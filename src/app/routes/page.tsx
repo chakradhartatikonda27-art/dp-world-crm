@@ -13,20 +13,20 @@ export default function RoutesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 border border-slate-800 p-4 rounded-xl">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <Route className="w-5 h-5 text-sky-400" />
-            <span>Routes & Checkpoints Management</span>
+          <h1 className="text-lg sm:text-xl font-bold text-slate-100 flex items-center space-x-2">
+            <Route className="w-5 h-5 text-sky-400 shrink-0" />
+            <span>Routes &amp; Checkpoints Management</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">Corridor optimization • Border crossing SLAs • Geofenced Rest Stops</p>
         </div>
-        <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold">
+        <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold shrink-0">
           + Add Checkpoint
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
         {corridors.map((c) => (
           <div key={c.id} className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
             <div className="flex items-center justify-between">

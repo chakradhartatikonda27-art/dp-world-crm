@@ -12,20 +12,20 @@ export default function FuelPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 border border-slate-800 p-4 rounded-xl">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <Fuel className="w-5 h-5 text-amber-400" />
-            <span>Fuel Management & Variance Audit</span>
+          <h1 className="text-lg sm:text-xl font-bold text-slate-100 flex items-center space-x-2">
+            <Fuel className="w-5 h-5 text-amber-400 shrink-0" />
+            <span>Fuel Management &amp; Variance Audit</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">IoT Fuel sensors • Digital Card reconciliation • Theft/Leakage detection</p>
         </div>
-        <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold">
+        <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold shrink-0">
           + Record Fuel Fill
         </button>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden overflow-x-auto min-w-full">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 uppercase text-[10px] font-semibold">

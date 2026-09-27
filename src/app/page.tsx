@@ -132,7 +132,7 @@ export default function ControlTowerDashboard() {
   return (
     <div className="space-y-6">
       {/* Metrics Banner */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
         <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between">
           <div>
             <div className="text-[10px] uppercase font-semibold text-slate-400">Total Active</div>
@@ -173,7 +173,7 @@ export default function ControlTowerDashboard() {
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between">
+        <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between col-span-2 sm:col-span-1">
           <div>
             <div className="text-[10px] uppercase font-semibold text-slate-400">Open Exceptions</div>
             <div className="text-xl font-bold font-mono text-amber-400">{exceptions.length}</div>
@@ -185,9 +185,9 @@ export default function ControlTowerDashboard() {
       </div>
 
       {/* Control Tower Map & Exceptions Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Map Column */}
-        <div className="lg:col-span-2 h-[420px]">
+        <div className="lg:col-span-2 h-[320px] sm:h-[420px]">
           <ControlTowerMap vehicles={liveVehicles} onSelectShipment={(id) => {
             const found = shipments.find((s) => s.id === id);
             if (found) handleSelectShipment(found);
@@ -195,7 +195,7 @@ export default function ControlTowerDashboard() {
         </div>
 
         {/* Real-time Exception & Operations Alert Sidebar */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between h-[420px]">
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between h-[340px] sm:h-[420px]">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center space-x-2">

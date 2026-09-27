@@ -16,24 +16,24 @@ export default function DriversPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <UserSquare2 className="w-5 h-5 text-sky-400" />
-            <span>Driver Performance & Roster Directory</span>
+          <h1 className="text-lg sm:text-xl font-bold text-slate-100 flex items-center space-x-2">
+            <UserSquare2 className="w-5 h-5 text-sky-400 shrink-0" />
+            <span>Driver Performance &amp; Roster Directory</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             Operational safety records, license verification status, on-time delivery rates, and active trip assignments.
           </p>
         </div>
 
-        <button className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-lg shadow-sky-500/20">
+        <button className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-lg shadow-sky-500/20 shrink-0">
           <Plus className="w-4 h-4" />
           <span>Register Driver</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {drivers.map((driver) => (
           <div key={driver.id} className="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl">
             <div className="flex items-center justify-between">

@@ -12,15 +12,15 @@ export default function WarehousePage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 border border-slate-800 p-4 rounded-xl">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <Boxes className="w-5 h-5 text-sky-400" />
-            <span>Warehouse & Inventory Control</span>
+          <h1 className="text-lg sm:text-xl font-bold text-slate-100 flex items-center space-x-2">
+            <Boxes className="w-5 h-5 text-sky-400 shrink-0" />
+            <span>Warehouse &amp; Inventory Control</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">Bin Location Management • Pick & Pack • Cross-Docking • QR Scanning</p>
+          <p className="text-xs text-slate-400 mt-0.5">Bin Location Management • Pick &amp; Pack • Cross-Docking • QR Scanning</p>
         </div>
-        <div className="flex space-x-2">
+        <div className="flex items-center space-x-2 shrink-0">
           <button className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold">
             Inbound Receipt
           </button>
@@ -30,7 +30,7 @@ export default function WarehousePage() {
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden overflow-x-auto min-w-full">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
             <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 uppercase text-[10px] font-semibold">
