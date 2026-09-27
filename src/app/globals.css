@@ -52,3 +52,105 @@ body {
 .leaflet-popup-tip {
   background: #1e293b !important;
 }
+
+/* ==========================================================================
+   Light / White Background Theme Overrides
+   ========================================================================== */
+.theme-light {
+  color: #0f172a;
+  background-color: #f8fafc;
+}
+
+.theme-light .bg-slate-950,
+.theme-light .bg-slate-900,
+.theme-light .bg-slate-850 {
+  background-color: #ffffff !important;
+  color: #0f172a;
+  border-color: #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+.theme-light .bg-slate-800,
+.theme-light .bg-slate-800\/80,
+.theme-light .bg-slate-800\/50,
+.theme-light .bg-slate-800\/60,
+.theme-light .bg-slate-950\/40 {
+  background-color: #f8fafc !important;
+  color: #1e293b;
+  border-color: #e2e8f0;
+}
+
+.theme-light .text-slate-100,
+.theme-light .text-slate-200,
+.theme-light .text-slate-300 {
+  color: #0f172a !important;
+}
+
+.theme-light .text-slate-400,
+.theme-light .text-slate-500 {
+  color: #64748b !important;
+}
+
+.theme-light .border-slate-800,
+.theme-light .border-slate-700,
+.theme-light .border-slate-800\/60 {
+  border-color: #e2e8f0 !important;
+}
+
+.theme-light th {
+  background-color: #f1f5f9 !important;
+  color: #475569 !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.theme-light tr:hover {
+  background-color: #f8fafc !important;
+}
+
+.theme-light td {
+  border-color: #f1f5f9 !important;
+}
+
+/* Retain white text on solid buttons & badges */
+.theme-light .bg-sky-600,
+.theme-light .bg-sky-500,
+.theme-light .bg-indigo-600,
+.theme-light .bg-emerald-600,
+.theme-light .bg-rose-600 {
+  color: #ffffff !important;
+}
+
+.theme-light .bg-sky-600 *,
+.theme-light .bg-sky-500 *,
+.theme-light .bg-indigo-600 *,
+.theme-light .bg-emerald-600 *,
+.theme-light .bg-rose-600 * {
+  color: #ffffff !important;
+}
+
+.theme-light input,
+.theme-light select,
+.theme-light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+.theme-light input::placeholder {
+  color: #94a3b8 !important;
+}
+
+/* Map adjustments in light theme */
+.theme-light .leaflet-container {
+  background: #f1f5f9 !important;
+}
+
+.theme-light .leaflet-popup-content-wrapper {
+  background: #ffffff !important;
+  color: #0f172a !important;
+  border: 1px solid #cbd5e1;
+}
+
+.theme-light .leaflet-popup-tip {
+  background: #ffffff !important;
+}
