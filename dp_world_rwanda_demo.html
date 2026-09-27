@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>DP World Rwanda — Logistics ERP Demo</title>
+<style>
+:root{--bg:#f4f6fa;--surface:#fff;--ink:#142033;--muted:#68758a;--line:#e5e9f0;--blue:#315efb;--green:#16a36f;--amber:#e99a18;--red:#d94850;--purple:#7657d9;--nav:#101827}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:13px Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{display:flex;min-height:100vh}.side{position:fixed;inset:0 auto 0 0;width:255px;background:var(--nav);color:#d8e0ed;padding:18px 12px;overflow:auto}.brand{font-size:21px;font-weight:850;color:#fff;padding:5px 12px 22px}.brand b{color:#6d8cff}.section{font-size:10px;color:#7f8ba0;letter-spacing:.12em;text-transform:uppercase;margin:18px 12px 7px}.nav{padding:9px 11px;border-radius:8px;margin:2px 0;cursor:pointer;font-size:12px}.nav:hover,.nav.active{background:#1d2940;color:#fff}.nav:focus-visible{outline:2px solid #6d8cff;outline-offset:2px}.main{margin-left:255px;width:calc(100% - 255px);padding:20px 24px 50px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.top h1{font-size:23px;margin:0}.top p{margin:4px 0 0;color:var(--muted);font-size:11px}.actions{display:flex;align-items:center;gap:8px}.search{width:240px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:#fff}.btn{border:0;background:var(--blue);color:#fff;padding:9px 12px;border-radius:8px;font-size:11px;cursor:pointer}.live{background:#fff;border:1px solid var(--line);border-radius:20px;padding:8px 11px;font-size:10px}.pulse{display:inline-block;width:7px;height:7px;background:#17b978;border-radius:50%;margin-right:5px;box-shadow:0 0 0 4px #dff7ed}.page{display:none}.page.active{display:block}.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.card,.panel{background:var(--surface);border:1px solid var(--line);border-radius:11px}.card{padding:14px}.label{font-size:10px;color:var(--muted)}.value{font-size:22px;font-weight:800;margin-top:6px}.delta{font-size:10px;color:var(--green);margin-top:5px}.warn{color:var(--amber)}.bad{color:var(--red)}.panel{padding:15px}.grid{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px}.panel h3{font-size:14px;margin:0 0 12px}.muted{color:var(--muted);font-size:10px}.map{height:350px;background:linear-gradient(22deg,transparent 48%,#d9e1ed 49%,#d9e1ed 50%,transparent 51%),linear-gradient(82deg,transparent 49%,#d9e1ed 50%,transparent 51%),#edf3f8;border-radius:9px;position:relative;overflow:hidden}.route{position:absolute;height:3px;background:var(--blue);left:10%;top:67%;width:78%;transform:rotate(-20deg);box-shadow:0 0 8px #315efb66}.pin{position:absolute;width:13px;height:13px;border:4px solid var(--blue);background:#fff;border-radius:50%;box-shadow:0 2px 8px #0002}.truck{position:absolute;background:#101827;color:#fff;padding:6px 8px;border-radius:7px;font-size:9px}.legend{position:absolute;bottom:9px;left:9px;background:#fff;padding:7px 9px;border-radius:7px;font-size:9px}.row{display:flex;justify-content:space-between;align-items:center;margin:8px 0;font-size:11px}.bar{height:7px;background:#edf0f5;border-radius:7px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue);border-radius:7px}.tag{font-size:9px;border-radius:20px;padding:4px 7px;background:#edf1ff;color:var(--blue)}.ok{background:#e6f8f0;color:#087e55}.warnbg{background:#fff3dc;color:#9a6100}.badbg{background:#ffeaec;color:#ad2830}.purple{background:#eeeaff;color:#6147b8}table{width:100%;border-collapse:collapse;font-size:11px}th,td{text-align:left;padding:9px 7px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:10px}.timeline{border-left:2px solid #dce3ee;margin:8px 0 0 6px;padding-left:18px}.event{position:relative;margin:0 0 18px}.event:before{content:"";position:absolute;left:-24px;top:2px;width:9px;height:9px;background:var(--blue);border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 1px var(--blue)}.event b{font-size:11px}.event div{font-size:9px;color:var(--muted);margin-top:3px}.kpi{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}.kpi:last-child{border:0}.chart{height:160px;display:flex;align-items:flex-end;gap:7px;padding:12px 4px 0}.col{height:100%;flex:1;display:flex;flex-direction:column;justify-content:flex-end}.col i{background:var(--blue);border-radius:4px 4px 1px 1px;display:block}.col span{font-size:8px;color:var(--muted);text-align:center;margin-top:5px}.flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.node{background:#f7f9fc;border:1px solid var(--line);padding:10px;border-radius:8px;min-width:110px;text-align:center;font-size:10px}.arrow{color:var(--blue);font-weight:800}.doc{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#f8fafc;border-radius:8px;margin:6px 0}.small{font-size:9px}.tabs{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:#fff;padding:7px 10px;border-radius:7px;font-size:10px}.tab.active{background:#eef2ff;color:var(--blue);border-color:#cdd6ff}.chat{background:#f7f9fc;border-radius:8px;padding:12px}.bubble{padding:8px 10px;border-radius:8px;background:#fff;border:1px solid var(--line);margin:6px 0;font-size:10px}.bubble.ai{background:#eef2ff}.pagehead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.pagehead h2{font-size:17px;margin:0}.alert{padding:10px;border-left:3px solid var(--red);background:#fff7f7;border-radius:6px;margin:6px 0;font-size:10px}.success{border-left-color:var(--green);background:#f4fcf8}.warning{border-left-color:var(--amber);background:#fffaf0}.code{font-family:ui-monospace,monospace;background:#111827;color:#d9e4ff;padding:14px;border-radius:8px;font-size:10px;line-height:1.7;white-space:pre-wrap}.portal{background:#f7f9fc;padding:16px;border-radius:9px}.portalbar{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line)}.riskgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.risk{padding:10px;border-radius:8px}.footer{color:var(--muted);font-size:9px;margin-top:20px;text-align:center}@media(max-width:1200px){.cards{grid-template-columns:repeat(3,1fr)}.grid,.grid3,.grid4{grid-template-columns:1fr 1fr}}@media(max-width:700px){.side{width:74px}.brand{font-size:0}.brand b{font-size:18px}.nav{font-size:0;text-align:center}.nav:first-letter{font-size:15px}.section{font-size:0}.main{margin-left:74px;width:calc(100% - 74px)}.cards,.grid,.grid3,.grid4{grid-template-columns:1fr}.actions .search{display:none}}
+
+/* Interactive layer & Modals */
+button,.btn,.tab,.clickable{cursor:pointer}.btn.secondary{background:#fff;color:#315efb;border:1px solid #cdd6ff}.btn.green{background:#16a36f}.btn.red{background:#d94850}.btn.dark{background:#101827}.actionbar{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 12px}.demo-actions{display:flex;gap:6px;flex-wrap:wrap}.modal-backdrop{position:fixed;inset:0;background:rgba(12,20,35,.52);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}.modal-backdrop.open{display:flex}.modal{width:min(720px,96vw);max-height:90vh;overflow:auto;background:#fff;border-radius:14px;box-shadow:0 25px 70px #0004}.modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e9f0}.modal-head h3{margin:0;font-size:16px}.modal-close{background:#f2f4f8;color:#334155;border:0;border-radius:7px;padding:7px 10px;cursor:pointer}.modal-body{padding:18px}.modal-foot{display:flex;justify-content:flex-end;gap:7px;padding:12px 18px;border-top:1px solid #e5e9f0}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{display:flex;flex-direction:column;gap:5px}.field.full{grid-column:1/-1}.field label{font-size:10px;color:#68758a;font-weight:700}.field input,.field select,.field textarea{border:1px solid #dfe5ee;border-radius:8px;padding:9px;font:inherit;background:#fff}.field textarea{min-height:80px;resize:vertical}.stepper{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.step{padding:7px 9px;border-radius:20px;background:#eef2f7;color:#64748b;font-size:9px}.step.done{background:#e6f8f0;color:#087e55}.step.current{background:#eef2ff;color:#315efb}.toast2{position:fixed;right:20px;bottom:20px;background:#101827;color:#fff;padding:11px 14px;border-radius:9px;font-size:11px;display:none;z-index:1200;box-shadow:0 8px 25px #0003}.toast2.show{display:block;animation:fadein .18s ease}.search-results{margin-top:10px;max-height:260px;overflow:auto}.result{padding:9px;border-bottom:1px solid #e5e9f0;cursor:pointer}.result:hover{background:#f7f9fc}.empty{padding:18px;text-align:center;color:#68758a}.selected-row{background:#eef2ff!important}.clickable-row{cursor:pointer}.clickable-row:hover{background:#f7f9fc}.status-live{display:inline-flex;align-items:center;gap:5px}.status-live:before{content:'';width:7px;height:7px;background:#16a36f;border-radius:50%}@media(max-width:700px){.formgrid{grid-template-columns:1fr}}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+.client-brand{display:flex;align-items:center;gap:10px;padding:7px 12px;background:#fff;border:1px solid #dfe5ec;border-radius:12px;min-width:210px}
+.client-brand .dpmark{width:42px;height:42px;flex:0 0 42px}
+.client-brand strong{display:block;font-size:14px;letter-spacing:.4px;color:#0d1828}
+.client-brand small{display:block;margin-top:2px;color:#68768a;font-size:10px;font-weight:700;letter-spacing:.7px}
+.client-brand .client-label{display:block;color:#8490a1;font-size:9px;text-transform:uppercase;letter-spacing:1px;margin-bottom:1px}
+.client-context{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #dfe5ec;background:#f8fafc;border-radius:9px;font-size:10px;color:#526174}
+.client-context b{color:#142033}
+.currency-badge{padding:6px 9px;border-radius:8px;background:#0d1828;color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px}
+.dp-rwanda-strip{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:12px;padding:12px 14px;border:1px solid #dfe5ec;border-radius:12px;background:linear-gradient(90deg,#fff,#f7fafc)}
+.dp-rwanda-strip .title{font-size:13px;font-weight:800;color:#0e1a2b}
+.dp-rwanda-strip .sub{font-size:10px;color:#6d7989;margin-top:3px}
+
+/* Driver mobile simulator */
+.driver-launch{display:inline-flex;align-items:center;gap:7px}
+.driver-modal{display:flex;justify-content:center;align-items:center;padding:10px}
+.phone-shell{width:390px;max-width:94vw;height:760px;max-height:82vh;background:#0d1725;border-radius:32px;padding:10px;box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.phone-screen{height:100%;background:#f5f7fa;border-radius:24px;overflow:hidden;display:flex;flex-direction:column}
+.phone-status{height:26px;background:#0d1725;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size:9px;font-weight:800}
+.driver-app-head{background:#fff;padding:13px 16px;border-bottom:1px solid #e2e7ed;display:flex;justify-content:space-between;align-items:center}
+.driver-brand{font-weight:900;letter-spacing:.7px;color:#102033}
+.driver-brand span{display:block;font-size:8px;color:#68778b;letter-spacing:1px;margin-top:2px}
+.driver-avatar{width:34px;height:34px;border-radius:50%;background:#102033;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}
+.driver-body{padding:13px;overflow:auto;flex:1}
+.driver-greeting{font-size:12px;color:#718094;margin-bottom:10px}
+.driver-trip-card{background:#102033;color:#fff;border-radius:15px;padding:14px;margin-bottom:11px}
+.driver-trip-card .trip-top{display:flex;justify-content:space-between;gap:10px}
+.driver-trip-card .trip-id{font-size:11px;font-weight:900;letter-spacing:.4px}
+.driver-trip-card .trip-status{font-size:8px;background:#24a77b;padding:4px 7px;border-radius:10px;font-weight:900}
+.driver-route{display:flex;align-items:center;gap:8px;margin:16px 0 10px}
+.driver-route .loc{font-size:10px;font-weight:800}
+.driver-route .line{height:2px;flex:1;background:#5c718b;position:relative}
+.driver-route .line:after{content:"";position:absolute;right:0;top:-4px;width:8px;height:8px;border-radius:50%;background:#fff}
+.driver-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.driver-kpi{background:#fff;border:1px solid #e0e6ed;border-radius:11px;padding:10px}
+.driver-kpi span{display:block;color:#7a8798;font-size:8px;text-transform:uppercase;letter-spacing:.6px}
+.driver-kpi b{display:block;margin-top:4px;font-size:12px;color:#152237}
+.driver-section-title{font-size:10px;font-weight:900;color:#34445a;text-transform:uppercase;letter-spacing:.8px;margin:14px 0 7px}
+.driver-actions-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.driver-action{border:1px solid #dfe5ec;background:#fff;border-radius:12px;padding:11px;text-align:left;cursor:pointer;font-size:10px;font-weight:800;color:#18263a}
+.driver-action span{display:block;font-size:18px;margin-bottom:5px}
+.driver-action.active{border-color:#102033;background:#eef3f8}
+.driver-primary{width:100%;border:0;border-radius:12px;padding:12px;background:#102033;color:#fff;font-weight:900;cursor:pointer;margin-top:9px}
+.driver-danger{width:100%;border:1px solid #d9534f;border-radius:12px;padding:10px;background:#fff;color:#b52e2e;font-weight:900;cursor:pointer;margin-top:8px}
+.driver-bottom{height:57px;background:#fff;border-top:1px solid #e1e6ed;display:grid;grid-template-columns:repeat(4,1fr)}
+.driver-bottom button{border:0;background:transparent;font-size:8px;color:#728094;cursor:pointer}
+.driver-bottom button.active{color:#102033;font-weight:900}
+.driver-timeline{background:#fff;border:1px solid #e1e6ed;border-radius:12px;padding:10px}
+.driver-event{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid #edf0f4;font-size:9px}
+.driver-event:last-child{border-bottom:0}
+.driver-event .dot{width:8px;height:8px;border-radius:50%;background:#24a77b;margin-top:3px;flex:0 0 8px}
+.driver-event .dot.pending{background:#d7a83d}
+.driver-demo-note{font-size:8px;color:#8390a0;text-align:center;padding:5px 10px;background:#f0f3f7}
+
+</style>
+
+<style id="rbacStyles">
+.rolebar{display:flex;align-items:center;gap:8px;margin-left:8px}
+.rolebar label{font-size:10px;color:#667085;font-weight:700}
+.rolebar select{border:1px solid #d9dfeb;background:#fff;border-radius:8px;padding:8px 10px;font-size:11px;font-weight:700;color:#1b2433;min-width:180px}
+.rolebadge{display:inline-flex;align-items:center;gap:6px;background:#eef4ff;color:#2857d8;border:1px solid #d8e4ff;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:800}
+.nav.rbac-hidden{display:none}
+.section.rbac-empty{display:none}
+.rbac-locked{opacity:.45!important;cursor:not-allowed!important;filter:grayscale(.35)}
+.rbac-locked::after{content:" 🔒";font-size:10px}
+.rbac-notice{background:#fff7e6;border:1px solid #ffd89a;color:#7a4d00;padding:9px 11px;border-radius:8px;font-size:11px;margin:0 0 12px}
+.permission-table td,.permission-table th{font-size:10px}
+.permission-full{color:#138a4b;font-weight:800}
+.permission-edit{color:#2857d8;font-weight:800}
+.permission-view{color:#667085;font-weight:700}
+.permission-none{color:#b42318;font-weight:700}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+<div class="brand" style="padding-bottom:8px">LOGI<b>OS</b><span style="display:block;font-size:9px;letter-spacing:1px;color:#8c98a8;margin-top:3px">DP WORLD RWANDA</span></div>
+<div class="section">Command</div>
+<div aria-label="Control Tower" class="nav active" data-page="control" role="button" tabindex="0">◉ Control Tower</div><div aria-label="Live" class="nav" data-page="live" role="button" tabindex="0">⌁ Live GPS / Tracking</div><div aria-label="Shipments" class="nav" data-page="shipments" role="button" tabindex="0">▣ Shipments / Trips</div>
+<div class="section">Transport</div>
+<div aria-label="Fleet" class="nav" data-page="fleet" role="button" tabindex="0">▰ Fleet / Trucks</div><div aria-label="Drivers" class="nav" data-page="drivers" role="button" tabindex="0">◌ Drivers</div><div aria-label="Routes" class="nav" data-page="routes" role="button" tabindex="0">⌁ Routes / Checkpoints</div><div aria-label="Fuel" class="nav" data-page="fuel" role="button" tabindex="0">⛽ Fuel</div><div aria-label="Maintenance" class="nav" data-page="maintenance" role="button" tabindex="0">⚒ Maintenance</div>
+<div class="section">Cargo Operations</div>
+<div aria-label="Loading" class="nav" data-page="loading" role="button" tabindex="0">▤ Loading / Unloading</div><div aria-label="Warehouse" class="nav" data-page="warehouse" role="button" tabindex="0">▤ Warehouse / Inventory</div><div aria-label="Documents" class="nav" data-page="documents" role="button" tabindex="0">▧ Documents / Customs</div><div aria-label="Pod" class="nav" data-page="pod" role="button" tabindex="0">✓ POD / Delivery</div>
+<div class="section">Commercial</div>
+<div aria-label="Clients" class="nav" data-page="clients" role="button" tabindex="0">◎ Client Portal / CRM</div><div aria-label="Quotes" class="nav" data-page="quotes" role="button" tabindex="0">◇ Quotes / Bookings</div><div aria-label="Finance" class="nav" data-page="finance" role="button" tabindex="0">$ Finance / Billing</div><div aria-label="Vendors" class="nav" data-page="vendors" role="button" tabindex="0">◫ Vendors / Transporters</div>
+<div class="section">Automation &amp; Intelligence</div>
+<div aria-label="Automation" class="nav" data-page="automation" role="button" tabindex="0">⚙ Workflow Automation</div><div aria-label="Ai" class="nav" data-page="ai" role="button" tabindex="0">✦ AI Assistant / OCR</div><div aria-label="Alerts" class="nav" data-page="alerts" role="button" tabindex="0">! Exceptions / Alerts</div><div aria-label="Trends" class="nav" data-page="trends" role="button" tabindex="0">↗ Trends / BI</div><div aria-label="Productivity" class="nav" data-page="productivity" role="button" tabindex="0">◎ Productivity / Profit</div>
+<div class="section">Administration</div>
+<div aria-label="Users" class="nav" data-page="users" role="button" tabindex="0">♙ Users / Roles</div><div aria-label="Audit" class="nav" data-page="audit" role="button" tabindex="0">▤ Audit / Security</div><div aria-label="Settings" class="nav" data-page="settings" role="button" tabindex="0">⚙ System Settings</div>
+</aside>
+<main class="main">
+<div class="top"><div><h1 id="title">Control Tower</h1><p>DP World Rwanda • Kigali • Interactive Logistics ERP Client Presentation Demo</p></div><div class="actions"><div class="client-brand" title="DP World Rwanda client environment">
+<svg class="dpmark" viewBox="0 0 64 64" aria-label="DP World">
+  <path d="M15 38c7 10 20 15 32 8 5-3 8-8 8-13 0 9-5 18-14 22-12 5-25 0-32-10z" fill="#7f8b95"/>
+  <path d="M16 37c8-2 16-7 21-15 4-6 5-12 3-16 7 7 7 18 2 27-6 11-17 17-26 15z" fill="#0b6f9b"/>
+  <path d="M21 27c6-7 13-12 21-14-3 4-4 9-3 14-5 2-11 2-18 0z" fill="#e32645"/>
+</svg>
+<div><span class="client-label">Client Environment</span><strong>DP WORLD</strong><small>RWANDA • KIGALI</small></div></div><span class="currency-badge">USD $</span><input class="search" placeholder="Search shipment, truck, client, document…"/><button class="btn" data-demo-action="create-shipment">+ New Shipment</button><div class="rolebar"><label for="roleSelect">DP WORLD ROLE</label><select id="roleSelect" aria-label="Current demo role"><option value="Super Admin" selected>Super Admin</option><option value="Executive / Management">Executive / Management</option><option value="Operations Manager">Operations Manager</option><option value="Dispatcher / Operations">Dispatcher / Operations</option><option value="Fleet Manager">Fleet Manager</option><option value="Driver">Driver</option><option value="Warehouse Manager">Warehouse Manager</option><option value="Documentation &amp; Customs">Documentation &amp; Customs</option><option value="Finance Manager">Finance Manager</option><option value="Sales / Customer Service">Sales / Customer Service</option><option value="Vendor / Transporter">Vendor / Transporter</option><option value="Client">Client</option><option value="Auditor / Security">Auditor / Security</option></select><span class="rolebadge" id="roleBadge">Super Admin</span></div><div class="live"><span class="pulse"></span>LIVE <b id="clock">10:45:00 AM</b></div></div></div>
+
+<!-- PAGE 1: CONTROL TOWER -->
+<section class="page active" id="control"><div class="dp-rwanda-strip"><div><div class="title">DP World Rwanda — Kigali Logistics Operations</div><div class="sub">Integrated visibility across inland port, transport, warehousing, customs, delivery and customer service</div></div><div class="client-context"><b>Currency:</b> USD <span>•</span><b>Timezone:</b> Africa/Kigali <span>•</span><b>Environment:</b> Production Demo</div></div><div class="pagehead"><h2>Live Fleet + Shipment Map 82 moving • geofences • route deviations</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="shipments">Open Shipment</button><button class="btn secondary" data-demo-action="routes">Dispatch Board</button><button class="btn secondary" data-demo-action="export">Export Control Report</button></div></div>
+<div class="cards">
+<div class="card"><div class="label">Active shipments</div><div class="value" id="shipCount">126</div><div class="delta">↑ 8.4% vs last week</div></div>
+<div class="card"><div class="label">Trucks moving</div><div class="value" id="truckCount">82</div><div class="delta">↑ 5.1%</div></div>
+<div class="card"><div class="label">On-time delivery</div><div class="value">94.2%</div><div class="delta">↑ 1.8 pts</div></div>
+<div class="card"><div class="label">Critical / delayed</div><div class="value">3 / 8</div><div class="delta bad">11 need attention</div></div>
+<div class="card"><div class="label">Monthly revenue</div><div class="value">$296K</div><div class="delta">↑ 12.6%</div></div>
+<div class="card"><div class="label">Gross margin</div><div class="value">31.8%</div><div class="delta">↑ 2.4 pts</div></div>
+</div>
+<div class="grid">
+<div class="panel"><h3>Live Fleet + Shipment Map <span class="muted">82 moving • geofences • route deviations</span></h3><div class="map" id="map"><div class="route"></div><div class="pin" style="left:10%;top:67%"></div><div class="pin" style="left:88%;top:30%"></div><div class="truck" style="left:48%;top:48%">🚛 RAB 123A • 58 km/h</div><div class="truck" style="left:25%;top:58%">🚛 AP39TX9211 • 42 km/h</div><div class="truck" style="left:69%;top:31%">🚛 KA01AB4455 • IDLE</div><div class="legend">● Online &nbsp; 🟠 At risk &nbsp; 🔴 Exception &nbsp; | GPS refresh: <b id="gps">2s</b></div></div></div>
+<div class="panel"><h3>Exception Center</h3><div class="alert">🔴 <b>Truck breakdown</b><br/>RAB 551B • shipment RW-00771</div><div class="alert warning">🟠 <b>Border delay</b><br/>Rusumo • +2h 45m predicted</div><div class="alert warning">🟡 <b>Document missing</b><br/>IND-00881 • customs declaration</div><h3 style="margin-top:15px">SLA pulse</h3><div class="row"><span>Pickup SLA</span><b>97%</b></div><div class="bar"><i style="width:97%"></i></div><div class="row"><span>Transit SLA</span><b>94%</b></div><div class="bar"><i style="width:94%"></i></div><div class="row"><span>POD SLA</span><b>98%</b></div><div class="bar"><i style="width:98%"></i></div></div>
+</div>
+<div class="grid3">
+<div class="panel"><h3>Shipment Volume — 30 days</h3><div class="chart" data-values="42,48,51,55,50,58,61,63,60,66,71,74,69,76,80,77,84,81,88,90"></div></div>
+<div class="panel"><h3>Revenue Trend</h3><div class="chart" data-values="45,52,49,58,61,66,62,71,74,79,83,88"></div><div class="row"><span>30-day growth</span><b class="delta">+12.6%</b></div></div>
+<div class="panel"><h3>Fleet Utilization</h3><div class="row"><span>Moving</span><b>82%</b></div><div class="bar"><i style="width:82%"></i></div><div class="row"><span>Idle</span><b>12%</b></div><div class="bar"><i style="width:12%"></i></div><div class="row"><span>Maintenance</span><b>6%</b></div><div class="bar"><i style="width:6%"></i></div></div>
+</div>
+</section>
+
+<!-- PAGE 2: LIVE GPS -->
+<section class="page" id="live">
+<div class="pagehead"><h2>Live Tracking &amp; GPS</h2><button class="btn" data-demo-action="gps-update" onclick="moveTruck()">Simulate GPS update</button><div class="demo-actions"><button class="btn secondary" data-demo-action="route-replay">Replay Route</button><button class="btn secondary" data-demo-action="center-fleet">Center Fleet</button></div></div>
+<div class="grid"><div class="panel"><h3>Fleet Map</h3><div class="map"><div class="route"></div><div class="truck" id="moving" style="left:48%;top:50%">🚛 RAB 123A</div><div class="truck" style="left:22%;top:61%">🚛 AP39TX9211</div><div class="truck" style="left:73%;top:31%">🚛 KA01AB4455</div><div class="truck" style="left:39%;top:28%">🚛 TS08GH7712</div><div class="legend">GPS • speed • direction • battery • network • ETA</div></div></div>
+<div class="panel"><h3>Selected Vehicle</h3><div class="kpi"><span>Truck</span><b>RAB 123A</b></div><div class="kpi"><span>Driver</span><b>John Mwangi</b></div><div class="kpi"><span>Speed</span><b>58 km/h</b></div><div class="kpi"><span>GPS accuracy</span><b>7 m</b></div><div class="kpi"><span>Battery</span><b>81%</b></div><div class="kpi"><span>Last update</span><b id="lastGps">Just now</b></div><div class="kpi"><span>Geofence</span><span class="tag ok">IN ROUTE</span></div></div></div>
+<div class="panel" style="margin-top:12px"><h3>Geofences</h3><div class="grid4"><div class="smallcard"><b>Dar Port</b><br/><span class="muted">12 trucks • 4 loading</span></div><div class="smallcard"><b>Rusumo Border</b><br/><span class="muted">8 trucks • avg wait 2.4h</span></div><div class="smallcard"><b>Kigali DC</b><br/><span class="muted">5 arrivals today</span></div><div class="smallcard"><b>Customer Sites</b><br/><span class="muted">18 active zones</span></div></div></div>
+</section>
+
+<!-- PAGE 3: SHIPMENTS -->
+<section class="page" id="shipments">
+<div class="pagehead"><h2>Shipments &amp; Trips</h2><button class="btn" data-demo-action="create-shipment">Create Shipment</button><div class="demo-actions"><button class="btn secondary" data-demo-action="bulk-assign">Bulk Assign</button><button class="btn secondary" data-demo-action="export">Export</button></div></div>
+<div class="tabs"><div class="tab active">All 126</div><div class="tab">In Transit 82</div><div class="tab">Loading 14</div><div class="tab">Border 8</div><div class="tab">Delivered 31</div><div class="tab">At Risk 12</div></div>
+<div class="panel"><table data-demo-table="shipments"><thead><tr><th>Shipment</th><th>Client</th><th>Cargo</th><th>Route</th><th>Truck / Driver</th><th>Status</th><th>ETA</th><th>Margin</th></tr></thead><tbody>
+<tr><td><b>RWA-2026-00125</b></td><td>DP World Rwanda</td><td>24.5T • Container</td><td>Dar → Rusumo → Kigali</td><td>RAB123A / John</td><td><span class="tag">IN TRANSIT</span></td><td>14:30</td><td>32%</td></tr>
+<tr><td><b>IND-2026-00881</b></td><td>Square Freight</td><td>18T • General</td><td>Chennai → Hyderabad</td><td>AP39TX9211 / Ravi</td><td><span class="tag warnbg">LOADING</span></td><td>18:10</td><td>28%</td></tr>
+<tr><td><b>UG-2026-00442</b></td><td>EastLink</td><td>28T • Container</td><td>Mombasa → Kampala</td><td>KA01AB4455 / Joseph</td><td><span class="tag badbg">AT RISK</span></td><td>Tomorrow 09:20</td><td>24%</td></tr>
+<tr><td><b>TZ-2026-00317</b></td><td>Zion Water</td><td>20T • Pallet</td><td>Dar → Arusha</td><td>TS08GH7712 / Musa</td><td><span class="tag ok">DELIVERED</span></td><td>Completed</td><td>35%</td></tr>
+</tbody></table></div>
+<div class="grid" style="margin-top:12px"><div class="panel"><h3>Shipment Lifecycle</h3><div class="flow"><div class="node">Client Request</div><span class="arrow">→</span><div class="node">Quotation</div><span class="arrow">→</span><div class="node">Booking</div><span class="arrow">→</span><div class="node">Docs</div><span class="arrow">→</span><div class="node">Assign</div><span class="arrow">→</span><div class="node">Load</div><span class="arrow">→</span><div class="node">Transit</div><span class="arrow">→</span><div class="node">Border</div><span class="arrow">→</span><div class="node">Unload</div><span class="arrow">→</span><div class="node">POD</div><span class="arrow">→</span><div class="node">Invoice</div></div></div>
+<div class="panel"><h3>Shipment Detail</h3><div class="kpi"><span>Container</span><b>MSCU1234567</b></div><div class="kpi"><span>Seal</span><b>SL-88219</b></div><div class="kpi"><span>Weight</span><b>24,500 kg</b></div><div class="kpi"><span>HS Code</span><b>8471.30</b></div><div class="kpi"><span>Special handling</span><b>None</b></div></div></div>
+</section>
+
+<!-- PAGE 4: FLEET -->
+<section class="page" id="fleet"><div class="pagehead"><h2>Fleet Registry</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="add-truck">Add Truck</button><button class="btn secondary" data-demo-action="export">Export Fleet</button></div></div>
+<div class="cards"><div class="card"><div class="label">Total trucks</div><div class="value">104</div></div><div class="card"><div class="label">Moving</div><div class="value">82</div></div><div class="card"><div class="label">Idle</div><div class="value">12</div></div><div class="card"><div class="label">Maintenance</div><div class="value">6</div></div><div class="card"><div class="label">Offline</div><div class="value">4</div></div><div class="card"><div class="label">Utilization</div><div class="value">82%</div></div></div>
+<div class="panel" style="margin-top:12px"><h3>Fleet Registry</h3><table data-demo-table="fleet"><tr><th>Truck</th><th>Owner</th><th>Type</th><th>Capacity</th><th>GPS</th><th>Insurance</th><th>Inspection</th><th>Next Service</th></tr><tr><td>RAB123A</td><td>ABC Transport</td><td>Volvo FH</td><td>30T</td><td><span class="tag ok">ONLINE</span></td><td>Valid</td><td>Valid</td><td>2,500 km</td></tr><tr><td>AP39TX9211</td><td>Square Fleet</td><td>Trailer</td><td>25T</td><td><span class="tag ok">ONLINE</span></td><td>Valid</td><td>Valid</td><td>800 km</td></tr><tr><td>KA01AB4455</td><td>EastLink</td><td>Container</td><td>28T</td><td><span class="tag warnbg">IDLE</span></td><td>Valid</td><td>Valid</td><td><span class="bad">OVERDUE</span></td></tr></table></div>
+</section>
+
+<!-- PAGE 5: DRIVERS -->
+<section class="page" id="drivers"><div class="pagehead"><h2>Driver Management &amp; Productivity</h2><button class="btn driver-launch" data-demo-action="driver-app">📱 Open Driver App</button><button class="btn" data-demo-action="add-driver">Add Driver</button><div class="demo-actions"><button class="btn secondary" data-demo-action="driver-settlement">Driver Settlement</button></div></div><div class="grid"><div class="panel"><h3>Driver Registry</h3><table data-demo-table="drivers"><tr><th>Driver</th><th>License</th><th>Truck</th><th>Trips</th><th>On-time</th><th>Idle</th><th>POD</th><th>Incidents</th></tr><tr><td>John Mwangi</td><td>EXP 2028</td><td>RAB123A</td><td>28</td><td>97%</td><td>4.2h</td><td>100%</td><td>0</td></tr><tr><td>Ravi Kumar</td><td>EXP 2027</td><td>AP39TX9211</td><td>25</td><td>94%</td><td>6.1h</td><td>98%</td><td>1</td></tr><tr><td>Joseph Otieno</td><td>EXP 2029</td><td>KA01AB4455</td><td>22</td><td>91%</td><td>8.4h</td><td>96%</td><td>0</td></tr></table></div><div class="panel"><h3>Driver App — Current Trip</h3><div class="portal"><b>RWA-2026-00125</b><p class="muted">Dar es Salaam → Kigali</p><div class="flow"><div class="node">✓ Start Trip</div><div class="node">✓ Loading</div><div class="node">● In Transit</div><div class="node">○ Border</div><div class="node">○ Delivery</div></div><br/><button class="btn" data-demo-action="record-checkpoint" onclick="toast('Checkpoint recorded with GPS + timestamp')">Record Checkpoint</button> <button class="btn" data-demo-action="upload-photo" onclick="toast('Camera upload opened')">Upload Photo</button></div></div></div></section>
+
+<!-- PAGE 6: ROUTES -->
+<section class="page" id="routes"><div class="pagehead"><h2>Route Planning</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="optimize-route">Optimize Route</button><button class="btn secondary" data-demo-action="add-checkpoint">Add Checkpoint</button></div></div><div class="grid"><div class="panel"><h3>Route Planning</h3><div class="flow"><div class="node">Dar Port<br/><span class="muted">Origin</span></div><span class="arrow">→</span><div class="node">Morogoro<br/><span class="muted">Checkpoint</span></div><span class="arrow">→</span><div class="node">Rusumo<br/><span class="muted">Border</span></div><span class="arrow">→</span><div class="node">Kigali DC<br/><span class="muted">Destination</span></div></div><div class="grid4" style="margin-top:15px"><div class="card"><div class="label">Distance</div><div class="value">1,460 km</div></div><div class="card"><div class="label">Driving time</div><div class="value">25.4h</div></div><div class="card"><div class="label">Border estimate</div><div class="value">2.4h</div></div><div class="card"><div class="label">ETA</div><div class="value">14:30</div></div></div></div><div class="panel"><h3>Route Checkpoints</h3><div class="timeline"><div class="event"><b>Dar Port</b><div>Departed 14:30 • GPS verified</div></div><div class="event"><b>Morogoro</b><div>Passed 19:42 • 62 km/h</div></div><div class="event"><b>Rusumo Border</b><div>Expected tomorrow 08:20</div></div><div class="event"><b>Kigali</b><div>ETA tomorrow 14:30</div></div></div></div></div></section>
+
+<!-- PAGE 7: FUEL -->
+<section class="page" id="fuel"><div class="pagehead"><h2>Fuel Transactions</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="record-fuel">Record Fuel</button><button class="btn secondary" data-demo-action="fuel-variance">Fuel Variance</button></div></div><div class="cards"><div class="card"><div class="label">Fuel this month</div><div class="value">48,200 L</div></div><div class="card"><div class="label">Spend</div><div class="value">$42.6L</div></div><div class="card"><div class="label">Fleet avg</div><div class="value">3.7 km/L</div></div><div class="card"><div class="label">Variance alerts</div><div class="value">7</div></div></div><div class="panel" style="margin-top:12px"><h3>Fuel Transactions</h3><table data-demo-table="fuel"><tr><th>Date</th><th>Truck</th><th>Location</th><th>Litres</th><th>Price</th><th>Mileage</th><th>Efficiency</th><th>Variance</th></tr><tr><td>27 Sep</td><td>RAB123A</td><td>Morogoro</td><td>310</td><td>$112/L</td><td>1,145 km</td><td>3.69 km/L</td><td>Normal</td></tr><tr><td>27 Sep</td><td>AP39TX9211</td><td>Vijayawada</td><td>280</td><td>$96/L</td><td>890 km</td><td>3.18 km/L</td><td><span class="bad">+14%</span></td></tr></table></div></section>
+
+<!-- PAGE 8: MAINTENANCE -->
+<section class="page" id="maintenance"><div class="pagehead"><h2>Maintenance Queue</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="schedule-service">Schedule Service</button><button class="btn secondary" data-demo-action="work-order">Create Work Order</button></div></div><div class="grid"><div class="panel"><h3>Maintenance Queue</h3><div class="alert badbg">⚠ KA01AB4455 — service overdue by 420 km</div><div class="alert warning">⚠ RAB551B — tire inspection due</div><div class="alert success">✓ AP39TX9211 — service completed today</div><h3 style="margin-top:15px">Maintenance Schedule</h3><table data-demo-table="maintenance"><tr><th>Truck</th><th>Task</th><th>Due</th><th>Cost</th><th>Status</th></tr><tr><td>KA01AB4455</td><td>Engine service</td><td>Overdue</td><td>$48,000</td><td><span class="tag badbg">OPEN</span></td></tr><tr><td>RAB551B</td><td>Tires</td><td>1,200 km</td><td>$72,000</td><td><span class="tag warnbg">DUE SOON</span></td></tr></table></div><div class="panel"><h3>Fleet Health</h3><div class="row"><span>Healthy</span><b>88%</b></div><div class="bar"><i style="width:88%"></i></div><div class="row"><span>Due soon</span><b>7%</b></div><div class="bar"><i style="width:7%"></i></div><div class="row"><span>Overdue</span><b>5%</b></div><div class="bar"><i style="width:5%"></i></div></div></div></section>
+
+<!-- PAGE 9: LOADING -->
+<section class="page" id="loading"><div class="pagehead"><h2>Dock Operations</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="start-loading">Start Loading</button><button class="btn secondary" data-demo-action="complete-loading">Complete Loading</button><button class="btn secondary" data-demo-action="assign-dock">Assign Dock</button></div></div><div class="cards"><div class="card"><div class="label">Loading today</div><div class="value">37</div></div><div class="card"><div class="label">Unloading</div><div class="value">29</div></div><div class="card"><div class="label">Avg loading</div><div class="value">2.1h</div></div><div class="card"><div class="label">Avg unloading</div><div class="value">1.3h</div></div><div class="card"><div class="label">Dock utilization</div><div class="value">78%</div></div><div class="card"><div class="label">Waiting trucks</div><div class="value">6</div></div></div><div class="panel" style="margin-top:12px"><h3>Dock Operations</h3><table data-demo-table="loading"><tr><th>Dock</th><th>Truck</th><th>Shipment</th><th>Activity</th><th>Started</th><th>Seal</th><th>Status</th></tr><tr><td>D-01</td><td>RAB123A</td><td>RWA00125</td><td>Loading</td><td>13:10</td><td>SL-88219</td><td><span class="tag warnbg">IN PROGRESS</span></td></tr><tr><td>D-02</td><td>AP39TX9211</td><td>IND00881</td><td>Unloading</td><td>12:45</td><td>SL-12091</td><td><span class="tag ok">ON TIME</span></td></tr></table></div></section>
+
+<!-- PAGE 10: WAREHOUSE -->
+<section class="page" id="warehouse"><div class="pagehead"><h2>Warehouse Inventory</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="receive-goods">Receive Goods</button><button class="btn secondary" data-demo-action="dispatch-goods">Dispatch Goods</button><button class="btn secondary" data-demo-action="scan-qr">Scan QR</button></div></div><div class="grid"><div class="panel"><h3>Warehouse Inventory</h3><div class="cards" style="grid-template-columns:repeat(3,1fr)"><div class="card"><div class="label">SKUs</div><div class="value">2,841</div></div><div class="card"><div class="label">Units</div><div class="value">84,210</div></div><div class="card"><div class="label">Capacity used</div><div class="value">76%</div></div></div><h3 style="margin-top:15px">Inbound / Outbound</h3><div class="flow"><div class="node">Receive</div><span class="arrow">→</span><div class="node">Scan QR</div><span class="arrow">→</span><div class="node">Putaway</div><span class="arrow">→</span><div class="node">Pick</div><span class="arrow">→</span><div class="node">Pack</div><span class="arrow">→</span><div class="node">Dispatch</div></div></div><div class="panel"><h3>Warehouse Tasks</h3><div class="smallcard">Pick order #8821 <span class="tag">6 items</span></div><div class="smallcard">Receive container MSCU1234567 <span class="tag warnbg">ARRIVING</span></div><div class="smallcard">Pack shipment IND00881 <span class="tag ok">READY</span></div></div></div></section>
+
+<!-- PAGE 11: DOCUMENTS -->
+<section class="page" id="documents"><div class="pagehead"><h2>Shipment Document Pack</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="upload-document">Upload Document</button><button class="btn secondary" data-demo-action="verify-documents">Verify All</button></div></div><div class="cards"><div class="card"><div class="label">Verified</div><div class="value">1,284</div></div><div class="card"><div class="label">Pending</div><div class="value">38</div></div><div class="card"><div class="label">Expiring</div><div class="value">12</div></div><div class="card"><div class="label">Missing</div><div class="value">7</div></div></div><div class="panel" style="margin-top:12px"><h3>Shipment Document Pack</h3><div class="doc"><span>✓ Bill of Lading.pdf</span><span class="tag ok">VERIFIED</span></div><div class="doc"><span>✓ Commercial Invoice.pdf</span><span class="tag ok">VERIFIED</span></div><div class="doc"><span>✓ Packing List.pdf</span><span class="tag ok">VERIFIED</span></div><div class="doc"><span>⚠ Customs Declaration.pdf</span><span class="tag warnbg">PENDING</span></div><div class="doc"><span>✓ Insurance.pdf</span><span class="tag ok">VERIFIED</span></div><div class="doc"><span>✓ Truck Documents.pdf</span><span class="tag ok">VERIFIED</span></div><div class="doc"><span>✓ Driver Documents.pdf</span><span class="tag ok">VERIFIED</span></div><div class="doc"><span>✓ Loading Photos</span><span class="tag ok">VERIFIED</span></div></div></section>
+
+<!-- PAGE 12: POD -->
+<section class="page" id="pod"><div class="pagehead"><h2>Digital Proof of Delivery</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="verify-pod">Verify POD</button><button class="btn secondary" data-demo-action="download-pod">Download POD</button></div></div><div class="grid"><div class="panel"><h3>Digital Proof of Delivery</h3><div class="portal"><h3>RWA-2026-00125</h3><div class="kpi"><span>Delivered to</span><b>Kigali Distribution Centre</b></div><div class="kpi"><span>Recipient</span><b>Patrick N.</b></div><div class="kpi"><span>Date / time</span><b>28 Sep • 14:28</b></div><div class="kpi"><span>GPS</span><b>-1.9441, 30.0619</b></div><div class="kpi"><span>Photos</span><b>4 attached</b></div><div class="kpi"><span>Signature</span><b>✓ Captured</b></div></div></div><div class="panel"><h3>Delivery Timeline</h3><div class="timeline"><div class="event"><b>POD signed</b><div>14:28 • GPS verified</div></div><div class="event"><b>Unloading completed</b><div>14:18 • 1h 03m</div></div><div class="event"><b>Destination arrived</b><div>13:15 • Geofence triggered</div></div><div class="event"><b>Border departed</b><div>07:42</div></div></div></div></div></section>
+
+<!-- PAGE 13: CLIENTS -->
+<section class="page" id="clients"><div class="pagehead"><h2>DP World Rwanda Client Portal &amp; CRM</h2><button class="btn" data-demo-action="client-view">Open Client View</button><div class="demo-actions"><button class="btn secondary" data-demo-action="new-client">New Client</button><button class="btn secondary" data-demo-action="send-client-update">Send Update</button></div></div><div class="portal"><div class="portalbar"><div><b>DP World Rwanda</b><div class="muted">Enterprise customer • Kigali • Account manager: Sarah</div></div><span class="tag ok">4.7 / 5 satisfaction</span></div><div class="cards" style="margin-top:12px"><div class="card"><div class="label">Active</div><div class="value">12</div></div><div class="card"><div class="label">In transit</div><div class="value">8</div></div><div class="card"><div class="label">Delivered</div><div class="value">42</div></div><div class="card"><div class="label">Delayed</div><div class="value">2</div></div><div class="card"><div class="label">Open tickets</div><div class="value">3</div></div><div class="card"><div class="label">Outstanding</div><div class="value">$18.8K</div></div></div><div class="grid" style="margin-top:12px"><div class="panel"><h3>Customer Shipment View</h3><b>RWA-2026-00125</b><p class="muted">Dar es Salaam → Kigali</p><div class="timeline"><div class="event"><b>✓ Booking confirmed</b><div>09:15</div></div><div class="event"><b>✓ Truck assigned</b><div>10:00 • RAB123A</div></div><div class="event"><b>✓ Loading completed</b><div>14:05</div></div><div class="event"><b>● In transit</b><div>Rusumo border • ETA 14:30 tomorrow</div></div></div></div><div class="panel"><h3>Client Self-Service</h3><div class="flow"><div class="node">Track Live</div><div class="node">Documents</div><div class="node">Invoices</div><div class="node">POD</div><div class="node">Messages</div><div class="node">Support Ticket</div></div><h3 style="margin-top:18px">Feedback</h3><div>Delivery ★★★★★</div><div>Communication ★★★★☆</div><div>Driver ★★★★★</div></div></div></div></section>
+
+<!-- PAGE 14: QUOTES -->
+<section class="page" id="quotes"><div class="pagehead"><h2>Quote Builder</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="new-quote">New Quote</button><button class="btn secondary" data-demo-action="convert-booking">Convert Booking</button></div></div><div class="grid"><div class="panel"><h3>Quote Builder</h3><div class="kpi"><span>Transport</span><b>$1,877</b></div><div class="kpi"><span>Customs</span><b>$334</b></div><div class="kpi"><span>Handling</span><b>$188</b></div><div class="kpi"><span>Loading / Unloading</span><b>$125</b></div><div class="kpi"><span>Insurance</span><b>$83</b></div><div class="kpi"><span>Total Quote</span><b>$2,607</b></div><button class="btn" data-demo-action="send-quote" style="margin-top:10px">Send Quote</button></div><div class="panel"><h3>Booking Pipeline</h3><div class="smallcard">New request — 18 <span class="tag">NEW</span></div><div class="smallcard">Quote sent — 11 <span class="tag purple">QUOTED</span></div><div class="smallcard">Awaiting confirmation — 7 <span class="tag warnbg">PENDING</span></div><div class="smallcard">Booked — 23 <span class="tag ok">BOOKED</span></div><div class="smallcard">Lost / cancelled — 3 <span class="tag badbg">CLOSED</span></div></div></div></section>
+
+<!-- PAGE 15: FINANCE -->
+<section class="page" id="finance"><div class="pagehead"><h2>Profitability by shipment</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="create-invoice">Create Invoice</button><button class="btn secondary" data-demo-action="record-payment">Record Payment</button><button class="btn secondary" data-demo-action="export">Export Ledger</button></div></div><div class="cards"><div class="card"><div class="label">Revenue</div><div class="value">$296K</div><div class="delta">↑ 12.6%</div></div><div class="card"><div class="label">Transport cost</div><div class="value">$201K</div></div><div class="card"><div class="label">Gross profit</div><div class="value">$95K</div></div><div class="card"><div class="label">Outstanding</div><div class="value">$35K</div></div><div class="card"><div class="label">Vendor payable</div><div class="value">$23K</div></div><div class="card"><div class="label">Invoices due</div><div class="value">18</div></div></div><div class="grid" style="margin-top:12px"><div class="panel"><h3>Profitability by shipment</h3><table data-demo-table="finance"><tr><th>Shipment</th><th>Revenue</th><th>Cost</th><th>Gross profit</th><th>Margin</th></tr><tr><td>RWA00125</td><td>$2,607</td><td>$1,773</td><td>$834</td><td>32%</td></tr><tr><td>IND00881</td><td>$1,898</td><td>$1,366</td><td>$532</td><td>28%</td></tr><tr><td>UG00442</td><td>$3,076</td><td>$2,336</td><td>$740</td><td>24%</td></tr></table></div><div class="panel"><h3>Receivables aging</h3><div class="row"><span>Current</span><b>$18.8K</b></div><div class="bar"><i style="width:53%"></i></div><div class="row"><span>1–30 days</span><b>$9L</b></div><div class="bar"><i style="width:26%"></i></div><div class="row"><span>31–60 days</span><b>$5L</b></div><div class="bar"><i style="width:15%"></i></div><div class="row"><span>60+ days</span><b>$2L</b></div><div class="bar"><i style="width:6%"></i></div></div></div></section>
+
+<!-- PAGE 16: VENDORS -->
+<section class="page" id="vendors"><div class="pagehead"><h2>Transporters / Vendors</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="add-vendor">Add Vendor</button><button class="btn secondary" data-demo-action="assign-vendor-load">Assign Load</button></div></div><div class="panel"><h3>Transporters / Vendors</h3><table data-demo-table="vendors"><tr><th>Vendor</th><th>Trucks</th><th>Active trips</th><th>On-time</th><th>Payable</th><th>Documents</th><th>Status</th></tr><tr><td>ABC Transport</td><td>34</td><td>21</td><td>96%</td><td>$8.2L</td><td>Complete</td><td><span class="tag ok">ACTIVE</span></td></tr><tr><td>EastLink Logistics</td><td>22</td><td>16</td><td>91%</td><td>$6.7L</td><td>2 pending</td><td><span class="tag warnbg">REVIEW</span></td></tr><tr><td>Square Fleet</td><td>18</td><td>12</td><td>94%</td><td>$4.8L</td><td>Complete</td><td><span class="tag ok">ACTIVE</span></td></tr></table></div></section>
+
+<!-- PAGE 17: AUTOMATION -->
+<section class="page" id="automation"><div class="pagehead"><h2>Workflow Automation Engine</h2><button class="btn" data-demo-action="create-workflow" onclick="toast('Workflow builder opened')">+ Create Workflow</button><div class="demo-actions"><button class="btn secondary" data-demo-action="run-automations">Run All Active</button></div></div><div class="grid"><div class="panel"><h3>Active Automations</h3><div class="smallcard"><b>Geofence → Arrival workflow</b><div class="muted">Truck enters destination → status ARRIVED → notify warehouse + client → create unloading task</div></div><div class="smallcard"><b>Idle detection</b><div class="muted">Truck stationary &gt; 90m → exception → notify operations → recalculate ETA</div></div><div class="smallcard"><b>POD → Billing</b><div class="muted">POD uploaded → verify → delivered → generate invoice → email client</div></div><div class="smallcard"><b>Document expiry</b><div class="muted">Expiry &lt; 7 days → notify fleet manager → renewal task → escalate</div></div><div class="smallcard"><b>Delay notification</b><div class="muted">ETA shift &gt; 60m → client WhatsApp + operations alert</div></div></div><div class="panel"><h3>Visual Builder</h3><div class="flow"><div class="node">EVENT<br/><b>Truck Arrived</b></div><span class="arrow">→</span><div class="node">CONDITION<br/><b>Shipment Type</b></div><span class="arrow">→</span><div class="node">ACTION<br/><b>Notify Client</b></div><span class="arrow">→</span><div class="node">ACTION<br/><b>Create Task</b></div></div><div class="code" style="margin-top:15px">WHEN truck.geofence == destination
+IF shipment.status == IN_TRANSIT
+THEN status = ARRIVED
+AND notify(warehouse, client)
+AND create_task(unloading)</div></div></div></section>
+
+<!-- PAGE 18: AI -->
+<section class="page" id="ai"><div class="pagehead"><h2>Logistics AI Assistant</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="upload-document">Upload Document</button><button class="btn secondary" data-demo-action="run-ocr">Run OCR</button><button class="btn secondary" data-demo-action="ask-ai">Ask AI</button></div></div><div class="grid"><div class="panel"><h3>Logistics AI Assistant</h3><div class="chat"><div class="bubble">Show me all delayed shipments.</div><div class="bubble ai"><b>AI:</b> 7 shipments are delayed: 3 border delays, 2 vehicle issues, 1 missing document, 1 destination congestion.</div><div class="bubble">Why is RWA-2026-00125 delayed?</div><div class="bubble ai"><b>AI:</b> Current ETA is 14:30 tomorrow. Main risk is predicted Rusumo border waiting time of 2h 45m.</div><div class="bubble">Which trucks are idle?</div><div class="bubble ai"><b>AI:</b> 12 trucks are idle. 4 have no next assignment. 3 have maintenance tasks due.</div></div></div><div class="panel"><h3>AI Document OCR</h3><div class="doc"><span>Bill of Lading.pdf</span><span class="tag ok">EXTRACTED</span></div><div class="kpi"><span>Container</span><b>MSCU1234567</b></div><div class="kpi"><span>Weight</span><b>24,500 KG</b></div><div class="kpi"><span>Port</span><b>Dar es Salaam</b></div><div class="kpi"><span>Destination</span><b>Kigali</b></div><div class="kpi"><span>Consignee</span><b>ABC Ltd</b></div></div></div></section>
+
+<!-- PAGE 19: ALERTS -->
+<section class="page" id="alerts"><div class="pagehead"><h2>Exception Queue</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="resolve-alerts">Resolve Selected</button><button class="btn secondary" data-demo-action="create-task">Create Task</button><button class="btn secondary" data-demo-action="ack-alerts">Acknowledge All</button></div></div><div class="riskgrid"><div class="risk badbg"><b>3 Critical</b><br/><span class="small">Immediate action</span></div><div class="risk warnbg"><b>8 Delayed</b><br/><span class="small">ETA changed</span></div><div class="risk warnbg"><b>12 At Risk</b><br/><span class="small">Potential SLA breach</span></div><div class="risk ok"><b>103 On Schedule</b><br/><span class="small">No action needed</span></div></div><div class="panel" style="margin-top:12px"><h3>Exception Queue</h3><table data-demo-table="alerts"><tr><th>Priority</th><th>Type</th><th>Shipment</th><th>Reason</th><th>Owner</th><th>Action</th></tr><tr><td><span class="tag badbg">CRITICAL</span></td><td>Breakdown</td><td>RW00771</td><td>Engine fault</td><td>Fleet</td><td>Assign recovery truck</td></tr><tr><td><span class="tag warnbg">HIGH</span></td><td>Delay</td><td>RWA00125</td><td>Border queue</td><td>Operations</td><td>Monitor ETA</td></tr><tr><td><span class="tag warnbg">HIGH</span></td><td>Document</td><td>IND00881</td><td>Customs missing</td><td>Docs</td><td>Request upload</td></tr></table></div></section>
+
+<!-- PAGE 20: TRENDS -->
+<section class="page" id="trends"><div class="pagehead"><h2>Shipment Volume Trend</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="export">Export Report</button><button class="btn secondary" data-demo-action="schedule-report">Schedule Report</button></div></div><div class="cards"><div class="card"><div class="label">Shipment growth</div><div class="value">+18.4%</div></div><div class="card"><div class="label">Revenue growth</div><div class="value">+12.6%</div></div><div class="card"><div class="label">Delay reduction</div><div class="value">-21%</div></div><div class="card"><div class="label">Utilization</div><div class="value">82%</div></div><div class="card"><div class="label">Cost / shipment</div><div class="value">$38.2K</div></div><div class="card"><div class="label">Client retention</div><div class="value">96%</div></div></div><div class="grid3"><div class="panel"><h3>Shipment Volume Trend</h3><div class="chart" data-values="45,48,51,55,50,58,61,63,60,66,71,74,69,76,80"></div></div><div class="panel"><h3>On-Time Delivery Trend</h3><div class="chart" data-values="72,75,78,77,81,80,84,83,86,88,91,90,94,93,94"></div></div><div class="panel"><h3>Cost / Shipment Trend</h3><div class="chart" data-values="82,79,80,76,74,75,72,71,69,68,66,64,63,61,60"></div></div></div><div class="grid" style="margin-top:12px"><div class="panel"><h3>Route Performance</h3><table data-demo-table="trends"><tr><th>Route</th><th>Shipments</th><th>On-time</th><th>Avg transit</th><th>Delay trend</th></tr><tr><td>Dar → Kigali</td><td>184</td><td>94%</td><td>32.4h</td><td class="delta">↓ 18%</td></tr><tr><td>Mombasa → Kampala</td><td>151</td><td>91%</td><td>28.1h</td><td class="delta">↓ 11%</td></tr><tr><td>Chennai → Hyderabad</td><td>126</td><td>97%</td><td>14.2h</td><td class="delta">↓ 24%</td></tr></table></div><div class="panel"><h3>Client / Country / Service Mix</h3><div class="row"><span>Enterprise</span><b>54%</b></div><div class="bar"><i style="width:54%"></i></div><div class="row"><span>SMB</span><b>31%</b></div><div class="bar"><i style="width:31%"></i></div><div class="row"><span>Spot</span><b>15%</b></div><div class="bar"><i style="width:15%"></i></div></div></div></section>
+
+<!-- PAGE 21: PRODUCTIVITY -->
+<section class="page" id="productivity"><div class="pagehead"><h2>Shipment Time Breakdown</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="find-backhaul">Find Backhaul</button><button class="btn secondary" data-demo-action="optimize-fleet">Optimize Fleet</button></div></div><div class="cards"><div class="card"><div class="label">Idle truck cost</div><div class="value">$12.5L</div><div class="delta bad">Opportunity</div></div><div class="card"><div class="label">Border delay cost</div><div class="value">$18.2L</div><div class="delta bad">Opportunity</div></div><div class="card"><div class="label">Empty return cost</div><div class="value">$21.4L</div><div class="delta bad">Opportunity</div></div><div class="card"><div class="label">Fuel variance</div><div class="value">$6.8L</div><div class="delta bad">Opportunity</div></div><div class="card"><div class="label">Warehouse waiting</div><div class="value">$9.3L</div><div class="delta bad">Opportunity</div></div><div class="card"><div class="label">Potential recovery</div><div class="value">$68.2L</div><div class="delta">Monthly opportunity</div></div></div><div class="grid"><div class="panel"><h3>Shipment Time Breakdown</h3><div class="row"><span>Booking</span><b>20 min</b></div><div class="bar"><i style="width:4%"></i></div><div class="row"><span>Port waiting</span><b>3.5 h</b></div><div class="bar"><i style="width:24%"></i></div><div class="row"><span>Loading</span><b>2.0 h</b></div><div class="bar"><i style="width:14%"></i></div><div class="row"><span>Driving</span><b>14 h</b></div><div class="bar"><i style="width:60%"></i></div><div class="row"><span>Border waiting</span><b>5.0 h</b></div><div class="bar"><i style="width:35%"></i></div><div class="row"><span>Unloading</span><b>1.5 h</b></div><div class="bar"><i style="width:10%"></i></div></div><div class="panel"><h3>Empty Truck / Backhaul Matching</h3><div class="smallcard"><b>Kigali → Dar</b><div class="muted">RAB123A becomes empty tomorrow 16:00</div><div style="margin-top:6px"><span class="tag ok">3 matching loads found</span></div></div><div class="smallcard"><b>Nairobi → Mombasa</b><div class="muted">KA01AB4455 empty after delivery</div><div style="margin-top:6px"><span class="tag ok">2 matching loads found</span></div></div><div class="smallcard"><b>Chennai → Hyderabad</b><div class="muted">AP39TX9211 next assignment unavailable</div><div style="margin-top:6px"><span class="tag warnbg">Optimize route</span></div></div></div></div></section>
+
+<!-- PAGE 22: USERS -->
+<section class="page" id="users">
+<div class="panel" id="rbacPanel" style="margin-bottom:12px">
+  <h3>Demo Role &amp; Feature Access</h3>
+  <div class="rbac-notice"><b>Client-demo RBAC:</b> switch the role above to show exactly what each user can see and operate. Green = full/admin, blue = edit, grey = view, red = no access.</div>
+  <div id="roleSummary" class="grid4"></div>
+</div>
+<div class="pagehead"><h2>Users, Roles &amp; DP World Tenant Access</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="add-user">Add User</button><button class="btn secondary" data-demo-action="test-role">Test Role</button></div></div><div class="panel"><h3>Users, Roles &amp; DP World Tenant Access</h3><table data-demo-table="users"><tr><th>Role</th><th>Shipment</th><th>Fleet</th><th>Finance</th><th>Client Data</th><th>Admin</th></tr><tr><td>Super Admin</td><td>Full</td><td>Full</td><td>Full</td><td>All</td><td>Full</td></tr><tr><td>Operations Manager</td><td>Full</td><td>View</td><td>View</td><td>Assigned</td><td>No</td></tr><tr><td>Dispatcher / Operations</td><td>Edit</td><td>View</td><td>No</td><td>View</td><td>No</td></tr><tr><td>Fleet Manager</td><td>View</td><td>Full</td><td>No</td><td>No</td><td>No</td></tr><tr><td>Driver</td><td>Assigned</td><td>Own</td><td>No</td><td>Own</td><td>No</td></tr><tr><td>Finance</td><td>View</td><td>No</td><td>Full</td><td>Billing</td><td>No</td></tr><tr><td>Client</td><td>Own</td><td>Own Trips</td><td>Invoices</td><td>Own</td><td>No</td></tr></table></div></section>
+
+<!-- PAGE 23: AUDIT -->
+<section class="page" id="audit"><div class="pagehead"><h2>Audit Trail</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="export">Export Audit</button><button class="btn secondary" data-demo-action="security-check">Run Security Check</button></div></div><div class="grid"><div class="panel"><h3>Audit Trail</h3><table data-demo-table="audit"><tr><th>Time</th><th>User</th><th>Action</th><th>Object</th><th>IP / Device</th></tr><tr><td>14:32</td><td>Mohan</td><td>Status Loading → Loaded</td><td>RWA00125</td><td>10.2.4.18</td></tr><tr><td>14:28</td><td>Driver John</td><td>POD signed</td><td>RWA00125</td><td>Android</td></tr><tr><td>14:20</td><td>System</td><td>ETA recalculated</td><td>RWA00125</td><td>Automation</td></tr></table></div><div class="panel"><h3>Security Controls</h3><div class="kpi"><span>2FA</span><span class="tag ok">ENFORCED</span></div><div class="kpi"><span>API authentication</span><span class="tag ok">ACTIVE</span></div><div class="kpi"><span>Document permissions</span><span class="tag ok">RLS</span></div><div class="kpi"><span>GPS permissions</span><span class="tag ok">DEVICE SCOPED</span></div><div class="kpi"><span>Encryption</span><span class="tag ok">AT REST / TLS</span></div><div class="kpi"><span>Login history</span><span class="tag ok">LOGGED</span></div></div></div></section>
+
+<!-- PAGE 24: SETTINGS -->
+<section class="page" id="settings"><div class="pagehead"><h2>System Settings</h2><div class="demo-actions"><button class="btn secondary" data-demo-action="save-settings">Save Settings</button><button class="btn secondary" data-demo-action="test-integrations">Test Integrations</button></div></div><div class="grid"><div class="panel"><h3>System Settings</h3><div class="kpi"><span>Tenant / Company</span><b>DP World Rwanda</b></div><div class="kpi"><span>Timezone</span><b>Africa/Kigali</b></div><div class="kpi"><span>Currency</span><b>USD</b></div><div class="kpi"><span>Default notification</span><b>WhatsApp + Email</b></div><div class="kpi"><span>GPS interval</span><b>30 seconds</b></div><div class="kpi"><span>ETA threshold</span><b>60 minutes</b></div></div><div class="panel"><h3>Integration Hub</h3><div class="doc"><span>Maps / Geocoding</span><span class="tag ok">CONNECTED</span></div><div class="doc"><span>GPS / IoT provider</span><span class="tag ok">CONNECTED</span></div><div class="doc"><span>WhatsApp Business</span><span class="tag ok">CONNECTED</span></div><div class="doc"><span>Email / SMS</span><span class="tag ok">CONNECTED</span></div><div class="doc"><span>Accounting / ERP</span><span class="tag warnbg">CONFIGURE</span></div></div></div></section>
+
+<div class="footer">DP World Rwanda demo environment • UI data is simulated for demonstration • Currency: USD. Production implementation connects GPS/IoT, maps, notifications, PostgreSQL, workflows, documents and accounting.</div>
+</main></div>
+
+<div id="demoToast" class="toast2"></div>
+
+<div aria-hidden="true" class="modal-backdrop" id="demoModal">
+<div aria-modal="true" class="modal" role="dialog">
+<div class="modal-head"><h3 id="modalTitle">Demo Action</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+<div class="modal-body" id="modalBody"></div>
+<div class="modal-foot" id="modalFoot"></div>
+</div>
+</div>
+
+<script>
+const RBAC = {
+  levels: {none:0, view:1, edit:2, approve:3, full:4},
+  roles: {
+    "Super Admin": {all:"full"},
+    "Executive / Management": {control:"view",live:"view",shipments:"view",fleet:"view",drivers:"view",routes:"view",fuel:"view",maintenance:"view",loading:"view",warehouse:"view",documents:"view",pod:"view",clients:"view",quotes:"view",finance:"view",vendors:"view",automation:"view",ai:"view",alerts:"view",trends:"view",productivity:"view",users:"view",audit:"view",settings:"view"},
+    "Operations Manager": {control:"edit",live:"edit",shipments:"edit",fleet:"view",drivers:"edit",routes:"edit",fuel:"view",maintenance:"view",loading:"edit",warehouse:"view",documents:"view",pod:"edit",clients:"edit",quotes:"view",finance:"view",vendors:"edit",automation:"edit",ai:"view",alerts:"edit",trends:"view",productivity:"view",users:"none",audit:"view",settings:"none"},
+    "Dispatcher / Operations": {control:"view",live:"edit",shipments:"edit",fleet:"view",drivers:"edit",routes:"edit",fuel:"view",maintenance:"view",loading:"edit",warehouse:"view",documents:"view",pod:"edit",clients:"view",quotes:"view",finance:"none",vendors:"edit",automation:"view",ai:"view",alerts:"edit",trends:"view",productivity:"view",users:"none",audit:"view",settings:"none"},
+    "Fleet Manager": {control:"view",live:"edit",shipments:"view",fleet:"edit",drivers:"edit",routes:"view",fuel:"edit",maintenance:"edit",loading:"view",warehouse:"none",documents:"view",pod:"view",clients:"none",quotes:"none",finance:"view",vendors:"edit",automation:"view",ai:"view",alerts:"edit",trends:"view",productivity:"edit",users:"none",audit:"view",settings:"none"},
+    "Driver": {control:"view",live:"edit",shipments:"view",fleet:"view",drivers:"view",routes:"view",fuel:"edit",maintenance:"none",loading:"edit",warehouse:"view",documents:"view",pod:"edit",clients:"view",quotes:"none",finance:"none",vendors:"none",automation:"none",ai:"view",alerts:"edit",trends:"none",productivity:"none",users:"none",audit:"none",settings:"none"},
+    "Warehouse Manager": {control:"view",live:"view",shipments:"view",fleet:"none",drivers:"none",routes:"view",fuel:"none",maintenance:"none",loading:"edit",warehouse:"edit",documents:"edit",pod:"view",clients:"view",quotes:"none",finance:"none",vendors:"view",automation:"view",ai:"view",alerts:"edit",trends:"view",productivity:"view",users:"none",audit:"view",settings:"none"},
+    "Documentation & Customs": {control:"view",live:"view",shipments:"view",fleet:"none",drivers:"none",routes:"view",fuel:"none",maintenance:"none",loading:"view",warehouse:"view",documents:"approve",pod:"view",clients:"view",quotes:"none",finance:"none",vendors:"view",automation:"edit",ai:"edit",alerts:"edit",trends:"view",productivity:"none",users:"none",audit:"view",settings:"none"},
+    "Finance Manager": {control:"view",live:"view",shipments:"view",fleet:"view",drivers:"view",routes:"view",fuel:"view",maintenance:"view",loading:"view",warehouse:"view",documents:"view",pod:"view",clients:"view",quotes:"view",finance:"approve",vendors:"edit",automation:"view",ai:"view",alerts:"view",trends:"edit",productivity:"view",users:"none",audit:"view",settings:"none"},
+    "Sales / Customer Service": {control:"view",live:"view",shipments:"view",fleet:"none",drivers:"none",routes:"view",fuel:"none",maintenance:"none",loading:"view",warehouse:"view",documents:"view",pod:"view",clients:"edit",quotes:"edit",finance:"view",vendors:"view",automation:"view",ai:"view",alerts:"edit",trends:"view",productivity:"view",users:"none",audit:"view",settings:"none"},
+    "Vendor / Transporter": {control:"view",live:"view",shipments:"view",fleet:"view",drivers:"edit",routes:"view",fuel:"edit",maintenance:"view",loading:"edit",warehouse:"none",documents:"view",pod:"edit",clients:"none",quotes:"view",finance:"view",vendors:"edit",automation:"none",ai:"view",alerts:"edit",trends:"none",productivity:"view",users:"none",audit:"none",settings:"none"},
+    "Client": {control:"view",live:"view",shipments:"view",fleet:"none",drivers:"none",routes:"view",fuel:"none",maintenance:"none",loading:"view",warehouse:"view",documents:"view",pod:"view",clients:"view",quotes:"edit",finance:"view",vendors:"none",automation:"none",ai:"view",alerts:"view",trends:"view",productivity:"view",users:"none",audit:"none",settings:"none"},
+    "Auditor / Security": {control:"view",live:"view",shipments:"view",fleet:"view",drivers:"view",routes:"view",fuel:"view",maintenance:"view",loading:"view",warehouse:"view",documents:"view",pod:"view",clients:"view",quotes:"view",finance:"view",vendors:"view",automation:"view",ai:"view",alerts:"view",trends:"view",productivity:"view",users:"view",audit:"full",settings:"view"}
+  },
+  pageLabels: {control:"Control Tower",live:"Live GPS / Tracking",shipments:"Shipments / Trips",fleet:"Fleet / Trucks",drivers:"Drivers",routes:"Routes / Checkpoints",fuel:"Fuel",maintenance:"Maintenance",loading:"Loading / Unloading",warehouse:"Warehouse / Inventory",documents:"Documents / Customs",pod:"POD / Delivery",clients:"Client Portal / CRM",quotes:"Quotes / Bookings",finance:"Finance / Billing",vendors:"Vendors / Transporters",automation:"Workflow Automation",ai:"AI Assistant / OCR",alerts:"Exceptions / Alerts",trends:"Trends / BI",productivity:"Productivity / Profit",users:"Users / Roles",audit:"Audit / Security",settings:"System Settings"},
+  actionRules: {
+    "create-shipment":["shipments","edit"],"bulk-assign":["shipments","edit"],"shipments":["shipments","view"],
+    "gps-update":["live","edit"],"route-replay":["live","view"],"center-fleet":["live","view"],
+    "add-truck":["fleet","edit"],"add-driver":["drivers","edit"],"driver-settlement":["finance","approve"],
+    "record-checkpoint":["routes","edit"],"upload-photo":["drivers","edit"],"optimize-route":["routes","edit"],"add-checkpoint":["routes","edit"],
+    "record-fuel":["fuel","edit"],"fuel-variance":["fuel","view"],
+    "schedule-service":["maintenance","edit"],"work-order":["maintenance","edit"],
+    "start-loading":["loading","edit"],"complete-loading":["loading","edit"],"assign-dock":["loading","edit"],
+    "receive-goods":["warehouse","edit"],"dispatch-goods":["warehouse","edit"],"scan-qr":["warehouse","edit"],
+    "upload-document":["documents","edit"],"verify-documents":["documents","approve"],
+    "verify-pod":["pod","approve"],"download-pod":["pod","view"],
+    "client-view":["clients","view"],"new-client":["clients","edit"],"send-client-update":["clients","edit"],
+    "new-quote":["quotes","edit"],"convert-booking":["quotes","edit"],"send-quote":["quotes","edit"],
+    "create-invoice":["finance","approve"],"record-payment":["finance","approve"],"export":["__current__","view"],
+    "add-vendor":["vendors","edit"],"assign-vendor-load":["vendors","edit"],
+    "create-workflow":["automation","edit"],"run-automations":["automation","edit"],
+    "run-ocr":["ai","edit"],"ask-ai":["ai","view"],
+    "resolve-alerts":["alerts","edit"],"create-task":["alerts","edit"],"ack-alerts":["alerts","edit"],
+    "schedule-report":["trends","edit"],"find-backhaul":["productivity","edit"],"optimize-fleet":["productivity","edit"],
+    "add-user":["users","full"],"test-role":["users","full"],"export-audit":["audit","view"],"security-check":["audit","full"],
+    "save-settings":["settings","full"],"test-integrations":["settings","edit"]
+  }
+};
+
+function getStored(key, fallback){
+  try { return localStorage.getItem(key) || fallback; } catch(e) { return fallback; }
+}
+function setStored(key, val){
+  try { localStorage.setItem(key, val); } catch(e) {}
+}
+
+RBAC.current = getStored("logiosDemoRole", "Super Admin");
+
+function rbacLevel(page, role){
+  if(!role) role = RBAC.current;
+  const p = RBAC.roles[role] || {};
+  return RBAC.levels[p.all || p[page] || "none"] || 0;
+}
+function rbacAllowed(page, required){
+  if(!required) required = "view";
+  return rbacLevel(page) >= RBAC.levels[required];
+}
+function rbacRule(action, currentPage){
+  const rule = RBAC.actionRules[action];
+  if(!rule) return [currentPage || "control","view"];
+  return [rule[0]==="__current__" ? (currentPage || "control") : rule[0], rule[1]];
+}
+function permissionWord(level){
+  return ["No Access","View","Edit","Approve","Full"][level] || "No Access";
+}
+
+function renderRoleOptions(){
+  const sel = document.getElementById("roleSelect");
+  if(!sel) return;
+  sel.innerHTML = Object.keys(RBAC.roles).map(function(r){ return '<option value="' + r + '">' + r + '</option>'; }).join("");
+  sel.value = RBAC.current;
+  const badge = document.getElementById("roleBadge");
+  if(badge) badge.textContent = RBAC.current;
+}
+
+function refreshRBAC(){
+  renderRoleOptions();
+  document.querySelectorAll(".nav[data-page]").forEach(function(n){
+    const allowed = rbacAllowed(n.dataset.page,"view");
+    n.classList.toggle("rbac-hidden",!allowed);
+    n.setAttribute("aria-hidden",String(!allowed));
+  });
+  document.querySelectorAll(".section").forEach(function(s){
+    let el = s.nextElementSibling, has = false;
+    while(el && !el.classList.contains("section")){
+      if(el.classList.contains("nav") && !el.classList.contains("rbac-hidden")) has = true;
+      el = el.nextElementSibling;
+    }
+    s.classList.toggle("rbac-empty",!has);
+  });
+  document.querySelectorAll("[data-demo-action]").forEach(function(btn){
+    const action = btn.dataset.demoAction;
+    if(action==='driver-app') return;
+
+    const current = btn.closest(".page")?.id || (action==="create-shipment"?"shipments":"control");
+    const ruleRes = rbacRule(action,current);
+    const page = ruleRes[0], required = ruleRes[1];
+    const ok = rbacAllowed(page,required);
+    btn.classList.toggle("rbac-locked",!ok);
+    btn.disabled = !ok;
+    btn.title = ok ? permissionWord(rbacLevel(page)) + " permission" : "No permission for " + permissionWord(RBAC.levels[required]) + " access to " + (RBAC.pageLabels[page]||page);
+  });
+  const active = document.querySelector(".nav.active");
+  if(active && active.classList.contains("rbac-hidden")){
+    const fallback = document.querySelector(".nav[data-page].active:not(.rbac-hidden)") || document.querySelector(".nav[data-page]:not(.rbac-hidden)");
+    if(fallback) activatePage(fallback);
+  }
+  renderRoleSummary();
+}
+
+function renderRoleSummary(){
+  const box = document.getElementById("roleSummary");
+  if(!box) return;
+  const pages = Object.entries(RBAC.pageLabels);
+  box.innerHTML = pages.map(function(entry){
+    const k = entry[0], label = entry[1];
+    const lv = rbacLevel(k);
+    const cls = ["permission-none","permission-view","permission-edit","permission-edit","permission-full"][lv]||"permission-none";
+    return '<div class="smallcard"><b>' + label + '</b><br><span class="' + cls + '">' + permissionWord(lv) + '</span></div>';
+  }).join("");
+}
+
+function switchRole(role){
+  if(!RBAC.roles[role]) return;
+  RBAC.current = role;
+  setStored("logiosDemoRole",role);
+  refreshRBAC();
+  toast("Role switched to " + role + " • permissions applied");
+  const first = document.querySelector(".nav[data-page]:not(.rbac-hidden)");
+  const active = document.querySelector(".nav.active");
+  if(!active || active.classList.contains("rbac-hidden")){ if(first) activatePage(first); }
+}
+
+const titles={control:"Control Tower",live:"Live GPS / Tracking",shipments:"Shipments & Trips",fleet:"Fleet / Trucks",drivers:"Drivers",routes:"Routes / Checkpoints",fuel:"Fuel Management",maintenance:"Maintenance",loading:"Loading / Unloading",warehouse:"Warehouse / Inventory",documents:"Documents / Customs",pod:"POD / Delivery",clients:"Client Portal / CRM",quotes:"Quotes / Bookings",finance:"Finance / Billing",vendors:"Vendors / Transporters",automation:"Workflow Automation",ai:"AI Assistant / OCR",alerts:"Exceptions / Alerts",trends:"Trends / BI",productivity:"Productivity / Profit",users:"Users / Roles",audit:"Audit / Security",settings:"System Settings"};
+const demo={shipments:126,trucks:82,quotes:18,invoices:42,payments:31,documents:97,alerts:11,workflows:8};
+
+function toast(s){const x=document.getElementById('demoToast');if(!x)return;x.textContent=s;x.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>x.classList.remove('show'),2200)}
+
+function closeModal(){
+  const m=document.getElementById('demoModal');
+  if(m){
+    m.classList.remove('open');
+    m.setAttribute('aria-hidden','true');
+    const box = m.querySelector('.modal');
+    if(box) box.style.maxWidth = '';
+  }
+}
+
+function openModal(title,body,actions=[]){
+ const m=document.getElementById('demoModal');
+ if(!m) return;
+ document.getElementById('modalTitle').textContent=title;
+ document.getElementById('modalBody').innerHTML=body;
+ const foot=document.getElementById('modalFoot');
+ foot.innerHTML='';
+ actions.forEach(a=>{
+   const b=document.createElement('button');
+   b.className='btn '+(a.className||'');
+   b.textContent=a.label;
+   b.onclick=a.onClick;
+   foot.appendChild(b);
+ });
+ const c=document.createElement('button');
+ c.className='btn secondary';
+ c.textContent='Cancel';
+ c.onclick=closeModal;
+ foot.appendChild(c);
+ m.classList.add('open');
+ m.setAttribute('aria-hidden','false');
+}
+
+function activatePage(nav){
+  const pageId=nav.dataset.page;
+  const page=document.getElementById(pageId);
+  if(!page||!titles[pageId]) return;
+  document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
+  nav.classList.add('active');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  page.classList.add('active');
+  document.getElementById('title').textContent=titles[pageId];
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function activatePageId(pageId){
+  const nav = document.querySelector('.nav[data-page="' + pageId + '"]');
+  if(nav) activatePage(nav);
+  else {
+    const page = document.getElementById(pageId);
+    if(page && titles[pageId]){
+      document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+      page.classList.add('active');
+      document.getElementById('title').textContent = titles[pageId];
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  }
+}
+
+function moveTruck(){
+  const t=document.getElementById('moving');
+  if(t){
+    t.style.left=(30+Math.random()*45)+'%';
+    t.style.top=(35+Math.random()*30)+'%';
+    const g=document.getElementById('lastGps');
+    if(g)g.textContent=new Date().toLocaleTimeString();
+  }
+  const tc=document.getElementById('truckCount');
+  if(tc)tc.textContent=80+Math.floor(Math.random()*7);
+  const sc=document.getElementById('shipCount');
+  if(sc)sc.textContent=demo.shipments;
+  const gps=document.getElementById('gps');
+  if(gps)gps.textContent='just now';
+  toast('GPS position updated • ETA recalculated • geofence checked');
+}
+
+function openDriverApp(){
+  const body = '<div class="driver-modal"><div class="phone-shell"><div class="phone-screen"><div class="phone-status"><span>9:41</span><span>▮▮▮ 82% 🔋</span></div><div class="driver-app-head"><div class="driver-brand">DP WORLD<span>RWANDA • DRIVER APP</span></div><div class="driver-avatar">JM</div></div><div class="driver-body"><div class="driver-greeting">Good morning, John. You have <b>1 active trip</b>.</div><div class="driver-trip-card"><div class="trip-top"><div class="trip-id">RWA-2026-00125</div><div class="trip-status" id="driverTripStatus">IN TRANSIT</div></div><div style="font-size:10px;margin-top:6px;color:#c5d0dc">DP World Rwanda • Container MSCU1234567</div><div class="driver-route"><span class="loc">DAR PORT</span><div class="line"></div><span class="loc">KIGALI</span></div><div style="font-size:9px;color:#c5d0dc">Via Rusumo Border • ETA 14:30 tomorrow</div></div><div class="driver-kpis"><div class="driver-kpi"><span>Truck</span><b>RAB123A</b></div><div class="driver-kpi"><span>Speed</span><b>58 km/h</b></div><div class="driver-kpi"><span>GPS</span><b id="driverGps">Online</b></div><div class="driver-kpi"><span>Next stop</span><b id="driverNext">Rusumo Border</b></div></div><div class="driver-section-title">Trip workflow</div><div class="driver-actions-grid"><button class="driver-action" onclick="driverEvent(\'Arrived at Port\',\'GPS + timestamp recorded\')"><span>📍</span>Arrived at Port</button><button class="driver-action" onclick="driverEvent(\'Loading Started\',\'Dock timer started\')"><span>📦</span>Start Loading</button><button class="driver-action" onclick="driverEvent(\'Loading Complete\',\'Seal and weight checklist opened\')"><span>✅</span>Complete Loading</button><button class="driver-action" onclick="driverEvent(\'Departed Port\',\'Shipment moved to IN TRANSIT\')"><span>🚛</span>Depart</button><button class="driver-action" onclick="driverEvent(\'Checkpoint Passed\',\'GPS checkpoint recorded\')"><span>🛣️</span>Checkpoint</button><button class="driver-action" onclick="driverEvent(\'Border Arrival\',\'Border waiting timer started\')"><span>🛂</span>Border Arrival</button><button class="driver-action" onclick="driverEvent(\'Fuel Recorded\',\'Fuel expense added to trip\')"><span>⛽</span>Fuel</button><button class="driver-action" onclick="driverEvent(\'Break Started\',\'Driver break recorded\')"><span>☕</span>Break</button><button class="driver-action" onclick="driverEvent(\'Destination Arrival\',\'Destination geofence entered\')"><span>🏁</span>Arrive Destination</button><button class="driver-action" onclick="driverEvent(\'Unloading Complete\',\'Unloading completed\')"><span>📦</span>Complete Unload</button></div><div class="driver-section-title">Delivery</div><button class="driver-primary" onclick="driverPod()">✍️ Capture Digital POD</button><button class="driver-danger" onclick="driverEvent(\'Incident Reported\',\'Operations team notified\')">⚠ Report Breakdown / Accident</button><div class="driver-section-title">Trip Timeline</div><div class="driver-timeline" id="driverTimeline"><div class="driver-event"><i class="dot"></i><div><b>Trip assigned</b><br><span class="muted">08:10 • RAB123A</span></div></div><div class="driver-event"><i class="dot"></i><div><b>GPS tracking started</b><br><span class="muted">08:12 • Dar es Salaam</span></div></div><div class="driver-event"><i class="dot pending"></i><div><b>Next: Rusumo Border</b><br><span class="muted">ETA 12:40</span></div></div></div></div><div class="driver-demo-note">Demo mode • GPS, notifications and backend events are simulated</div><div class="driver-bottom"><button class="active">🏠<br>Home</button><button onclick="driverEvent(\'Trip screen opened\',\'Trip details viewed\')">🚛<br>Trip</button><button onclick="driverEvent(\'Messages opened\',\'Operations chat viewed\')">💬<br>Chat</button><button onclick="driverEvent(\'Profile opened\',\'Driver profile viewed\')">👤<br>Profile</button></div></div></div></div>';
+  openModal('DP World Rwanda — Driver Mobile App', body, [
+    {label:'Close Driver App', className:'secondary', onClick:closeModal}
+  ]);
+  const modalBox = document.getElementById('demoModal')?.querySelector('.modal');
+  if(modalBox) modalBox.style.maxWidth='430px';
+}
+
+function driverEvent(eventName, detail){
+  const timeline=document.getElementById('driverTimeline');
+  if(timeline){
+    timeline.insertAdjacentHTML('afterbegin','<div class="driver-event"><i class="dot"></i><div><b>' + eventName + '</b><br><span class="muted">' + new Date().toLocaleTimeString() + ' • ' + detail + '</span></div></div>');
+  }
+  const status=document.getElementById('driverTripStatus');
+  if(status && /Loading Complete|Departed|Checkpoint|Border|Destination|Unload/.test(eventName)){
+    status.textContent = eventName.toUpperCase();
+  }
+  const next=document.getElementById('driverNext');
+  if(next){
+    const nextMap={
+      'Arrived at Port':'Loading Bay',
+      'Loading Started':'Loading Bay',
+      'Loading Complete':'Dar Port Gate',
+      'Departed Port':'Rusumo Border',
+      'Checkpoint Passed':'Rusumo Border',
+      'Border Arrival':'Border Departure',
+      'Fuel Recorded':'Rusumo Border',
+      'Break Started':'Rusumo Border',
+      'Destination Arrival':'Kigali DC',
+      'Unloading Complete':'POD / Customer'
+    };
+    if(nextMap[eventName]) next.textContent=nextMap[eventName];
+  }
+  const gps=document.getElementById('driverGps');
+  if(gps) gps.textContent='Just now';
+  toast('Driver App • ' + eventName + ' • Control Tower event created');
+}
+
+function driverPod(){
+  openModal('Digital POD — DP World Rwanda',form([
+    {id:'recipient',label:'Recipient Name',value:'Kigali DC Receiving'},
+    {id:'delivery',label:'Delivery Status',type:'select',options:['Delivered in full','Short delivery','Damaged cargo']},
+    {id:'notes',label:'Delivery Notes',type:'textarea',placeholder:'Enter delivery notes…'},
+  ]),[
+    {label:'Capture Signature + Complete Delivery',onClick:()=>{
+      const timeline=document.getElementById('driverTimeline');
+      if(timeline) timeline.insertAdjacentHTML('afterbegin','<div class="driver-event"><i class="dot"></i><div><b>Digital POD captured</b><br><span class="muted">' + new Date().toLocaleTimeString() + ' • ' + val('recipient') + '</span></div></div>');
+      const status=document.getElementById('driverTripStatus'); if(status) status.textContent='DELIVERED';
+      closeModal();
+      toast('POD captured • Delivery completed • Client portal updated • Invoice release triggered');
+    }}
+  ]);
+}
+
+function form(fields){
+  return '<div class="formgrid">' + fields.map(function(f){
+    return '<div class="field ' + (f.full?'full':'') + '"><label>' + f.label + '</label>' +
+      (f.type==='select' ? '<select id="f_' + f.id + '">' + f.options.map(function(x){ return '<option>' + x + '</option>'; }).join('') + '</select>' :
+       f.type==='textarea' ? '<textarea id="f_' + f.id + '" placeholder="' + (f.placeholder||'') + '"></textarea>' :
+       '<input id="f_' + f.id + '" type="' + (f.type||'text') + '" placeholder="' + (f.placeholder||'') + '" value="' + (f.value||'') + '">') +
+      '</div>';
+  }).join('') + '</div>';
+}
+function val(id){return document.getElementById('f_'+id)?.value||''}
+function addRow(table,html){const tb=table?.querySelector('tbody')||table;if(tb)tb.insertAdjacentHTML('beforeend',html)}
+function findTable(pid){return document.querySelector('table[data-demo-table="' + pid + '"]')}
+
+function createShipment(){openModal('Create Shipment',form([
+{id:'client',label:'Client',value:'DP World Rwanda'},{id:'reference',label:'Client Reference',value:'PO-2026-0198'},
+{id:'origin',label:'Origin',value:'Dar Port'},{id:'destination',label:'Destination',value:'Kigali DC'},
+{id:'cargo',label:'Cargo',value:'24.5T Container'},{id:'truck',label:'Truck',value:'RAB123A'},
+{id:'eta',label:'ETA',value:'Tomorrow 14:30'},{id:'priority',label:'Priority',type:'select',options:['Normal','High','Critical']}
+]),[{label:'Create Shipment',onClick:()=>{const id='RWA-2026-'+String(++demo.shipments).padStart(5,'0');const t=findTable('shipments');if(t)addRow(t,'<tr class="clickable-row"><td><b>'+id+'</b></td><td>'+val('client')+'</td><td>'+val('cargo')+'</td><td>'+val('origin')+' → '+val('destination')+'</td><td>'+val('truck')+' / Assigned</td><td><span class="tag">BOOKED</span></td><td>'+val('eta')+'</td><td>30%</td></tr>');const sc=document.getElementById('shipCount');if(sc)sc.textContent=demo.shipments;closeModal();toast('Shipment ' + id + ' created • checklist generated • assignment task created')}}])}
+function addDriver(){openModal('Add Driver',form([{id:'name',label:'Driver Name',value:'New Driver'},{id:'phone',label:'Phone',value:'+91 90000 00000'},{id:'license',label:'License',value:'DL-2028-001'},{id:'truck',label:'Assigned Truck',value:'AP39TX9211'},{id:'expiry',label:'License Expiry',type:'date'}]),[{label:'Create Driver',onClick:()=>{const t=findTable('drivers');if(t)addRow(t,'<tr><td>'+val('name')+'</td><td>EXP '+(val('expiry')||'2028')+'</td><td>'+val('truck')+'</td><td>0</td><td>—</td><td>0h</td><td>—</td><td>0</td></tr>');closeModal();toast('Driver created • compliance checklist assigned')} }])}
+function addTruck(){openModal('Add Truck',form([{id:'reg',label:'Registration',value:'AP40AB1234'},{id:'owner',label:'Owner',value:'Demo Transport'},{id:'type',label:'Vehicle Type',type:'select',options:['Prime Mover','Trailer','Container','Tanker']},{id:'capacity',label:'Capacity',value:'30T'},{id:'gps',label:'GPS Device ID',value:'GPS-DEMO-001'}]),[{label:'Register Truck',onClick:()=>{const t=findTable('fleet');if(t)addRow(t,'<tr><td>'+val('reg')+'</td><td>'+val('owner')+'</td><td>'+val('type')+'</td><td>'+val('capacity')+'</td><td><span class="tag ok">ONLINE</span></td><td>Valid</td><td>Valid</td><td>5,000 km</td></tr>');closeModal();toast('Truck registered • GPS device linked • compliance tasks created')} }])}
+function recordFuel(){openModal('Record Fuel Transaction',form([{id:'truck',label:'Truck',value:'RAB123A'},{id:'driver',label:'Driver',value:'John Mwangi'},{id:'litres',label:'Litres',type:'number',value:'220'},{id:'rate',label:'Rate / Litre (USD)',type:'number',value:'1.02'},{id:'odometer',label:'Odometer',type:'number',value:'184220'},{id:'station',label:'Fuel Station',value:'Shell Dar'}]),[{label:'Save Fuel Record',onClick:()=>{closeModal();toast('Fuel record saved • $' + (Number(val('litres')||0)*Number(val('rate')||0)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' posted to trip cost')}}])}
+function scheduleService(){openModal('Schedule Maintenance',form([{id:'truck',label:'Truck',value:'KA01AB4455'},{id:'type',label:'Service',type:'select',options:['Preventive Service','Brake Inspection','Tyre Replacement','Engine Repair']},{id:'date',label:'Scheduled Date',type:'date'},{id:'vendor',label:'Workshop',value:'FleetCare Workshop'},{id:'notes',label:'Notes',type:'textarea',placeholder:'Work order notes'}]),[{label:'Create Work Order',onClick:()=>{closeModal();toast('Maintenance work order created • truck status scheduled • vendor notified')}}])}
+function simpleAction(title,msg,fields=[]){openModal(title,fields.length?form(fields):'<div class="alert success">'+msg+'</div>',[{label:'Confirm',onClick:()=>{closeModal();toast(msg)}}])}
+
+function doAction(a){
+ if(titles[a] || document.getElementById(a)){
+   activatePageId(a);
+   return;
+ }
+ switch(a){
+ case'create-shipment': return createShipment(); case'add-driver':return addDriver();case'driver-settlement':return simpleAction('Driver Settlement','Driver settlement calculated: trip pay, approved expenses, advances and deductions summarized for approval.',[{id:'driver',label:'Driver',value:'John Mwangi'},{id:'period',label:'Period',value:'September 2026'},{id:'amount',label:'Net Settlement',value:'$42,800'}]);case'add-truck':return addTruck();case'gps-update':return moveTruck();
+ case'record-checkpoint':return simpleAction('Record Checkpoint','Checkpoint recorded with GPS, timestamp, truck, driver and shipment event.',[{id:'location',label:'Location',value:'Rusumo Border'},{id:'status',label:'Event',type:'select',options:['Checkpoint Passed','Border Arrival','Border Departure','Break','Fuel Stop']},{id:'remarks',label:'Remarks',type:'textarea'}]);
+ case'upload-photo':return simpleAction('Upload Delivery Photo','Demo photo attached to shipment event and audit trail.');
+ case'bulk-assign':return simpleAction('Bulk Assign Loads','12 eligible shipments matched to 9 available trucks using capacity, route and driver availability.');
+ case'export':return toast('Report prepared • CSV/Excel export simulated');
+ case'client-view':return openModal('Client Portal Preview','<div class="portal"><div class="portalbar"><b>DP World Rwanda</b><span class="tag ok">CLIENT PORTAL</span></div><h3>Shipment RWA-2026-00125</h3><div class="stepper"><span class="step done">Booked</span><span class="step done">Loaded</span><span class="step current">In Transit</span><span class="step">Border</span><span class="step">Delivered</span></div><p>Live truck: RAB123A • ETA: Tomorrow 14:30 • Driver: John Mwangi</p><button class="btn" onclick="toast(\'Client tracking link copied\')">Copy Tracking Link</button></div>',[]);
+ case'optimize-route':return simpleAction('Route Optimization','Route optimized: 42 km saved, estimated 58 minutes faster, two checkpoints preserved.');
+ case'add-checkpoint':return simpleAction('Add Checkpoint','Checkpoint added to route and included in driver trip plan.',[{id:'name',label:'Checkpoint',value:'Weighbridge / Custom Point'},{id:'type',label:'Type',type:'select',options:['Weighbridge','Border','Customer','Rest Area','Fuel'] }]);
+ case'record-fuel':return recordFuel();case'fuel-variance':return simpleAction('Fuel Variance Analysis','Demo analysis found a 4.8% variance on RAB123A and created an investigation task.');
+ case'schedule-service':return scheduleService();case'work-order':return scheduleService();
+ case'start-loading':return simpleAction('Start Loading','Loading operation started • dock timer running • shipment status changed to LOADING.');
+ case'complete-loading':return simpleAction('Complete Loading','Loading completed • seal captured • weight verified • shipment status changed to LOADED.');
+ case'assign-dock':return simpleAction('Assign Dock','Dock D-04 assigned to RWA-2026-00125 • driver notified.');
+ case'receive-goods':return simpleAction('Receive Goods','Inbound receipt created • 24.5T received • inventory updated • putaway task generated.');
+ case'dispatch-goods':return simpleAction('Dispatch Goods','Outbound dispatch created • pick/pack completed • gate-out task generated.');
+ case'scan-qr':return simpleAction('QR / Barcode Scan','QR scanned: SKU-8471-001 • 120 units • location WH-A-04.');
+ case'upload-document':return simpleAction('Upload Document','Document uploaded to the shipment pack and version 1 created.',[{id:'type',label:'Document Type',type:'select',options:['Bill of Lading','Invoice','Packing List','Customs Declaration','Insurance','POD']},{id:'file',label:'File Name',value:'demo_document.pdf'}]);
+ case'verify-documents':return simpleAction('Verify Document Pack','97 documents checked • 94 valid • 2 expiring • 1 missing. Exception created for missing customs declaration.');
+ case'verify-pod':return simpleAction('Verify POD','POD verified • signature, recipient, timestamp and GPS passed validation • invoice release triggered.');
+ case'download-pod':return toast('POD PDF prepared for download (demo)');
+ case'new-client':return simpleAction('Create Client', 'Client account created • portal credentials and rate-card task generated.',[{id:'name',label:'Company',value:'New Logistics Client'},{id:'contact',label:'Contact',value:'Operations Manager'},{id:'email',label:'Email',value:'ops@client.example'}]);
+ case'send-client-update':return simpleAction('Send Client Update','Shipment update sent through WhatsApp + Email + portal notification.');
+ case'new-quote':return simpleAction('Create Quote','Quote draft created with rate, accessorials, taxes and validity period.',[{id:'client',label:'Client',value:'DP World Rwanda'},{id:'route',label:'Route',value:'Dar → Kigali'},{id:'rate',label:'Quoted Amount',value:'$185,000'},{id:'valid',label:'Valid Until',type:'date'}]);
+ case'send-quote':return simpleAction('Send Quote','Quote sent to client • delivery/read tracking enabled.');
+ case'convert-booking':return simpleAction('Convert Quote to Booking','Quote accepted • shipment and operational checklist created automatically.');
+ case'create-invoice':return simpleAction('Create Invoice','Invoice INV-2026-0043 created from verified POD and shipment costs.',[{id:'client',label:'Client',value:'DP World Rwanda'},{id:'amount',label:'Amount',value:'$185,000'},{id:'due',label:'Due Date',type:'date'}]);
+ case'record-payment':return simpleAction('Record Payment','Payment posted • outstanding balance reduced • receipt generated.',[{id:'invoice',label:'Invoice',value:'INV-2026-0042'},{id:'amount',label:'Amount',value:'$125,000'},{id:'method',label:'Method',type:'select',options:['Bank Transfer','UPI','Cash','Card']}]);
+ case'add-vendor':return simpleAction('Add Vendor / Transporter','Vendor created • compliance checklist assigned.',[{id:'name',label:'Vendor',value:'New Transporter'},{id:'tax',label:'Tax / GST ID',value:'29ABCDE1234F1Z5'},{id:'contact',label:'Contact',value:'+91 90000 00000'}]);
+ case'assign-vendor-load':return simpleAction('Assign Vendor Load','Tender sent to 3 eligible transporters • best matching quote highlighted.');
+ case'create-workflow':return simpleAction('Create Workflow','Workflow created: Missing document → create task → notify operations → escalate after 60 minutes.',[{id:'name',label:'Workflow Name',value:'Missing Customs Document Alert'},{id:'trigger',label:'Trigger',type:'select',options:['Shipment Created','Status Changed','GPS Event','Document Missing','ETA Breach'] }]);
+ case'run-automations':return simpleAction('Run Active Automations','8 active workflows executed • 14 tasks created • 6 notifications sent • 2 exceptions escalated.');
+ case'run-ocr':return simpleAction('AI OCR Complete','Bill of Lading extracted: shipper, consignee, container, seal, weight and BL number. Confidence: 97%.');
+ case'ask-ai':return openModal('LogiOS AI Assistant','<div class="chat"><div class="bubble ai"><b>AI:</b> I can analyze shipments, explain delays, find documents, summarize route performance and identify cost leakage.</div><div class="bubble"><b>Demo query:</b> Why is RWA-2026-00125 delayed?</div><div class="bubble ai"><b>AI:</b> The current ETA impact is primarily from the Rusumo border queue (+2h 45m predicted). A route/checkpoint exception has been created and the client notification workflow is ready.</div></div><br><input id="aiQuestion" class="search" style="width:100%" placeholder="Ask another logistics question…">',[{label:'Ask',onClick:()=>{closeModal();toast('AI analysis completed • answer and recommended actions generated')}}]);
+ case'alert-ack':case'ack-alerts':return simpleAction('Acknowledge Alerts','All visible alerts acknowledged and assigned to the operations queue.');
+ case'resolve-alerts':return simpleAction('Resolve Selected Exceptions','Selected exceptions resolved with audit trail entries and notification updates.');
+ case'create-task':return simpleAction('Create Operations Task','Task created and assigned to Operations Queue with SLA timer.');
+ case'schedule-report':return simpleAction('Schedule BI Report','Report scheduled for every Monday 08:00 • recipients added.');
+ case'find-backhaul':return simpleAction('Backhaul Matching','3 compatible loads found for empty RAB123A • estimated recovery $82,000.');
+ case'optimize-fleet':return simpleAction('Fleet Optimization','12 idle trucks matched against pending loads • 7 assignments recommended.');
+ case'add-user':return simpleAction('Add User','User invited • role and tenant permissions configured.',[{id:'name',label:'Name',value:'Demo User'},{id:'email',label:'Email',value:'user@example.com'},{id:'role',label:'Role',type:'select',options:['Operations Staff','Operations Manager','Finance','Fleet Manager','Client']}]);
+ case'test-role':return simpleAction('Role Test','Permission simulation passed: user can view assigned shipments but cannot access finance or admin settings.');
+ case'security-check':return simpleAction('Security Check','Demo checks passed: 2FA, session timeout, API authentication, document access policy and audit logging.');
+ case'save-settings':return simpleAction('Settings Saved','Tenant configuration saved • notification preferences and GPS thresholds updated.');
+ case'test-integrations':return simpleAction('Integration Health Check','Maps ✓  GPS/IoT ✓  WhatsApp ✓  Email/SMS ✓  Accounting △ Configure credentials.');
+ case'route-replay':return simpleAction('Route Replay','Last 6 hours of GPS events replayed on the demo map.');
+ case'center-fleet':return toast('Map centered on active fleet • 82 moving vehicles');
+ case'driver-app':return openDriverApp();
+ default:return toast('Demo action executed');
+ }
+}
+
+// Global Event Delegation
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('[data-demo-action]');
+  if(btn){
+    e.preventDefault();
+    doAction(btn.dataset.demoAction);
+    return;
+  }
+  const tab = e.target.closest('.tab');
+  if(tab){
+    const box = tab.parentElement;
+    box.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    tab.classList.add('active');
+    const label = tab.textContent.trim();
+    const table = tab.closest('.page')?.querySelector('table');
+    if(table){
+      const rows = table.querySelectorAll('tbody tr');
+      rows.forEach(r=>{
+        const text = r.textContent.toLowerCase();
+        let show = true;
+        if(/in transit/i.test(label)) show = text.includes('in transit');
+        else if(/loading/i.test(label)) show = text.includes('loading');
+        else if(/border/i.test(label)) show = text.includes('border');
+        else if(/delivered/i.test(label)) show = text.includes('delivered');
+        else if(/at risk/i.test(label)) show = text.includes('at risk');
+        r.style.display = show ? '' : 'none';
+      });
+    }
+    toast('View changed to ' + label);
+    return;
+  }
+  const nav = e.target.closest('.nav[data-page]');
+  if(nav){
+    activatePage(nav);
+    return;
+  }
+  const modalBackdrop = e.target.closest('.modal-backdrop');
+  if(modalBackdrop && e.target === modalBackdrop){
+    closeModal();
+  }
+});
+
+// Global Role & Search Event Delegation
+document.addEventListener('change', function(e){
+  if(e.target && e.target.id === 'roleSelect'){
+    switchRole(e.target.value);
+  }
+});
+
+document.addEventListener('input', function(e){
+  if(e.target && e.target.classList.contains('search')){
+    const q = e.target.value.toLowerCase().trim();
+    document.querySelectorAll('.page.active table tbody tr').forEach(row => {
+      const text = row.textContent.toLowerCase();
+      row.style.display = text.includes(q) ? '' : 'none';
+    });
+  }
+});
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){
+    closeModal();
+  }
+});
+
+// Initialization
+function initDemoApp(){
+  // Initialize charts
+  document.querySelectorAll('.chart').forEach(el=>{
+    const v=(el.dataset.values||"40,50,60").split(',');
+    el.innerHTML=v.map((x,i)=>'<div class="col"><i style="height:'+x+'%"></i><span>'+(i+1)+'</span></div>').join('');
+  });
+
+  // Start live clock
+  const updateClock = ()=>{
+    const c=document.getElementById('clock');
+    if(c) c.textContent = new Date().toLocaleTimeString();
+  };
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // Initialize RBAC dropdown & permissions
+  renderRoleOptions();
+  refreshRBAC();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initDemoApp);
+} else {
+  initDemoApp();
+}
+</script>
+</body>
+</html>
