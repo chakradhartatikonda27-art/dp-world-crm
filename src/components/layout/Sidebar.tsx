@@ -28,84 +28,103 @@ import {
   Lock,
   Settings,
   CheckCircle2,
+  X,
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useLanguage } from '@/context/LanguageContext';
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseMobile }) => {
   const pathname = usePathname();
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const isLight = theme === 'light';
 
   const sections = [
     {
-      title: 'Operations Core',
+      titleKey: 'operationsCore',
       items: [
-        { href: '/', label: 'Control Tower', icon: LayoutDashboard, badge: 'Live' },
-        { href: '/shipments', label: 'Shipments', icon: Boxes },
-        { href: '/tracking', label: 'Live GPS Map', icon: MapPin },
-        { href: '/driver', label: 'Driver PWA App', icon: Smartphone, highlight: true },
-        { href: '/customer', label: 'Customer Portal', icon: Users2 },
+        { href: '/', labelKey: 'controlTower', icon: LayoutDashboard, badge: 'Live' },
+        { href: '/shipments', labelKey: 'shipments', icon: Boxes },
+        { href: '/tracking', labelKey: 'liveGpsMap', icon: MapPin },
+        { href: '/driver', labelKey: 'driverApp', icon: Smartphone, highlight: true },
+        { href: '/customer', labelKey: 'customerPortal', icon: Users2 },
       ],
     },
     {
-      title: 'Transport & Fleet',
+      titleKey: 'transportFleet',
       items: [
-        { href: '/fleet', label: 'Fleet & Trucks', icon: Truck },
-        { href: '/drivers', label: 'Driver Roster', icon: UserSquare2 },
-        { href: '/routes', label: 'Routes & Checkpoints', icon: Route },
-        { href: '/fuel', label: 'Fuel Audit', icon: Fuel },
-        { href: '/maintenance', label: 'Maintenance', icon: Wrench },
+        { href: '/fleet', labelKey: 'fleet', icon: Truck },
+        { href: '/drivers', labelKey: 'drivers', icon: UserSquare2 },
+        { href: '/routes', labelKey: 'routes', icon: Route },
+        { href: '/fuel', labelKey: 'fuel', icon: Fuel },
+        { href: '/maintenance', labelKey: 'maintenance', icon: Wrench },
       ],
     },
     {
-      title: 'Cargo Operations',
+      titleKey: 'cargoOperations',
       items: [
-        { href: '/loading', label: 'Cargo Loading', icon: Package },
-        { href: '/warehouse', label: 'Warehouse & Inventory', icon: Boxes },
-        { href: '/documents', label: 'Documents & Customs', icon: FileText },
-        { href: '/pod', label: 'Proof of Delivery', icon: CheckCircle2 },
+        { href: '/loading', labelKey: 'loading', icon: Package },
+        { href: '/warehouse', labelKey: 'warehouse', icon: Boxes },
+        { href: '/documents', labelKey: 'documents', icon: FileText },
+        { href: '/pod', labelKey: 'pod', icon: CheckCircle2 },
       ],
     },
     {
-      title: 'Commercial',
+      titleKey: 'commercial',
       items: [
-        { href: '/clients', label: 'Client CRM', icon: Building2 },
-        { href: '/quotes', label: 'Quotes & Rates', icon: Tag },
-        { href: '/invoices', label: 'Finance & Invoices', icon: Receipt },
-        { href: '/vendors', label: 'Vendors & Carriers', icon: Truck },
+        { href: '/clients', labelKey: 'clients', icon: Building2 },
+        { href: '/quotes', labelKey: 'quotes', icon: Tag },
+        { href: '/invoices', labelKey: 'invoices', icon: Receipt },
+        { href: '/vendors', labelKey: 'vendors', icon: Truck },
       ],
     },
     {
-      title: 'Automation & AI',
+      titleKey: 'automationAi',
       items: [
-        { href: '/automation', label: 'Automation Rules', icon: Zap },
-        { href: '/ai', label: 'AI Assistant & OCR', icon: Bot, highlight: true },
-        { href: '/exceptions', label: 'Exceptions', icon: AlertTriangle, color: 'text-amber-400' },
-        { href: '/analytics', label: 'Analytics & BI', icon: BarChart3 },
-        { href: '/productivity', label: 'Productivity & Profit', icon: TrendingUp },
+        { href: '/automation', labelKey: 'automation', icon: Zap },
+        { href: '/ai', labelKey: 'aiAssistant', icon: Bot, highlight: true },
+        { href: '/exceptions', labelKey: 'exceptions', icon: AlertTriangle, color: 'text-amber-400' },
+        { href: '/analytics', labelKey: 'analytics', icon: BarChart3 },
+        { href: '/productivity', labelKey: 'productivity', icon: TrendingUp },
       ],
     },
     {
-      title: 'Administration',
+      titleKey: 'administration',
       items: [
-        { href: '/users', label: 'Users & RBAC', icon: Shield },
-        { href: '/audit', label: 'Audit Log', icon: Lock },
-        { href: '/settings', label: 'System Settings', icon: Settings },
+        { href: '/users', labelKey: 'users', icon: Shield },
+        { href: '/audit', labelKey: 'audit', icon: Lock },
+        { href: '/settings', labelKey: 'settings', icon: Settings },
       ],
     },
   ];
 
-  return (
-    <aside className={`w-60 border-r flex flex-col justify-between hidden lg:flex shrink-0 h-screen overflow-y-auto transition-colors ${
-      isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-800 text-slate-200'
-    }`}>
-      <div className="py-4 px-3 space-y-4">
+  const sidebarContent = (
+    <div className="flex flex-col h-full justify-between py-4 px-3">
+      {/* Mobile Drawer Header */}
+      <div className="flex items-center justify-between lg:hidden mb-2 pb-2 border-b border-slate-200 dark:border-slate-800">
+        <span className="font-bold text-xs tracking-wider uppercase text-slate-500">
+          Navigation Menu
+        </span>
+        <button
+          onClick={onCloseMobile}
+          className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
+
+      <div className="space-y-4 overflow-y-auto flex-1 pr-1">
         {sections.map((section) => (
-          <div key={section.title} className="space-y-1">
+          <div key={section.titleKey} className="space-y-1">
             <div className={`px-3 text-[10px] uppercase tracking-wider font-semibold ${
               isLight ? 'text-slate-400' : 'text-slate-500'
             }`}>
-              {section.title}
+              {t(section.titleKey)}
             </div>
             {section.items.map((item) => {
               const Icon = item.icon;
@@ -114,6 +133,7 @@ export const Sidebar: React.FC = () => {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={() => onCloseMobile?.()}
                   className={`flex items-center justify-between px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     isActive
                       ? isLight
@@ -130,7 +150,7 @@ export const Sidebar: React.FC = () => {
                 >
                   <div className="flex items-center space-x-2.5">
                     <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-sky-500' : (item as any).color || (isLight ? 'text-slate-500' : 'text-slate-400')}`} />
-                    <span>{item.label}</span>
+                    <span>{t(item.labelKey)}</span>
                   </div>
                   {(item as any).badge && (
                     <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-500 border border-rose-500/30 animate-pulse">
@@ -144,7 +164,7 @@ export const Sidebar: React.FC = () => {
         ))}
       </div>
 
-      <div className={`p-3 border-t ${isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-800 bg-slate-950/40'}`}>
+      <div className={`mt-4 p-3 border-t ${isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-800 bg-slate-950/40'}`}>
         <div className={`p-2.5 rounded-xl border text-xs ${isLight ? 'bg-white border-slate-200' : 'bg-slate-850 border-slate-800'}`}>
           <div className={`font-semibold flex items-center justify-between ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
             <span>System Telemetry</span>
@@ -155,6 +175,35 @@ export const Sidebar: React.FC = () => {
           </div>
         </div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Permanent Sidebar */}
+      <aside className={`w-60 border-r hidden lg:flex shrink-0 h-screen overflow-y-auto transition-colors ${
+        isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-800 text-slate-200'
+      }`}>
+        {sidebarContent}
+      </aside>
+
+      {/* Mobile / Tablet Overlay Drawer */}
+      {isMobileOpen && (
+        <div className="fixed inset-0 z-50 flex lg:hidden">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"
+            onClick={onCloseMobile}
+          />
+
+          {/* Sliding Drawer Container */}
+          <div className={`relative w-72 max-w-[85vw] h-full shadow-2xl transition-all ${
+            isLight ? 'bg-white text-slate-800' : 'bg-slate-900 text-slate-200'
+          }`}>
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
