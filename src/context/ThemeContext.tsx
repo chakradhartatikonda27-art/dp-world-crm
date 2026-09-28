@@ -21,26 +21,43 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     try {
-      localStorage.setItem('logios_theme', 'light');
-      document.documentElement.classList.remove('dark');
+      const saved = localStorage.getItem('logios_theme') as Theme;
+      if (saved === 'dark' || saved === 'light') {
+        setThemeState(saved);
+        if (saved === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
     } catch (e) {}
   }, []);
 
   const setTheme = (t: Theme) => {
-    setThemeState('light');
+    setThemeState(t);
     try {
-      localStorage.setItem('logios_theme', 'light');
+      localStorage.setItem('logios_theme', t);
     } catch (e) {}
-    document.documentElement.classList.remove('dark');
+    if (t === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   const toggleTheme = () => {
-    setTheme('light');
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <ThemeContext.Provider value={{ theme: 'light', toggleTheme, setTheme }}>
-      <div className="theme-light bg-white text-slate-900 min-h-screen w-full">
+    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+      <div
+        className={
+          theme === 'dark'
+            ? 'dark theme-dark bg-slate-950 text-slate-100 min-h-screen w-full transition-colors'
+            : 'theme-light bg-slate-50 text-slate-900 min-h-screen w-full transition-colors'
+        }
+      >
         {children}
       </div>
     </ThemeContext.Provider>
