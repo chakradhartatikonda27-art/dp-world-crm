@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { AlertTriangle, Plus, X, RefreshCw, CheckCircle2, ShieldAlert, ArrowRight } from 'lucide-react';
+import { AlertTriangle, Plus, X, RefreshCw, CheckCircle2, ShieldAlert, ArrowRight, Trash2 } from 'lucide-react';
 import { ExceptionItem } from '@/types';
 
 export default function ExceptionsPage() {
@@ -34,6 +34,18 @@ export default function ExceptionsPage() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+  };
+
+  const handleDeleteException = async (id: string) => {
+    if (!confirm(`Are you sure you want to delete exception ${id}?`)) return;
+    try {
+      const res = await fetch(`/api/v1/exceptions?id=${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        fetchExceptions();
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   useEffect(() => {
@@ -172,6 +184,13 @@ export default function ExceptionsPage() {
                   >
                     {exc.status}
                   </span>
+                  <button
+                    onClick={() => handleDeleteException(exc.id)}
+                    className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
+                    title="Delete Exception"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
 

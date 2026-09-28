@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Cpu, Plus, X, RefreshCw, Zap, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Cpu, Plus, X, RefreshCw, Zap, CheckCircle2, AlertCircle, Edit, Trash2 } from 'lucide-react';
 import { WorkflowRule } from '@/types';
 
 export default function AutomationPage() {
   const [rules, setRules] = useState<WorkflowRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingRule, setEditingRule] = useState<WorkflowRule | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   // Form State
@@ -17,6 +18,11 @@ export default function AutomationPage() {
   const [operator, setOperator] = useState<'EQUALS' | 'GREATER_THAN' | 'LESS_THAN' | 'CONTAINS'>('GREATER_THAN');
   const [value, setValue] = useState('80');
   const [actionType, setActionType] = useState<'CREATE_EXCEPTION' | 'UPDATE_STATUS' | 'SEND_NOTIFICATION'>('CREATE_EXCEPTION');
+
+  // Edit Form State
+  const [editName, setEditName] = useState('');
+  const [editEventType, setEditEventType] = useState('GPS_PING');
+  const [editActionType, setEditActionType] = useState<'CREATE_EXCEPTION' | 'UPDATE_STATUS' | 'SEND_NOTIFICATION'>('CREATE_EXCEPTION');
 
   const orgId = 'org-apex-001';
 
@@ -63,6 +69,44 @@ export default function AutomationPage() {
     }
   };
 
+  const handleUpdateRule = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingRule) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/v1/automation', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: editingRule.id,
+          name: editName.trim(),
+          eventType: editEventType,
+          actionType: editActionType,
+        }),
+      });
+      if (res.ok) {
+        setEditingRule(null);
+        fetchRules();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteRule = async (id: string) => {
+    if (!confirm(`Are you sure you want to delete automation rule ${id}?`)) return;
+    try {
+      const res = await fetch(`/api/v1/automation?id=${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        fetchRules();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleToggleRuleActive = async (ruleId: string, currentActive: boolean) => {
     try {
       const res = await fetch('/api/v1/automation', {
@@ -76,6 +120,13 @@ export default function AutomationPage() {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const openEditModal = (rule: WorkflowRule) => {
+    setEditingRule(rule);
+    setEditName(rule.name || '');
+    setEditEventType(rule.eventType || 'GPS_PING');
+    setEditActionType(rule.actionType || 'CREATE_EXCEPTION');
   };
 
   return (
@@ -115,16 +166,32 @@ export default function AutomationPage() {
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-xs font-bold text-sky-600 dark:text-sky-400">{rule.id}</span>
-                <button
-                  onClick={() => handleToggleRuleActive(rule.id, rule.active)}
-                  className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition ${
-                    rule.active
-                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                      : 'bg-slate-200 dark:bg-slate-800 text-slate-500 border-slate-300 dark:border-slate-700'
-                  }`}
-                >
-                  {rule.active ? 'ACTIVE' : 'INACTIVE'}
-                </button>
+                <div className="flex items-center space-x-1.5">
+                  <button
+                    onClick={() => handleToggleRuleActive(rule.id, rule.active)}
+                    className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition ${
+                      rule.active
+                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                        : 'bg-slate-200 dark:bg-slate-800 text-slate-500 border-slate-300 dark:border-slate-700'
+                    }`}
+                  >
+                    {rule.active ? 'ACTIVE' : 'INACTIVE'}
+                  </button>
+                  <button
+                    onClick={() => openEditModal(rule)}
+                    className="p-1 text-slate-400 hover:text-sky-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
+                    title="Edit Rule"
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                  </button>
+                  <button
+                    onClick={() => handleDeleteRule(rule.id)}
+                    className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
+                    title="Delete Rule"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
 
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
@@ -254,6 +321,80 @@ export default function AutomationPage() {
                   className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
                 >
                   {submitting ? 'Creating...' : 'Create Rule'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Rule Modal */}
+      {editingRule && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+                <Edit className="w-4 h-4 text-sky-500" />
+                <span>Edit Automation Rule ({editingRule.id})</span>
+              </h3>
+              <button onClick={() => setEditingRule(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleUpdateRule} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Rule Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Trigger Event</label>
+                <select
+                  value={editEventType}
+                  onChange={(e) => setEditEventType(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                >
+                  <option value="GPS_PING">GPS Ping Event</option>
+                  <option value="POD_COMPLETED">POD Uploaded</option>
+                  <option value="BORDER_ARRIVAL">Border Arrival</option>
+                  <option value="FUEL_FILL">Fuel Fill</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Action Type</label>
+                <select
+                  value={editActionType}
+                  onChange={(e: any) => setEditActionType(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                >
+                  <option value="CREATE_EXCEPTION">Create Operational Exception</option>
+                  <option value="UPDATE_STATUS">Update Shipment Status</option>
+                  <option value="SEND_NOTIFICATION">Send Alert Notification</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setEditingRule(null)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                >
+                  {submitting ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>
