@@ -1,62 +1,305 @@
 'use client';
 
-import React from 'react';
-import { Shield, UserPlus, Lock } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Shield, Plus, X, RefreshCw, UserCheck, Key, Lock, Eye } from 'lucide-react';
+import { User, UserRole } from '@/types';
 
 export default function UsersPage() {
-  const users = [
-    { name: 'Mohan Kumar', email: 'mohan@dpworld.com', role: 'Super Admin', status: 'ACTIVE', lastLogin: '10 mins ago' },
-    { name: 'John Mwangi', email: 'john.m@dpworld.com', role: 'Driver', status: 'ACTIVE', lastLogin: 'Just now' },
-    { name: 'Sarah K.', email: 'sarah.k@dpworld.com', role: 'Finance Manager', status: 'ACTIVE', lastLogin: '1 hour ago' },
-  ];
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Modals
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showMatrixModal, setShowMatrixModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Form State
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState<UserRole>('OPERATIONS_MANAGER');
+
+  const orgId = 'org-apex-001';
+
+  const fetchUsers = () => {
+    setLoading(true);
+    fetch(`/api/v1/users?organizationId=${orgId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setUsers(data.users || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleCreateUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !firstName.trim()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/v1/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          organizationId: orgId,
+          email: email.trim(),
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          phone: phone.trim() || '+250 780 000 000',
+          role,
+        }),
+      });
+      if (res.ok) {
+        setShowCreateModal(false);
+        setEmail('');
+        setFirstName('');
+        setLastName('');
+        fetchUsers();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleToggleUserStatus = async (userId: string, currentStatus: string) => {
+    const nextStatus = currentStatus === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE';
+    try {
+      const res = await fetch('/api/v1/users', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, status: nextStatus }),
+      });
+      if (res.ok) {
+        fetchUsers();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <Shield className="w-5 h-5 text-sky-400" />
-            <span>Users & Multi-Tenant RBAC Permissions</span>
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+            <Shield className="w-5 h-5 text-sky-500 shrink-0" />
+            <span>Users &amp; Multi-Tenant RBAC Permissions</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">Role Definitions • Field Level Security • Tenant Scoping</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Role-based access control, tenant boundary enforcement, user provision, and security policies.
+          </p>
         </div>
-        <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold">
-          + Invite User
-        </button>
+
+        <div className="flex items-center space-x-2 shrink-0">
+          <button
+            onClick={() => setShowMatrixModal(true)}
+            className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition"
+          >
+            <Key className="w-4 h-4 text-sky-500" />
+            <span>RBAC Matrix</span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Create System User</span>
+          </button>
+        </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-        <table className="w-full text-left border-collapse text-xs">
-          <thead>
-            <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 uppercase text-[10px] font-semibold">
-              <th className="p-3">User Name</th>
-              <th className="p-3">Email</th>
-              <th className="p-3">Assigned Role</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Last Active</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-800 text-slate-300 font-mono">
-            {users.map((u) => (
-              <tr key={u.email} className="hover:bg-slate-800/40">
-                <td className="p-3 font-sans font-bold text-slate-200">{u.name}</td>
-                <td className="p-3 text-slate-400">{u.email}</td>
-                <td className="p-3 font-sans">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/30">
-                    {u.role}
-                  </span>
-                </td>
-                <td className="p-3 font-sans">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                    {u.status}
-                  </span>
-                </td>
-                <td className="p-3 text-slate-400">{u.lastLogin}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {/* Grid */}
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <RefreshCw className="w-6 h-6 animate-spin text-sky-500" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          {users.map((u) => (
+            <div
+              key={u.id}
+              className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="font-bold text-slate-900 dark:text-slate-100 text-sm">
+                    {u.firstName} {u.lastName}
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono">{u.email}</div>
+                </div>
+                <button
+                  onClick={() => handleToggleUserStatus(u.id, u.status)}
+                  className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
+                    u.status === 'ACTIVE'
+                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                      : 'bg-slate-200 dark:bg-slate-800 text-slate-500 border-slate-300 dark:border-slate-700'
+                  }`}
+                >
+                  {u.status}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100 dark:border-slate-800">
+                <div>
+                  <span className="text-slate-400 dark:text-slate-500 block text-[10px] uppercase font-semibold">Assigned Role</span>
+                  <span className="text-sky-600 dark:text-sky-400 font-bold font-mono text-[11px]">{u.role}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 dark:text-slate-500 block text-[10px] uppercase font-semibold">Phone</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-mono text-[10px] truncate block">{u.phone}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Create User Modal */}
+      {showCreateModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+                <Shield className="w-4 h-4 text-sky-500" />
+                <span>Create New System User</span>
+              </h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateUser} className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">First Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Last Name</label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Phone Number</label>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">RBAC Role *</label>
+                  <select
+                    value={role}
+                    onChange={(e: any) => setRole(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  >
+                    <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+                    <option value="ORG_ADMIN">ORG_ADMIN</option>
+                    <option value="OPERATIONS_MANAGER">OPERATIONS_MANAGER</option>
+                    <option value="FLEET_MANAGER">FLEET_MANAGER</option>
+                    <option value="DISPATCHER">DISPATCHER</option>
+                    <option value="DRIVER">DRIVER</option>
+                    <option value="FINANCE_MANAGER">FINANCE_MANAGER</option>
+                    <option value="CUSTOMER_ADMIN">CUSTOMER_ADMIN</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                >
+                  {submitting ? 'Creating...' : 'Create User'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* RBAC Matrix Modal */}
+      {showMatrixModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+                <Key className="w-4 h-4 text-sky-500" />
+                <span>RBAC Role Permission Matrix</span>
+              </h3>
+              <button onClick={() => setShowMatrixModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-3 text-xs max-h-[60vh] overflow-y-auto pr-1">
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                <div className="font-bold text-slate-900 dark:text-slate-100">ORG_ADMIN</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Full administrative rights over organization users, shipments, invoices &amp; fleet settings.</p>
+              </div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                <div className="font-bold text-slate-900 dark:text-slate-100">OPERATIONS_MANAGER</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Shipment dispatching, route optimization, driver assignment, and exception resolution.</p>
+              </div>
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-800">
+                <div className="font-bold text-slate-900 dark:text-slate-100">FINANCE_MANAGER</div>
+                <p className="text-[11px] text-slate-500 mt-0.5">Freight invoicing, payment reconciliation, yield analysis, and quote pricing approvals.</p>
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setShowMatrixModal(false)}
+                className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

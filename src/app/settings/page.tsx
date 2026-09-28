@@ -1,72 +1,185 @@
 'use client';
 
-import React from 'react';
-import { Settings, Sliders, CheckCircle2, AlertTriangle, Link2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Settings as SettingsIcon, Key, Save, RefreshCw, CheckCircle2, Shield, Globe, Bell } from 'lucide-react';
 
 export default function SettingsPage() {
-  const integrations = [
-    { name: 'OpenStreetMap / Carto Spatial', type: 'GIS Mapping', status: 'CONNECTED' },
-    { name: 'IoT Telemetry Stream (Teltonika/CalAmp)', type: 'GPS Hardware', status: 'CONNECTED' },
-    { name: 'WhatsApp Business API', type: 'Messaging Engine', status: 'CONNECTED' },
-    { name: 'Twilio SMS & Email Gateway', type: 'Notifications', status: 'CONNECTED' },
-    { name: 'SAP / Oracle ERP Bridge', type: 'Accounting Sync', status: 'READY' },
-  ];
+  const [settings, setSettings] = useState<any>({
+    orgName: 'DP World Rwanda Logistics Hub',
+    currency: 'USD',
+    timezone: 'Africa/Kigali',
+    autoInvoiceOnPOD: true,
+    gpsPollingIntervalSec: 15,
+    apiKey: 'dpw_live_sk_9940182749102948',
+    webhookUrl: 'https://api.dpworld.rw/v1/telemetry-webhook',
+  });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [savedSuccess, setSavedSuccess] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/v1/settings')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.settings) setSettings(data.settings);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setSavedSuccess(false);
+    try {
+      const res = await fetch('/api/v1/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(settings),
+      });
+      if (res.ok) {
+        setSavedSuccess(true);
+        setTimeout(() => setSavedSuccess(false), 3000);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleGenerateApiKey = async () => {
+    try {
+      const res = await fetch('/api/v1/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'GENERATE_API_KEY' }),
+      });
+      const data = await res.json();
+      if (data.settings) setSettings(data.settings);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <Settings className="w-5 h-5 text-sky-400" />
-            <span>System Settings & API Integration Hub</span>
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+            <SettingsIcon className="w-5 h-5 text-sky-500 shrink-0" />
+            <span>System Settings &amp; API Integration Hub</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">Tenant Branding • Timezone (Africa/Kigali) • Currency (USD) • Webhooks</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Organization preferences, API secret key management, webhooks, and IoT telemetry polling rates.
+          </p>
         </div>
-        <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold">
-          Save Configuration
+
+        <button
+          onClick={handleSaveSettings}
+          disabled={saving}
+          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition disabled:opacity-50 shrink-0"
+        >
+          <Save className="w-4 h-4" />
+          <span>{saving ? 'Saving...' : 'Save Configuration'}</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
-          <h2 className="text-sm font-bold text-slate-200">Organization Defaults</h2>
-          <div className="space-y-2 text-xs font-mono">
-            <div className="flex justify-between py-1.5 border-b border-slate-800">
-              <span className="text-slate-400">Organization Tenant</span>
-              <span className="text-slate-100 font-bold">DP World Rwanda</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800">
-              <span className="text-slate-400">Operating Timezone</span>
-              <span className="text-slate-100 font-bold">Africa/Kigali (UTC+2)</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800">
-              <span className="text-slate-400">Base Currency</span>
-              <span className="text-slate-100 font-bold">USD ($)</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-800">
-              <span className="text-slate-400">GPS Ping Interval</span>
-              <span className="text-emerald-400 font-bold">30 Seconds</span>
-            </div>
-          </div>
+      {savedSuccess && (
+        <div className="p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-400 flex items-center space-x-2">
+          <CheckCircle2 className="w-4 h-4" />
+          <span>Organization settings and API configuration saved successfully!</span>
         </div>
+      )}
 
-        <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
-          <h2 className="text-sm font-bold text-slate-200">API & Hardware Integrations</h2>
-          <div className="space-y-2">
-            {integrations.map((i) => (
-              <div key={i.name} className="flex items-center justify-between p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-xs">
-                <div>
-                  <div className="font-bold text-slate-200">{i.name}</div>
-                  <div className="text-[10px] text-slate-400">{i.type}</div>
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                  {i.status}
-                </span>
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <RefreshCw className="w-6 h-6 animate-spin text-sky-500" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Org Profile */}
+          <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-4 shadow-sm">
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+              <Globe className="w-4 h-4 text-sky-500" />
+              <span>Organization &amp; Regional Profile</span>
+            </h3>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Organization Name</label>
+                <input
+                  type="text"
+                  value={settings.orgName}
+                  onChange={(e) => setSettings({ ...settings, orgName: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
               </div>
-            ))}
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Default Currency</label>
+                  <input
+                    type="text"
+                    value={settings.currency}
+                    onChange={(e) => setSettings({ ...settings, currency: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Timezone</label>
+                  <input
+                    type="text"
+                    value={settings.timezone}
+                    onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* API Keys & Webhooks */}
+          <div className="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-4 shadow-sm">
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+              <Key className="w-4 h-4 text-sky-500" />
+              <span>API Integration &amp; Telemetry Webhook</span>
+            </h3>
+
+            <div className="space-y-3 text-xs">
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-slate-700 dark:text-slate-300 font-medium">Production API Secret Key</label>
+                  <button
+                    type="button"
+                    onClick={handleGenerateApiKey}
+                    className="text-sky-600 dark:text-sky-400 font-semibold hover:underline text-[10px]"
+                  >
+                    Regenerate Key
+                  </button>
+                </div>
+                <input
+                  type="text"
+                  readOnly
+                  value={settings.apiKey}
+                  className="w-full px-3 py-2 bg-slate-100 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-[11px] text-sky-600 dark:text-sky-400"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Webhook Endpoint URL</label>
+                <input
+                  type="text"
+                  value={settings.webhookUrl}
+                  onChange={(e) => setSettings({ ...settings, webhookUrl: e.target.value })}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 font-mono text-[11px]"
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
