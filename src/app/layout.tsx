@@ -19,7 +19,7 @@ function MainAppShell({ children }: { children: React.ReactNode }) {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div className="min-h-screen flex flex-col w-full max-w-full overflow-x-hidden">
+    <div className="min-h-screen flex flex-col w-full max-w-full overflow-x-hidden bg-white text-slate-900">
       <Navbar
         currentOrgId={currentOrgId}
         onOrgChange={setCurrentOrgId}
@@ -30,14 +30,15 @@ function MainAppShell({ children }: { children: React.ReactNode }) {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        theme="light"
       />
 
-      <div className="flex-1 flex overflow-hidden relative w-full max-w-full">
+      <div className="flex-1 flex overflow-hidden relative w-full max-w-full bg-white">
         <Sidebar
           isMobileOpen={isMobileMenuOpen}
           onCloseMobile={() => setIsMobileMenuOpen(false)}
         />
-        <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 md:p-6 w-full max-w-full min-w-0">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 md:p-6 w-full max-w-full min-w-0 bg-white">
           {children}
         </main>
       </div>
@@ -59,12 +60,12 @@ function MainAppShell({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="w-full max-w-full overflow-x-hidden">
+    <html lang="en" className="w-full max-w-full overflow-x-hidden bg-white">
       <head>
         <title>LogisticsOS - Multi-Tenant ERP &amp; Control Tower</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </head>
-      <body className="antialiased font-sans min-h-screen w-full max-w-full overflow-x-hidden">
+      <body className="antialiased font-sans min-h-screen w-full max-w-full overflow-x-hidden bg-white text-slate-900">
         <LanguageProvider>
           <ThemeProvider>
             <AuthProvider>
