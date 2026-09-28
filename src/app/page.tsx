@@ -129,55 +129,55 @@ export default function ControlTowerDashboard() {
   const borderCount = shipments.filter((s) => s.status === 'BORDER_PROCESSING').length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-white text-slate-900 min-h-screen">
       {/* Metrics Banner */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+        <div className="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">Total Active</div>
-            <div className="text-xl font-bold font-mono text-slate-900 dark:text-slate-100">{shipments.length}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500">Total Active</div>
+            <div className="text-xl font-bold font-mono text-slate-900">{shipments.length}</div>
           </div>
-          <div className="p-2 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-lg">
+          <div className="p-2 bg-sky-50 text-sky-600 rounded-lg border border-sky-100">
             <Truck className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+        <div className="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">In Transit</div>
-            <div className="text-xl font-bold font-mono text-sky-600 dark:text-sky-400">{inTransitCount}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500">In Transit</div>
+            <div className="text-xl font-bold font-mono text-sky-600">{inTransitCount}</div>
           </div>
-          <div className="p-2 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-lg">
+          <div className="p-2 bg-sky-50 text-sky-600 rounded-lg border border-sky-100">
             <MapPin className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+        <div className="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">At Border</div>
-            <div className="text-xl font-bold font-mono text-amber-600 dark:text-amber-400">{borderCount}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500">At Border</div>
+            <div className="text-xl font-bold font-mono text-amber-600">{borderCount}</div>
           </div>
-          <div className="p-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg">
+          <div className="p-2 bg-amber-50 text-amber-600 rounded-lg border border-amber-100">
             <Clock className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
+        <div className="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">SLA Delayed</div>
-            <div className="text-xl font-bold font-mono text-rose-600 dark:text-rose-400">{delayedCount}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500">SLA Delayed</div>
+            <div className="text-xl font-bold font-mono text-rose-600">{delayedCount}</div>
           </div>
-          <div className="p-2 bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-lg">
+          <div className="p-2 bg-rose-50 text-rose-600 rounded-lg border border-rose-100">
             <AlertTriangle className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm col-span-2 sm:col-span-1">
+        <div className="bg-white border border-slate-200 p-3.5 rounded-xl flex items-center justify-between shadow-sm col-span-2 sm:col-span-1">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">Open Exceptions</div>
-            <div className="text-xl font-bold font-mono text-amber-600 dark:text-amber-400">{exceptions.length}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500">Open Exceptions</div>
+            <div className="text-xl font-bold font-mono text-amber-600">{exceptions.length}</div>
           </div>
-          <div className="p-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg">
+          <div className="p-2 bg-amber-50 text-amber-600 rounded-lg border border-amber-100">
             <ShieldAlert className="w-4 h-4" />
           </div>
         </div>
@@ -194,38 +194,38 @@ export default function ControlTowerDashboard() {
         </div>
 
         {/* Real-time Exception & Operations Alert Sidebar */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col justify-between h-[340px] sm:h-[420px] shadow-sm">
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-between h-[340px] sm:h-[420px] shadow-sm">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200">
               <div className="flex items-center space-x-2">
                 <AlertTriangle className="w-4 h-4 text-amber-500" />
-                <h3 className="font-bold text-xs text-slate-900 dark:text-slate-100">Control Tower Live Alerts</h3>
+                <h3 className="font-bold text-xs text-slate-900">Control Tower Live Alerts</h3>
               </div>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
                 {exceptions.length} Active
               </span>
             </div>
 
             <div className="mt-3 space-y-2 overflow-y-auto max-h-[290px] pr-1">
               {exceptions.map((exc) => (
-                <div key={exc.id} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs space-y-1">
+                <div key={exc.id} className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold text-sky-600 dark:text-sky-400">{exc.shipmentNumber}</span>
+                    <span className="font-mono font-bold text-sky-600">{exc.shipmentNumber}</span>
                     <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
-                      exc.severity === 'CRITICAL' || exc.severity === 'HIGH' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20' : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
+                      exc.severity === 'CRITICAL' || exc.severity === 'HIGH' ? 'bg-rose-50 text-rose-700 border-rose-200' : 'bg-amber-50 text-amber-700 border-amber-200'
                     }`}>
                       {exc.severity}
                     </span>
                   </div>
-                  <div className="font-semibold text-slate-900 dark:text-slate-100">{exc.type.replace(/_/g, ' ')}</div>
-                  <div className="text-[11px] text-slate-500 dark:text-slate-400">{exc.rootCause}</div>
+                  <div className="font-semibold text-slate-900">{exc.type.replace(/_/g, ' ')}</div>
+                  <div className="text-[11px] text-slate-500">{exc.rootCause}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Quick Simulation Bar */}
-          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="pt-3 border-t border-slate-200 flex items-center justify-between">
             <button
               onClick={handleSimulateTelemetryPing}
               disabled={isSimulating}
@@ -240,15 +240,15 @@ export default function ControlTowerDashboard() {
 
       {/* Active Shipments Section */}
       <div className="space-y-4 pt-2">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-2 border-b border-slate-200">
           <div className="flex items-center space-x-2">
-            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">Active Operations Roster</h2>
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">({shipments.length} records)</span>
+            <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">Active Operations Roster</h2>
+            <span className="text-xs text-slate-500 font-mono">({shipments.length} records)</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
             {/* Status Filter Tabs */}
-            <div className="flex flex-wrap items-center bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1 rounded-xl text-xs font-semibold">
+            <div className="flex flex-wrap items-center bg-slate-100 border border-slate-200 p-1 rounded-xl text-xs font-semibold">
               {['ALL', 'IN_TRANSIT', 'BORDER_PROCESSING', 'DELAYED', 'DELIVERED'].map((st) => (
                 <button
                   key={st}
@@ -256,7 +256,7 @@ export default function ControlTowerDashboard() {
                   className={`px-2.5 py-1 rounded-lg text-[11px] transition-all ${
                     filterStatus === st
                       ? 'bg-sky-600 text-white shadow-sm font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                      : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
                   {st.replace(/_/g, ' ')}
