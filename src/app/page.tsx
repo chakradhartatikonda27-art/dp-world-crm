@@ -102,7 +102,6 @@ export default function ControlTowerDashboard() {
     setIsSimulating(true);
     const activeShp = shipments.find((s) => s.status === 'IN_TRANSIT') || shipments[0];
     if (activeShp && activeShp.truckId) {
-      // Simulate moving closer to destination
       const nextLat = activeShp.origin.latitude + (activeShp.destination.latitude - activeShp.origin.latitude) * 0.98;
       const nextLng = activeShp.origin.longitude + (activeShp.destination.longitude - activeShp.origin.longitude) * 0.98;
 
@@ -133,52 +132,52 @@ export default function ControlTowerDashboard() {
     <div className="space-y-6">
       {/* Metrics Banner */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 sm:gap-3">
-        <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-400">Total Active</div>
-            <div className="text-xl font-bold font-mono text-slate-100">{shipments.length}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">Total Active</div>
+            <div className="text-xl font-bold font-mono text-slate-900 dark:text-slate-100">{shipments.length}</div>
           </div>
-          <div className="p-2 bg-sky-500/10 text-sky-400 rounded-lg">
+          <div className="p-2 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-lg">
             <Truck className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-400">In Transit</div>
-            <div className="text-xl font-bold font-mono text-sky-400">{inTransitCount}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">In Transit</div>
+            <div className="text-xl font-bold font-mono text-sky-600 dark:text-sky-400">{inTransitCount}</div>
           </div>
-          <div className="p-2 bg-sky-500/10 text-sky-400 rounded-lg">
+          <div className="p-2 bg-sky-500/10 text-sky-600 dark:text-sky-400 rounded-lg">
             <MapPin className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-400">At Border</div>
-            <div className="text-xl font-bold font-mono text-amber-400">{borderCount}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">At Border</div>
+            <div className="text-xl font-bold font-mono text-amber-600 dark:text-amber-400">{borderCount}</div>
           </div>
-          <div className="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+          <div className="p-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg">
             <Clock className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-400">SLA Delayed</div>
-            <div className="text-xl font-bold font-mono text-rose-400">{delayedCount}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">SLA Delayed</div>
+            <div className="text-xl font-bold font-mono text-rose-600 dark:text-rose-400">{delayedCount}</div>
           </div>
-          <div className="p-2 bg-rose-500/10 text-rose-400 rounded-lg">
+          <div className="p-2 bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-lg">
             <AlertTriangle className="w-4 h-4" />
           </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 p-3.5 rounded-xl flex items-center justify-between col-span-2 sm:col-span-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-xl flex items-center justify-between shadow-sm col-span-2 sm:col-span-1">
           <div>
-            <div className="text-[10px] uppercase font-semibold text-slate-400">Open Exceptions</div>
-            <div className="text-xl font-bold font-mono text-amber-400">{exceptions.length}</div>
+            <div className="text-[10px] uppercase font-semibold text-slate-500 dark:text-slate-400">Open Exceptions</div>
+            <div className="text-xl font-bold font-mono text-amber-600 dark:text-amber-400">{exceptions.length}</div>
           </div>
-          <div className="p-2 bg-amber-500/10 text-amber-400 rounded-lg">
+          <div className="p-2 bg-amber-500/10 text-amber-600 dark:text-amber-400 rounded-lg">
             <ShieldAlert className="w-4 h-4" />
           </div>
         </div>
@@ -195,45 +194,45 @@ export default function ControlTowerDashboard() {
         </div>
 
         {/* Real-time Exception & Operations Alert Sidebar */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between h-[340px] sm:h-[420px]">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 flex flex-col justify-between h-[340px] sm:h-[420px] shadow-sm">
           <div>
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center space-x-2">
-                <AlertTriangle className="w-4 h-4 text-amber-400" />
-                <h3 className="font-bold text-xs text-slate-200">Control Tower Live Alerts</h3>
+                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                <h3 className="font-bold text-xs text-slate-900 dark:text-slate-100">Control Tower Live Alerts</h3>
               </div>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
                 {exceptions.length} Active
               </span>
             </div>
 
             <div className="mt-3 space-y-2 overflow-y-auto max-h-[290px] pr-1">
               {exceptions.map((exc) => (
-                <div key={exc.id} className="p-2.5 rounded-lg bg-slate-950 border border-slate-800 text-xs space-y-1">
+                <div key={exc.id} className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-xs space-y-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold text-sky-400">{exc.shipmentNumber}</span>
+                    <span className="font-mono font-bold text-sky-600 dark:text-sky-400">{exc.shipmentNumber}</span>
                     <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded border ${
-                      exc.severity === 'CRITICAL' || exc.severity === 'HIGH' ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : 'bg-amber-500/10 text-amber-400 border-amber-500/20'
+                      exc.severity === 'CRITICAL' || exc.severity === 'HIGH' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20' : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
                     }`}>
                       {exc.severity}
                     </span>
                   </div>
-                  <div className="font-semibold text-slate-200">{exc.type.replace(/_/g, ' ')}</div>
-                  <div className="text-[11px] text-slate-400">{exc.rootCause}</div>
+                  <div className="font-semibold text-slate-900 dark:text-slate-100">{exc.type.replace(/_/g, ' ')}</div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400">{exc.rootCause}</div>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Quick Simulation Bar */}
-          <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
+          <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
             <button
               onClick={handleSimulateTelemetryPing}
               disabled={isSimulating}
-              className="w-full py-2 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white rounded-lg text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md shadow-sky-500/20 transition-all"
+              className="w-full py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md shadow-sky-500/20 transition-all"
             >
               <Zap className={`w-3.5 h-3.5 ${isSimulating ? 'animate-spin' : ''}`} />
-              <span>Simulate Driver GPS Ping & Geofence Entry</span>
+              <span>Simulate Driver GPS Ping &amp; Geofence Entry</span>
             </button>
           </div>
         </div>
