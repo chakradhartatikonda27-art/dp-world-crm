@@ -86,7 +86,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {onToggleMobileMenu && (
           <button
             onClick={onToggleMobileMenu}
-            className={`p-1.5 sm:p-2 rounded-lg border lg:hidden ${
+            className={`p-1.5 sm:p-2 rounded-xl border lg:hidden ${
               isLight ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700' : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
             }`}
             title="Toggle Navigation Menu"
@@ -99,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className={`h-5 w-px hidden sm:block ${isLight ? 'bg-slate-200' : 'bg-slate-800'}`} />
 
-        {/* Tenant Switcher (Hidden on extra small screens < sm to prevent header overflow) */}
+        {/* Tenant Switcher */}
         <div className="relative hidden sm:block">
           <button
             onClick={() => {
@@ -107,20 +107,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               setShowRoleDropdown(false);
               setShowLangDropdown(false);
             }}
-            className={`flex items-center space-x-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg border transition-all ${
+            className={`flex items-center space-x-1.5 text-xs font-semibold px-2.5 py-1.5 rounded-xl border transition-all ${
               isLight
                 ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300'
-                : 'bg-slate-800/80 hover:bg-slate-800 text-slate-200 border-slate-700/60'
+                : 'bg-slate-800 hover:bg-slate-750 text-slate-200 border-slate-700'
             }`}
           >
-            <Building2 className="w-3.5 h-3.5 text-sky-600 shrink-0" />
+            <Building2 className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
             <span className="truncate max-w-[100px] md:max-w-[160px] font-semibold">{currentOrg.name}</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </button>
 
           {showOrgDropdown && (
             <div
-              className={`absolute left-0 mt-2 w-56 rounded-xl shadow-2xl py-1 z-50 border ${
+              className={`absolute left-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-50 border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder={t('searchPlaceholder')}
-            className={`w-full pl-9 pr-24 py-1.5 rounded-lg text-xs transition-all ${
+            className={`w-full pl-9 pr-24 py-1.5 rounded-xl text-xs transition-all ${
               isLight
                 ? 'bg-slate-100 border border-slate-300 text-slate-900 placeholder-slate-400 focus:bg-white focus:border-sky-600'
                 : 'bg-slate-950 border border-slate-800 text-slate-200 placeholder-slate-500 focus:border-sky-500'
@@ -176,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           />
           <button
             onClick={onOpenCommandPalette}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-semibold px-2 py-0.5 rounded border flex items-center space-x-1 ${
+            className={`absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-semibold px-2 py-0.5 rounded-lg border flex items-center space-x-1 ${
               isLight ? 'bg-slate-200 border-slate-300 text-slate-600' : 'bg-slate-800 border-slate-700 text-slate-400'
             }`}
           >
@@ -187,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Right: Language Switcher, Theme Toggle, AI Ops & Role Switcher */}
-      <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
+      <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
         {/* Language Switcher */}
         <div className="relative">
           <button
@@ -196,23 +196,23 @@ export const Navbar: React.FC<NavbarProps> = ({
               setShowOrgDropdown(false);
               setShowRoleDropdown(false);
             }}
-            className={`flex items-center space-x-0.5 sm:space-x-1 px-1.5 sm:px-2 py-1.5 rounded-lg border text-xs font-semibold ${
-              isLight ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300' : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
+            className={`flex items-center space-x-1 px-2 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
+              isLight ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300' : 'bg-slate-800 hover:bg-slate-750 text-slate-200 border-slate-700'
             }`}
             title="Switch Language"
           >
             <Globe className="w-3.5 h-3.5 text-sky-500" />
-            <span className="font-bold text-[10px] sm:text-[11px]">{language === 'rw' ? '🇷🇼' : '🇬🇧'}</span>
+            <span className="font-bold text-[11px] sm:text-xs">{language === 'rw' ? '🇷🇼' : '🇬🇧'}</span>
             <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:inline" />
           </button>
 
           {showLangDropdown && (
             <div
-              className={`absolute right-0 mt-2 w-40 rounded-xl shadow-2xl py-1 z-50 border ${
+              className={`absolute right-0 mt-2 w-44 rounded-2xl shadow-2xl py-1 z-50 border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
-              <div className="px-3 py-1 text-[10px] uppercase font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800">
+              <div className="px-3 py-1.5 text-[10px] uppercase font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800">
                 Select Language
               </div>
               <button
@@ -256,7 +256,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={handleToggleTheme}
             title={isLight ? 'Switch to Dark Theme' : 'Switch to White Background Theme'}
-            className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center space-x-1 transition-all ${
+            className={`p-2 rounded-xl border text-xs font-semibold flex items-center justify-center transition-all ${
               isLight
                 ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
                 : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-slate-700'
@@ -269,13 +269,13 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* AI Operations Assistant Button */}
         <button
           onClick={onOpenAI}
-          className="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold shadow-md shadow-sky-500/20 transition-all"
+          className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold shadow-md shadow-sky-500/20 transition-all"
         >
           <Sparkles className="w-3.5 h-3.5 animate-pulse" />
           <span className="hidden sm:inline">{t('aiOps')}</span>
         </button>
 
-        {/* Role Selector Badge & Dropdown (Fully visible & responsive on mobile/desktop) */}
+        {/* Role Selector Button & Dropdown (Uniform corporate styling matching Tenant Switcher) */}
         <div className="relative">
           <button
             onClick={() => {
@@ -283,22 +283,22 @@ export const Navbar: React.FC<NavbarProps> = ({
               setShowOrgDropdown(false);
               setShowLangDropdown(false);
             }}
-            className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-bold transition-all shadow-sm ${
+            className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
               isLight
-                ? 'bg-sky-50 hover:bg-sky-100 text-sky-700 border-sky-300'
-                : 'bg-sky-950/80 hover:bg-sky-900 text-sky-300 border-sky-700'
+                ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300'
+                : 'bg-slate-800 hover:bg-slate-750 text-slate-200 border-slate-700'
             }`}
           >
             <UserCheck className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
             <span className="font-bold text-[11px] sm:text-xs tracking-tight truncate max-w-[90px] sm:max-w-none">
               {currentRole.replace(/_/g, ' ')}
             </span>
-            <ChevronDown className="w-3 h-3 text-sky-500 shrink-0" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
           </button>
 
           {showRoleDropdown && (
             <div
-              className={`absolute right-0 mt-2 w-56 rounded-xl shadow-2xl py-1 z-50 border ${
+              className={`absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-50 border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
