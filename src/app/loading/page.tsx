@@ -1,57 +1,256 @@
 'use client';
 
-import React from 'react';
-import { Package, Clock, CheckSquare, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Package, Plus, X, RefreshCw, CheckSquare, Clock } from 'lucide-react';
+import { LoadingDock } from '@/types';
 
 export default function LoadingPage() {
-  const docks = [
-    { id: 'DOCK-01', name: 'Kigali DC Dock 1', shipment: 'SHP-2026-10012', truck: 'RAB123A', status: 'LOADING', progress: '65%', operator: 'Eric N.' },
-    { id: 'DOCK-02', name: 'Kigali DC Dock 2', shipment: 'SHP-2026-10018', truck: 'AP39TX9211', status: 'INSPECTION', progress: '90%', operator: 'Jean K.' },
-    { id: 'DOCK-03', name: 'Dar Inland Dock 4', shipment: 'SHP-2026-10022', truck: 'KA01AB4455', status: 'UNLOADING', progress: '30%', operator: 'Amani M.' },
-  ];
+  const [docks, setDocks] = useState<LoadingDock[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Form state
+  const [name, setName] = useState('Kigali DC Dock 3');
+  const [shipment, setShipment] = useState('SHP-2026-10025');
+  const [truck, setTruck] = useState('RAB123A');
+  const [operator, setOperator] = useState('Jean K.');
+
+  const orgId = 'org-apex-001';
+
+  const fetchDocks = () => {
+    setLoading(true);
+    fetch(`/api/v1/loading?organizationId=${orgId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setDocks(data.loadingDocks || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchDocks();
+  }, []);
+
+  const handleAssignDock = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim() || !shipment.trim()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/v1/loading', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          organizationId: orgId,
+          name: name.trim(),
+          shipment: shipment.trim(),
+          truck: truck.trim(),
+          operator: operator.trim(),
+          status: 'LOADING',
+          progress: 25,
+        }),
+      });
+      if (res.ok) {
+        setShowAssignModal(false);
+        fetchDocks();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleAdvanceProgress = async (dockId: string, currentProgress: number) => {
+    const nextProgress = Math.min(100, currentProgress + 25);
+    const nextStatus = nextProgress === 100 ? 'INSPECTION' : 'LOADING';
+    try {
+      const res = await fetch('/api/v1/loading', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ dockId, progress: nextProgress, status: nextStatus }),
+      });
+      if (res.ok) {
+        fetchDocks();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <Package className="w-5 h-5 text-sky-400 shrink-0" />
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+            <Package className="w-5 h-5 text-sky-500 shrink-0" />
             <span>Cargo Loading &amp; Dock Operations</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">Dock Scheduling • Weight Bridge Verification • Seal Verification • Tally Sheets</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Dock Scheduling • Weight Bridge Verification • Seal Verification • Tally Sheets &amp; Container Loading.
+          </p>
         </div>
-        <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold shrink-0">
-          + Assign Loading Dock
+
+        <button
+          onClick={() => setShowAssignModal(true)}
+          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Assign Loading Dock</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        {docks.map((d) => (
-          <div key={d.id} className="bg-slate-900 border border-slate-800 p-4 rounded-xl space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-bold text-sky-400">{d.id}</span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 border border-sky-500/30">
-                {d.status}
-              </span>
-            </div>
-            <h3 className="text-sm font-bold text-slate-100">{d.name}</h3>
-            <div className="space-y-1 text-xs text-slate-400">
-              <div>Shipment: <strong className="text-slate-200 font-mono">{d.shipment}</strong></div>
-              <div>Truck: <strong className="text-slate-200 font-mono">{d.truck}</strong></div>
-              <div>Dock Operator: <span className="text-slate-300">{d.operator}</span></div>
-            </div>
-            <div className="space-y-1">
-              <div className="flex justify-between text-[10px] text-slate-400">
-                <span>Progress</span>
-                <span className="font-mono font-bold text-sky-400">{d.progress}</span>
+      {/* Grid */}
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <RefreshCw className="w-6 h-6 animate-spin text-sky-500" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+          {docks.map((d) => (
+            <div
+              key={d.id}
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-xs font-bold text-sky-600 dark:text-sky-400">{d.id}</span>
+                <span
+                  className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                    d.status === 'LOADING'
+                      ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30'
+                      : d.status === 'INSPECTION'
+                      ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                      : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                  }`}
+                >
+                  {d.status}
+                </span>
               </div>
-              <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
-                <div className="h-full bg-sky-500 rounded-full" style={{ width: d.progress }} />
+
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{d.name}</h3>
+
+              <div className="space-y-1 text-xs text-slate-500 dark:text-slate-400 border-t border-slate-100 dark:border-slate-800/80 pt-2">
+                <div>
+                  Shipment: <strong className="text-slate-800 dark:text-slate-200 font-mono">{d.shipment}</strong>
+                </div>
+                <div>
+                  Truck: <strong className="text-slate-800 dark:text-slate-200 font-mono">{d.truck}</strong>
+                </div>
+                <div>
+                  Dock Operator: <span className="text-slate-700 dark:text-slate-300 font-medium">{d.operator}</span>
+                </div>
+              </div>
+
+              <div className="space-y-1.5 pt-1">
+                <div className="flex justify-between text-[10px] text-slate-500 dark:text-slate-400">
+                  <span>Progress</span>
+                  <span className="font-mono font-bold text-sky-600 dark:text-sky-400">{d.progress}%</span>
+                </div>
+                <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-sky-500 rounded-full transition-all duration-300"
+                    style={{ width: `${d.progress}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="pt-2 flex justify-end">
+                <button
+                  onClick={() => handleAdvanceProgress(d.id, d.progress)}
+                  className="w-full py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-700 transition"
+                >
+                  {d.progress >= 100 ? 'Mark Complete' : '+ 25% Loading Progress'}
+                </button>
               </div>
             </div>
+          ))}
+        </div>
+      )}
+
+      {/* Assign Dock Modal */}
+      {showAssignModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+                <Package className="w-4 h-4 text-sky-500" />
+                <span>Assign Loading Dock</span>
+              </h3>
+              <button onClick={() => setShowAssignModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAssignDock} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dock Location Name *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Kigali DC Dock 3"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Shipment ID *</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="SHP-2026-10025"
+                  value={shipment}
+                  onChange={(e) => setShipment(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Truck Reg</label>
+                  <input
+                    type="text"
+                    placeholder="RAB123A"
+                    value={truck}
+                    onChange={(e) => setTruck(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dock Operator</label>
+                  <input
+                    type="text"
+                    placeholder="Jean K."
+                    value={operator}
+                    onChange={(e) => setOperator(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setShowAssignModal(false)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                >
+                  {submitting ? 'Assigning...' : 'Assign Dock'}
+                </button>
+              </div>
+            </form>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -336,3 +336,73 @@ export interface AuditLog {
   ipAddress: string;
   timestamp: string;
 }
+
+export interface FuelRecord {
+  id: string;
+  organizationId: string;
+  truck: string;
+  driver: string;
+  station: string;
+  litres: number;
+  totalCost: number;
+  kmPerLitre: number;
+  variancePercent: number;
+  createdAt: string;
+}
+
+export interface RouteCheckpoint {
+  id: string;
+  name: string;
+  slaHours: number;
+  geofenceRadiusKm: number;
+  status: 'NORMAL' | 'QUEUE' | 'DELAYED';
+}
+
+export interface CorridorRoute {
+  id: string;
+  organizationId: string;
+  name: string;
+  dist: string;
+  checkpointsCount: number;
+  avgHours: number;
+  status: 'OPEN' | 'CAUTION' | 'CLOSED';
+  liveCondition: string;
+  checkpoints: RouteCheckpoint[];
+}
+
+export interface LoadingDock {
+  id: string;
+  organizationId: string;
+  name: string;
+  shipment: string;
+  truck: string;
+  operator: string;
+  status: 'LOADING' | 'INSPECTION' | 'UNLOADING' | 'AVAILABLE';
+  progress: number;
+}
+
+export interface WarehouseItem {
+  id: string;
+  organizationId: string;
+  skuCode: string;
+  description: string;
+  binLocation: string;
+  quantity: number;
+  weightKg: number;
+  status: 'READY_FOR_DISPATCH' | 'IN_STOCK' | 'PUTAWAY_PENDING';
+  unitType: string;
+  createdAt: string;
+}
+
+export interface MaintenanceOrder {
+  id: string;
+  organizationId: string;
+  truckId: string;
+  truckReg: string;
+  serviceType: string;
+  scheduledDate: string;
+  estimatedCost: number;
+  serviceCenter: string;
+  status: 'SCHEDULED' | 'IN_SERVICE' | 'COMPLETED';
+  notes: string;
+}

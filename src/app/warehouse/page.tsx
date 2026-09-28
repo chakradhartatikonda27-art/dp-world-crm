@@ -1,65 +1,347 @@
 'use client';
 
-import React from 'react';
-import { Boxes, QrCode, Layers, ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Boxes, Plus, X, RefreshCw, ArrowDownRight, ArrowUpRight } from 'lucide-react';
+import { WarehouseItem } from '@/types';
 
 export default function WarehousePage() {
-  const inventory = [
-    { sku: 'SKU-8471-001', name: 'Industrial Steel Coils', location: 'WH-A-Zone-04', qty: '120 Units', weight: '24,500 kg', status: 'READY_FOR_DISPATCH' },
-    { sku: 'SKU-8471-002', name: 'Commercial Electronics Pallets', location: 'WH-B-Zone-02', qty: '450 Boxes', weight: '8,200 kg', status: 'IN_STOCK' },
-    { sku: 'SKU-8471-003', name: 'Solar Panel Assemblies', location: 'WH-C-Zone-01', qty: '80 Crates', weight: '14,100 kg', status: 'PUTAWAY_PENDING' },
-  ];
+  const [inventory, setInventory] = useState<WarehouseItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Modals
+  const [showInboundModal, setShowInboundModal] = useState(false);
+  const [showOutboundModal, setShowOutboundModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Form states
+  const [skuCode, setSkuCode] = useState('SKU-8471-004');
+  const [description, setDescription] = useState('Heavy Duty Electrical Transformers');
+  const [binLocation, setBinLocation] = useState('WH-A-Zone-05');
+  const [quantity, setQuantity] = useState('50');
+  const [unitType, setUnitType] = useState('Units');
+  const [weightKg, setWeightKg] = useState('18500');
+
+  // Outbound state
+  const [dispatchSku, setDispatchSku] = useState('');
+  const [dispatchQty, setDispatchQty] = useState('10');
+
+  const orgId = 'org-apex-001';
+
+  const fetchInventory = () => {
+    setLoading(true);
+    fetch(`/api/v1/warehouse?organizationId=${orgId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setInventory(data.inventory || []);
+        if (data.inventory && data.inventory.length > 0 && !dispatchSku) {
+          setDispatchSku(data.inventory[0].skuCode);
+        }
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchInventory();
+  }, []);
+
+  const handleInboundReceipt = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!description.trim()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/v1/warehouse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          organizationId: orgId,
+          skuCode: skuCode.trim() || `SKU-${Math.floor(1000 + Math.random() * 9000)}`,
+          description: description.trim(),
+          binLocation: binLocation.trim(),
+          quantity: Number(quantity),
+          unitType,
+          weightKg: Number(weightKg),
+          status: 'IN_STOCK',
+        }),
+      });
+      if (res.ok) {
+        setShowInboundModal(false);
+        fetchInventory();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleOutboundDispatch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!dispatchSku) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/v1/warehouse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          organizationId: orgId,
+          action: 'OUTBOUND_DISPATCH',
+          skuCode: dispatchSku,
+          quantity: Number(dispatchQty),
+        }),
+      });
+      if (res.ok) {
+        setShowOutboundModal(false);
+        fetchInventory();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <Boxes className="w-5 h-5 text-sky-400 shrink-0" />
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+            <Boxes className="w-5 h-5 text-sky-500 shrink-0" />
             <span>Warehouse &amp; Inventory Control</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">Bin Location Management • Pick &amp; Pack • Cross-Docking • QR Scanning</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Bin Location Management • Pick &amp; Pack • Cross-Docking • Inbound Receipt &amp; Outbound Dispatch.
+          </p>
         </div>
+
         <div className="flex items-center space-x-2 shrink-0">
-          <button className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-lg text-xs font-semibold">
-            Inbound Receipt
+          <button
+            onClick={() => setShowInboundModal(true)}
+            className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition"
+          >
+            <ArrowDownRight className="w-4 h-4 text-emerald-500" />
+            <span>Inbound Receipt</span>
           </button>
-          <button className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold">
-            Outbound Dispatch
+          <button
+            onClick={() => setShowOutboundModal(true)}
+            className="px-3.5 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-md transition"
+          >
+            <ArrowUpRight className="w-4 h-4" />
+            <span>Outbound Dispatch</span>
           </button>
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden overflow-x-auto min-w-full">
-        <table className="w-full text-left border-collapse text-xs">
-          <thead>
-            <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 uppercase text-[10px] font-semibold">
-              <th className="p-3">SKU Code</th>
-              <th className="p-3">Item Description</th>
-              <th className="p-3">Bin Location</th>
-              <th className="p-3">Quantity</th>
-              <th className="p-3">Weight</th>
-              <th className="p-3">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-800 text-slate-300 font-mono">
-            {inventory.map((i) => (
-              <tr key={i.sku} className="hover:bg-slate-800/40">
-                <td className="p-3 font-bold text-sky-400">{i.sku}</td>
-                <td className="p-3 font-sans font-medium text-slate-200">{i.name}</td>
-                <td className="p-3 font-sans text-slate-400">{i.location}</td>
-                <td className="p-3">{i.qty}</td>
-                <td className="p-3 text-slate-300">{i.weight}</td>
-                <td className="p-3 font-sans">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-sky-500/10 text-sky-400 border border-sky-500/30">
-                    {i.status.replace(/_/g, ' ')}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {/* Table */}
+      {loading ? (
+        <div className="flex justify-center items-center py-12">
+          <RefreshCw className="w-6 h-6 animate-spin text-sky-500" />
+        </div>
+      ) : (
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
+          <div className="overflow-x-auto min-w-full">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-semibold">
+                  <th className="p-3">SKU Code</th>
+                  <th className="p-3">Item Description</th>
+                  <th className="p-3">Bin Location</th>
+                  <th className="p-3">Quantity</th>
+                  <th className="p-3">Total Weight</th>
+                  <th className="p-3">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300 font-mono">
+                {inventory.map((i) => (
+                  <tr key={i.id || i.skuCode} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition">
+                    <td className="p-3 font-bold text-sky-600 dark:text-sky-400">{i.skuCode}</td>
+                    <td className="p-3 font-sans font-medium text-slate-900 dark:text-slate-200">{i.description}</td>
+                    <td className="p-3 font-sans text-slate-500 dark:text-slate-400">{i.binLocation}</td>
+                    <td className="p-3 font-bold">
+                      {i.quantity} <span className="text-[10px] text-slate-400 font-normal">{i.unitType}</span>
+                    </td>
+                    <td className="p-3 text-slate-600 dark:text-slate-300">{i.weightKg.toLocaleString()} kg</td>
+                    <td className="p-3 font-sans">
+                      <span
+                        className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                          i.status === 'READY_FOR_DISPATCH'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                            : i.status === 'IN_STOCK'
+                            ? 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30'
+                            : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                        }`}
+                      >
+                        {i.status.replace(/_/g, ' ')}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Inbound Receipt Modal */}
+      {showInboundModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+                <ArrowDownRight className="w-4 h-4 text-emerald-500" />
+                <span>Inbound Stock Receipt</span>
+              </h3>
+              <button onClick={() => setShowInboundModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleInboundReceipt} className="space-y-3 text-xs">
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">SKU Code</label>
+                  <input
+                    type="text"
+                    value={skuCode}
+                    onChange={(e) => setSkuCode(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Bin Location</label>
+                  <input
+                    type="text"
+                    value={binLocation}
+                    onChange={(e) => setBinLocation(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Item Description *</label>
+                <input
+                  type="text"
+                  required
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Quantity</label>
+                  <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Unit Type</label>
+                  <input
+                    type="text"
+                    value={unitType}
+                    onChange={(e) => setUnitType(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Weight (kg)</label>
+                  <input
+                    type="number"
+                    value={weightKg}
+                    onChange={(e) => setWeightKg(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setShowInboundModal(false)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                >
+                  {submitting ? 'Receiving...' : 'Receive Stock'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Outbound Dispatch Modal */}
+      {showOutboundModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+                <ArrowUpRight className="w-4 h-4 text-sky-500" />
+                <span>Outbound Stock Dispatch</span>
+              </h3>
+              <button onClick={() => setShowOutboundModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleOutboundDispatch} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Select Inventory SKU *</label>
+                <select
+                  value={dispatchSku}
+                  onChange={(e) => setDispatchSku(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                >
+                  {inventory.map((i) => (
+                    <option key={i.skuCode} value={i.skuCode}>
+                      {i.skuCode} - {i.description} (Available: {i.quantity})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dispatch Quantity *</label>
+                <input
+                  type="number"
+                  required
+                  value={dispatchQty}
+                  onChange={(e) => setDispatchQty(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setShowOutboundModal(false)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                >
+                  {submitting ? 'Dispatching...' : 'Confirm Dispatch'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

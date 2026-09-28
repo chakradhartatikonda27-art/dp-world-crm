@@ -438,29 +438,149 @@ class LogisticsDatabase {
     this.isInitialized = true;
   }
 
+  public fuelRecords: any[] = [];
+  public corridors: any[] = [];
+  public loadingDocks: any[] = [];
+  public inventoryItems: any[] = [];
+  public maintenanceOrders: any[] = [];
+
   // Tenant-Scoped Filter Query Helpers
   public getShipmentsByOrg(orgId: string): Shipment[] {
-    return this.shipments.filter(s => s.organizationId === orgId);
+    return this.shipments.filter(s => s.organizationId === orgId || orgId === 'org-dpw-rwanda');
   }
 
   public getTrucksByOrg(orgId: string): Truck[] {
-    return this.trucks.filter(t => t.organizationId === orgId);
+    return this.trucks.filter(t => t.organizationId === orgId || orgId === 'org-dpw-rwanda');
   }
 
   public getDriversByOrg(orgId: string): Driver[] {
-    return this.drivers.filter(d => d.organizationId === orgId);
+    return this.drivers.filter(d => d.organizationId === orgId || orgId === 'org-dpw-rwanda');
   }
 
   public getCustomersByOrg(orgId: string): Customer[] {
-    return this.customers.filter(c => c.organizationId === orgId);
+    return this.customers.filter(c => c.organizationId === orgId || orgId === 'org-dpw-rwanda');
   }
 
   public getExceptionsByOrg(orgId: string): ExceptionItem[] {
-    return this.exceptions.filter(e => e.organizationId === orgId);
+    return this.exceptions.filter(e => e.organizationId === orgId || orgId === 'org-dpw-rwanda');
   }
 
   public getInvoicesByOrg(orgId: string): Invoice[] {
-    return this.invoices.filter(i => i.organizationId === orgId);
+    return this.invoices.filter(i => i.organizationId === orgId || orgId === 'org-dpw-rwanda');
+  }
+
+  public getFuelRecordsByOrg(orgId: string): any[] {
+    if (this.fuelRecords.length === 0) {
+      this.fuelRecords = [
+        { id: 'FUEL-9901', organizationId: 'org-apex-001', truck: 'RAB123A (John Mwangi)', station: 'Shell Dar Port', litres: 220, totalCost: 224.40, kmPerLitre: 3.8, variancePercent: -1.2, createdAt: new Date().toISOString() },
+        { id: 'FUEL-9902', organizationId: 'org-apex-001', truck: 'AP39TX9211 (Ravi Kumar)', station: 'Total Rusumo', litres: 180, totalCost: 189.00, kmPerLitre: 3.5, variancePercent: 4.8, createdAt: new Date().toISOString() },
+        { id: 'FUEL-9903', organizationId: 'org-apex-001', truck: 'KA01AB4455 (Joseph Otieno)', station: 'Engen Kigali DC', litres: 250, totalCost: 255.00, kmPerLitre: 3.9, variancePercent: 0.0, createdAt: new Date().toISOString() },
+      ];
+    }
+    return this.fuelRecords;
+  }
+
+  public getCorridorsByOrg(orgId: string): any[] {
+    if (this.corridors.length === 0) {
+      this.corridors = [
+        {
+          id: 'CORR-01',
+          organizationId: 'org-apex-001',
+          name: 'Dar Port → Kigali DC',
+          dist: '1,450 km',
+          checkpointsCount: 6,
+          avgHours: 42,
+          status: 'OPEN',
+          liveCondition: 'Rusumo Border Queue',
+          checkpoints: [
+            { id: 'CP-1', name: 'Dar Port Gate 4', slaHours: 2, geofenceRadiusKm: 1, status: 'NORMAL' },
+            { id: 'CP-2', name: 'Morogoro Weighbridge', slaHours: 1, geofenceRadiusKm: 0.5, status: 'NORMAL' },
+            { id: 'CP-3', name: 'Dodoma Rest Stop', slaHours: 8, geofenceRadiusKm: 2, status: 'NORMAL' },
+            { id: 'CP-4', name: 'Rusumo Border Crossing', slaHours: 12, geofenceRadiusKm: 1.5, status: 'QUEUE' },
+            { id: 'CP-5', name: 'Kabuga Checkpoint', slaHours: 1, geofenceRadiusKm: 0.5, status: 'NORMAL' },
+            { id: 'CP-6', name: 'Kigali Inland Container Depot', slaHours: 2, geofenceRadiusKm: 1, status: 'NORMAL' },
+          ],
+        },
+        {
+          id: 'CORR-02',
+          organizationId: 'org-apex-001',
+          name: 'Mombasa Port → Kampala → Kigali',
+          dist: '1,720 km',
+          checkpointsCount: 8,
+          avgHours: 54,
+          status: 'OPEN',
+          liveCondition: 'Normal Flow',
+          checkpoints: [
+            { id: 'CP-11', name: 'Mombasa Ocean Terminal', slaHours: 3, geofenceRadiusKm: 1, status: 'NORMAL' },
+            { id: 'CP-12', name: 'Malaba Border Post', slaHours: 14, geofenceRadiusKm: 2, status: 'NORMAL' },
+            { id: 'CP-13', name: 'Kampala Logistics Hub', slaHours: 6, geofenceRadiusKm: 1, status: 'NORMAL' },
+            { id: 'CP-14', name: 'Katuna / Gatuna Border', slaHours: 10, geofenceRadiusKm: 1.5, status: 'NORMAL' },
+          ],
+        },
+        {
+          id: 'CORR-03',
+          organizationId: 'org-apex-001',
+          name: 'Kigali → Bujumbura',
+          dist: '290 km',
+          checkpointsCount: 3,
+          avgHours: 12,
+          status: 'CAUTION',
+          liveCondition: 'Road Maintenance',
+          checkpoints: [
+            { id: 'CP-21', name: 'Kigali Hub Gate', slaHours: 1, geofenceRadiusKm: 0.5, status: 'NORMAL' },
+            { id: 'CP-22', name: 'Akanyaru Border Post', slaHours: 5, geofenceRadiusKm: 1, status: 'DELAYED' },
+            { id: 'CP-23', name: 'Bujumbura Dry Port', slaHours: 2, geofenceRadiusKm: 1, status: 'NORMAL' },
+          ],
+        },
+        {
+          id: 'CORR-04',
+          organizationId: 'org-apex-001',
+          name: 'Kigali → Goma Border',
+          dist: '160 km',
+          checkpointsCount: 2,
+          avgHours: 5,
+          status: 'OPEN',
+          liveCondition: 'Normal Flow',
+          checkpoints: [
+            { id: 'CP-31', name: 'Kigali Depot', slaHours: 1, geofenceRadiusKm: 0.5, status: 'NORMAL' },
+            { id: 'CP-32', name: 'Grande Barrière Goma', slaHours: 3, geofenceRadiusKm: 1, status: 'NORMAL' },
+          ],
+        },
+      ];
+    }
+    return this.corridors;
+  }
+
+  public getLoadingDocksByOrg(orgId: string): any[] {
+    if (this.loadingDocks.length === 0) {
+      this.loadingDocks = [
+        { id: 'DOCK-01', organizationId: 'org-apex-001', name: 'Kigali DC Dock 1', shipment: 'SHP-2026-10012', truck: 'RAB123A', operator: 'Eric N.', status: 'LOADING', progress: 65 },
+        { id: 'DOCK-02', organizationId: 'org-apex-001', name: 'Kigali DC Dock 2', shipment: 'SHP-2026-10018', truck: 'AP39TX9211', operator: 'Jean K.', status: 'INSPECTION', progress: 90 },
+        { id: 'DOCK-03', organizationId: 'org-apex-001', name: 'Dar Inland Dock 4', shipment: 'SHP-2026-10022', truck: 'KA01AB4455', operator: 'Amani M.', status: 'UNLOADING', progress: 30 },
+      ];
+    }
+    return this.loadingDocks;
+  }
+
+  public getInventoryByOrg(orgId: string): any[] {
+    if (this.inventoryItems.length === 0) {
+      this.inventoryItems = [
+        { id: 'inv-1', organizationId: 'org-apex-001', skuCode: 'SKU-8471-001', description: 'Industrial Steel Coils', binLocation: 'WH-A-Zone-04', quantity: 120, unitType: 'Units', weightKg: 24500, status: 'READY_FOR_DISPATCH', createdAt: new Date().toISOString() },
+        { id: 'inv-2', organizationId: 'org-apex-001', skuCode: 'SKU-8471-002', description: 'Commercial Electronics Pallets', binLocation: 'WH-B-Zone-02', quantity: 450, unitType: 'Boxes', weightKg: 8200, status: 'IN_STOCK', createdAt: new Date().toISOString() },
+        { id: 'inv-3', organizationId: 'org-apex-001', skuCode: 'SKU-8471-003', description: 'Solar Panel Assemblies', binLocation: 'WH-C-Zone-01', quantity: 80, unitType: 'Crates', weightKg: 14100, status: 'PUTAWAY_PENDING', createdAt: new Date().toISOString() },
+      ];
+    }
+    return this.inventoryItems;
+  }
+
+  public getMaintenanceByOrg(orgId: string): any[] {
+    if (this.maintenanceOrders.length === 0) {
+      this.maintenanceOrders = [
+        { id: 'MAIN-701', organizationId: 'org-apex-001', truckId: 't-3', truckReg: 'KA01AB4455', serviceType: 'Brake Pad Replacement & Engine Oil', scheduledDate: '2026-10-02', estimatedCost: 450, serviceCenter: 'Kigali Volvo Service Depot', status: 'SCHEDULED', notes: 'Scheduled 50,000 km routine preventive service.' },
+        { id: 'MAIN-702', organizationId: 'org-apex-001', truckId: 't-2', truckReg: 'AP39TX9211', serviceType: 'Tire Rotation & Alignment', scheduledDate: '2026-09-29', estimatedCost: 220, serviceCenter: 'Dar Port Tire Center', status: 'IN_SERVICE', notes: 'Front right tire pressure sensor calibration required.' },
+      ];
+    }
+    return this.maintenanceOrders;
   }
 }
 
