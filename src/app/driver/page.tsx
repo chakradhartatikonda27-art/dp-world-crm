@@ -58,7 +58,7 @@ export default function DriverMobileApp() {
           </div>
           <div>
             <div className="font-bold text-slate-100 text-xs">Driver Job Console</div>
-            <div className="text-[10px] text-slate-400">John Kabuya (Truck KBC-101X)</div>
+            <div className="text-[10px] text-slate-400 font-semibold">John (Truck RAB 123A)</div>
           </div>
         </div>
 
