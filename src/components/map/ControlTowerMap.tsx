@@ -40,8 +40,8 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
 
   if (!isMounted) {
     return (
-      <div className="w-full h-full bg-slate-900 rounded-xl flex items-center justify-center border border-slate-800">
-        <div className="text-xs text-slate-400 font-mono animate-pulse">Initializing Control Tower Spatial Map...</div>
+      <div className="w-full h-full bg-white dark:bg-slate-900 rounded-xl flex items-center justify-center border border-slate-200 dark:border-slate-800">
+        <div className="text-xs text-slate-500 dark:text-slate-400 font-mono animate-pulse">Initializing Control Tower Spatial Map...</div>
       </div>
     );
   }
@@ -64,7 +64,7 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
   const centerLng = vehicles.length > 0 ? vehicles[0].longitude : 30.7850;
 
   return (
-    <div className="w-full h-full rounded-xl overflow-hidden border border-slate-800 shadow-2xl relative z-0 isolate">
+    <div className="w-full h-full rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm relative z-0 isolate">
       <MapContainer center={[centerLat, centerLng]} zoom={7} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -126,12 +126,12 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
       </MapContainer>
 
       {/* Map Overlay Badge */}
-      <div className="absolute top-3 right-3 z-[1000] bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-2.5 rounded-xl shadow-xl text-white text-xs font-mono">
+      <div className="absolute top-3 right-3 z-[1000] bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200 dark:border-slate-700/80 p-2.5 rounded-xl shadow-md text-slate-900 dark:text-white text-xs font-mono">
         <div className="flex items-center space-x-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-          <span className="font-bold text-emerald-400">Rusumo Border Live Feed</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-ping" />
+          <span className="font-bold text-emerald-600 dark:text-emerald-400">Rusumo Border Live Feed</span>
         </div>
-        <div className="text-[10px] text-slate-400 mt-0.5">Lat: -2.3845 • Lng: 30.7850 • 4G Cellular</div>
+        <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Lat: -2.3845 • Lng: 30.7850 • 4G Cellular</div>
       </div>
     </div>
   );

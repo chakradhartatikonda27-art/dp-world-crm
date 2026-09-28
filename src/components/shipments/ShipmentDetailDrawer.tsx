@@ -35,24 +35,24 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
   return (
     <>
       {/* Backdrop (Starts below Navbar top-16) */}
-      <div className="fixed top-16 inset-x-0 bottom-0 z-[8999] bg-slate-950/60 backdrop-blur-xs" onClick={onClose} />
+      <div className="fixed top-16 inset-x-0 bottom-0 z-[8999] bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-xs" onClick={onClose} />
 
       {/* Drawer Panel (Starts below Navbar top-16) */}
-      <div className="fixed top-16 bottom-0 right-0 w-full max-w-2xl bg-slate-900 border-l border-slate-800 shadow-2xl z-[9000] flex flex-col h-[calc(100vh-4rem)]">
+      <div className="fixed top-16 bottom-0 right-0 w-full max-w-2xl bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl z-[9000] flex flex-col h-[calc(100vh-4rem)] text-slate-900 dark:text-slate-100">
         {/* Header */}
-        <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-lg font-mono font-bold text-sky-400">{shipment.shipmentNumber}</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-sky-500/10 text-sky-400 font-semibold border border-sky-500/20">
+              <span className="text-lg font-mono font-bold text-sky-600 dark:text-sky-400">{shipment.shipmentNumber}</span>
+              <span className="text-xs px-2 py-0.5 rounded bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 font-semibold border border-sky-200 dark:border-sky-500/20">
                 {shipment.status.replace(/_/g, ' ')}
               </span>
             </div>
-            <div className="text-xs text-slate-400 font-medium">{shipment.customerName}</div>
+            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">{shipment.customerName}</div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
+            className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -62,8 +62,8 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
         <div className="flex-1 overflow-y-auto p-5 space-y-6">
           {/* State Machine Transition Controls */}
           {allowedTransitions.length > 0 && (
-            <div className="p-4 bg-slate-850 rounded-xl border border-sky-500/30 space-y-3">
-              <div className="text-xs font-bold text-sky-400 flex items-center space-x-1.5">
+            <div className="p-4 bg-slate-50 dark:bg-slate-850 rounded-xl border border-sky-200 dark:border-sky-500/30 space-y-3">
+              <div className="text-xs font-bold text-sky-700 dark:text-sky-400 flex items-center space-x-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 <span>Execute Validated State Transition</span>
               </div>
@@ -74,8 +74,8 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
                     onClick={() => setSelectedNextStatus(nextSt)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                       selectedNextStatus === nextSt
-                        ? 'bg-sky-600 text-white border-sky-400 shadow-lg shadow-sky-500/30'
-                        : 'bg-slate-800 text-slate-300 border-slate-700 hover:border-sky-500'
+                        ? 'bg-sky-600 text-white border-sky-400 shadow-md'
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-sky-500'
                     }`}
                   >
                     → {nextSt.replace(/_/g, ' ')}
@@ -83,13 +83,13 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
                 ))}
               </div>
               {selectedNextStatus && (
-                <div className="space-y-2 pt-2 border-t border-slate-800">
+                <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
                   <input
                     type="text"
                     value={remarks}
                     onChange={(e) => setRemarks(e.target.value)}
                     placeholder="Mandatory transition audit notes / driver remarks..."
-                    className="w-full px-3 py-1.5 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-200"
+                    className="w-full px-3 py-1.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-200"
                   />
                   <button
                     onClick={handleApplyTransition}
@@ -103,97 +103,58 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
             </div>
           )}
 
-          {/* Details Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block">Origin Point</span>
-              <div className="text-xs font-bold text-slate-200">{shipment.origin.name}</div>
-              <div className="text-[10px] text-slate-500 font-mono">
-                Lat: {shipment.origin.latitude}, Lng: {shipment.origin.longitude}
+          {/* Key Overview Cards */}
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-1">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Origin</span>
+              <div className="font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1">
+                <MapPin className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                <span className="truncate">{shipment.origin.name}</span>
               </div>
             </div>
-
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block">Destination Point</span>
-              <div className="text-xs font-bold text-slate-200">{shipment.destination.name}</div>
-              <div className="text-[10px] text-slate-500 font-mono">
-                Lat: {shipment.destination.latitude}, Lng: {shipment.destination.longitude}
+            <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-1">
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Destination</span>
+              <div className="font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1">
+                <MapPin className="w-3.5 h-3.5 text-sky-500 shrink-0" />
+                <span className="truncate">{shipment.destination.name}</span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block">Cargo Type</span>
-              <span className="text-slate-200 font-semibold">{shipment.cargoType}</span>
+          {/* Assigned Fleet & Driver */}
+          <div className="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2 text-xs">
+            <div className="font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5">
+              <Truck className="w-4 h-4 text-sky-500" />
+              <span>Assigned Vehicle &amp; Driver</span>
             </div>
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block">Weight</span>
-              <span className="text-slate-200 font-mono font-semibold">
-                {shipment.weightKg ? `${shipment.weightKg.toLocaleString()} kg` : 'N/A'}
-              </span>
-            </div>
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block">Volume</span>
-              <span className="text-slate-200 font-mono font-semibold">
-                {shipment.volumeCbm ? `${shipment.volumeCbm} cbm` : 'N/A'}
-              </span>
+            <div className="grid grid-cols-2 gap-2 pt-1 font-mono">
+              <div>
+                <span className="text-slate-500 dark:text-slate-400 block text-[10px]">Truck Reg:</span>
+                <span className="font-bold text-slate-900 dark:text-slate-100">{shipment.truckRegistration || 'Unassigned'}</span>
+              </div>
+              <div>
+                <span className="text-slate-500 dark:text-slate-400 block text-[10px]">Driver:</span>
+                <span className="font-bold text-slate-900 dark:text-slate-100">{shipment.driverName || 'Unassigned'}</span>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block">Container #</span>
-              <span className="text-sky-400 font-mono font-semibold">{shipment.containerNumber || 'N/A'}</span>
-            </div>
-            <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
-              <span className="text-[10px] text-slate-500 uppercase font-semibold block">Seal #</span>
-              <span className="text-amber-400 font-mono font-semibold">{shipment.sealNumber || 'N/A'}</span>
-            </div>
-          </div>
-
-          {/* Assigned Driver & Truck */}
-          <div className="p-4 bg-slate-950/60 rounded-xl border border-slate-800 space-y-2">
-            <span className="text-[10px] text-slate-500 uppercase font-semibold block">Assigned Transport Unit</span>
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center space-x-2">
-                <Truck className="w-4 h-4 text-sky-400" />
-                <span className="font-semibold text-slate-200">{shipment.truckRegistration || 'Truck Pending'}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <User className="w-4 h-4 text-emerald-400" />
-                <span className="font-semibold text-slate-200">{shipment.driverName || 'Driver Unassigned'}</span>
-              </div>
-            </div>
-            {shipment.driverPhone && (
-              <div className="text-[11px] text-slate-400 font-mono pt-1 border-t border-slate-850">
-                Driver Contact: {shipment.driverPhone}
-              </div>
-            )}
-          </div>
-
-          {/* Immutable Audit Timeline */}
-          <div className="space-y-3 pt-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">Immutable Audit Timeline Events</span>
-              <span className="text-[10px] text-slate-500 font-mono">{timeline.length} records</span>
-            </div>
-
-            <div className="relative pl-4 space-y-4 border-l border-slate-800">
-              {timeline.map((event) => (
-                <div key={event.id} className="relative space-y-1">
-                  <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-sky-500 border-2 border-slate-900" />
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-slate-200">{event.eventType.replace(/_/g, ' ')}</span>
-                    <span className="text-[10px] text-slate-500 font-mono">
-                      {new Date(event.timestamp).toLocaleString()}
-                    </span>
+          {/* Timeline History */}
+          <div className="space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
+              <FileText className="w-3.5 h-3.5 text-sky-500" />
+              <span>Audit Timeline Trail</span>
+            </h4>
+            <div className="space-y-2 border-l-2 border-slate-200 dark:border-slate-800 pl-4 ml-1">
+              {timeline.map((evt) => (
+                <div key={evt.id} className="relative space-y-0.5 text-xs">
+                  <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-white dark:ring-slate-900" />
+                  <div className="flex items-center justify-between font-semibold">
+                    <span className="text-slate-900 dark:text-slate-100">{evt.eventType.replace(/_/g, ' ')}</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
                   </div>
-                  {event.remarks && <div className="text-xs text-slate-400">{event.remarks}</div>}
-                  <div className="text-[10px] text-slate-500 font-mono">
-                    Source: <span className="text-slate-400">{event.source}</span>
-                    {event.userName && ` by ${event.userName}`}
-                  </div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-400">{evt.remarks}</div>
+                  <div className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">Source: {evt.source} • By: {evt.userName || 'System'}</div>
                 </div>
               ))}
             </div>
