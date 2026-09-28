@@ -257,6 +257,47 @@ class LogisticsDatabase {
       'DELIVERED', 'INVOICED', 'DELAYED'
     ];
 
+    // Explicit Featured Shipment requested by user
+    const flagshipShipment: Shipment = {
+      id: 'shp-rwa-125',
+      organizationId: 'org-dpw-rwanda',
+      shipmentNumber: 'RWA-2026-000125',
+      customerId: 'cust-1',
+      customerName: 'Kigali Commercial Hub',
+      bookingId: 'BK-RWA-00125',
+      origin: { name: 'Dar es Salaam Port', latitude: -6.7924, longitude: 39.2083 },
+      destination: { name: 'Kigali, Rwanda', latitude: -1.9441, longitude: 30.0619 },
+      cargoType: 'Refrigerated & Containerized Freight',
+      cargoDescription: 'High-Value Commercial Freight (Container MSCU1234567)',
+      weightKg: 24000,
+      volumeCbm: 60,
+      packageCount: 32,
+      containerNumber: 'MSCU1234567',
+      sealNumber: 'SL-TZ-88491',
+      billOfLadingNumber: 'BOL-DAR-99210',
+      referenceNumber: 'PO-RWA-2026',
+      transportMode: 'ROAD',
+      truckId: 'truck-rwa-1',
+      truckRegistration: 'RAB 123A',
+      driverId: 'driver-rwa-1',
+      driverName: 'John',
+      driverPhone: '+250 788 123 456',
+      plannedPickupAt: new Date(Date.now() - 36 * 3600 * 1000).toISOString(),
+      actualPickupAt: new Date(Date.now() - 32 * 3600 * 1000).toISOString(),
+      plannedDeliveryAt: new Date(Date.now() + 28 * 3600 * 1000).toISOString(),
+      estimatedDeliveryAt: new Date(Date.now() + 28 * 3600 * 1000).toISOString(),
+      status: 'IN_TRANSIT',
+      priority: 'HIGH',
+      currentLatitude: -2.3845,
+      currentLongitude: 30.7850,
+      speedKmh: 58,
+      distanceRemainingKm: 180,
+      specialInstructions: 'Currently at Rusumo Border checkpoint. Remaining distance: 180 km. Target ETA: Tomorrow 14:30.',
+      createdAt: new Date(Date.now() - 36 * 3600 * 1000).toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    this.shipments.push(flagshipShipment);
+
     // 7. Generate 100 Realistic Shipments
     for (let i = 1; i <= 100; i++) {
       const orgId = i <= 60 ? org1Id : org2Id;
@@ -406,6 +447,31 @@ class LogisticsDatabase {
         });
       }
     }
+
+    // Timeline Events & Telemetry for Flagship Shipment RWA-2026-000125
+    this.timelineEvents.push(
+      { id: 'evt-rwa-1', organizationId: 'org-dpw-rwanda', shipmentId: 'shp-rwa-125', eventType: 'BOOKING_CREATED', status: 'BOOKED', timestamp: new Date(Date.now() - 36 * 3600 * 1000).toISOString(), userName: 'System Auto-Booking', source: 'SYSTEM', remarks: 'Freight booking created for Container MSCU1234567.' },
+      { id: 'evt-rwa-2', organizationId: 'org-dpw-rwanda', shipmentId: 'shp-rwa-125', eventType: 'DOCUMENTS_VERIFIED', status: 'DOCUMENTS_PENDING', timestamp: new Date(Date.now() - 34 * 3600 * 1000).toISOString(), userName: 'Customs Officer', source: 'SYSTEM', remarks: 'C17 & COMESA transit documentation cleared at Dar Port.' },
+      { id: 'evt-rwa-3', organizationId: 'org-dpw-rwanda', shipmentId: 'shp-rwa-125', eventType: 'TRUCK_ASSIGNED', status: 'TRUCK_ASSIGNED', timestamp: new Date(Date.now() - 32 * 3600 * 1000).toISOString(), userName: 'Dispatcher', source: 'MANUAL', remarks: 'Assigned Truck RAB 123A and Driver John.' },
+      { id: 'evt-rwa-4', organizationId: 'org-dpw-rwanda', shipmentId: 'shp-rwa-125', eventType: 'DEPARTED', status: 'IN_TRANSIT', timestamp: new Date(Date.now() - 24 * 3600 * 1000).toISOString(), userName: 'John (Driver)', source: 'DRIVER_APP', remarks: 'Departed Dar es Salaam Port in-transit to Kigali, Rwanda.' },
+      { id: 'evt-rwa-5', organizationId: 'org-dpw-rwanda', shipmentId: 'shp-rwa-125', eventType: 'CHECKPOINT', status: 'IN_TRANSIT', timestamp: new Date().toISOString(), userName: 'GPS Telemetry', source: 'GPS_AUTOMATION', remarks: 'Currently at Rusumo Border. Distance remaining: 180 km. Dynamic ETA: Tomorrow 14:30.' }
+    );
+
+    this.gpsPositions.push({
+      id: 'gps-rwa-125',
+      organizationId: 'org-dpw-rwanda',
+      truckId: 'truck-rwa-1',
+      driverId: 'driver-rwa-1',
+      shipmentId: 'shp-rwa-125',
+      latitude: -2.3845,
+      longitude: 30.7850,
+      speed: 58,
+      heading: 285,
+      altitude: 1350,
+      batteryLevel: 94,
+      timestamp: new Date().toISOString(),
+      source: 'DRIVER_APP',
+    });
 
     // 8. Default Automation Rules
     this.workflowRules = [
