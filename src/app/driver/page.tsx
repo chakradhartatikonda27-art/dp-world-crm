@@ -19,7 +19,12 @@ import {
   Sparkles,
   Fuel,
   X,
-  Gauge
+  Gauge,
+  Flag,
+  Award,
+  ChevronRight,
+  ShieldCheck,
+  Check
 } from 'lucide-react';
 import { Shipment, ShipmentStatus } from '@/types';
 
@@ -48,24 +53,24 @@ export default function DriverMobileApp() {
 
   const translations = {
     EN: {
-      consoleTitle: 'Driver Job Console',
+      consoleTitle: 'Driver Mobile Console',
       driverName: 'John (Truck RAB 123A)',
-      activeTrip: 'Current Active Trip',
+      activeTrip: 'Active Shipment Route',
       origin: 'Start: Dar es Salaam Port',
       destination: 'End: Kigali, Rwanda',
       payload: 'Cargo: Refrigerated Goods',
-      step1: '1. Depart Port',
+      step1: '1. Dar Port',
       step2: '2. Border Clearance',
-      step3: '3. Destination Hub',
-      borderBtn: '🛂 AT BORDER',
-      arrivedBtn: '🏁 I HAVE ARRIVED',
-      checkpointBtn: '🚩 CHECKPOINT PING',
-      refuelBtn: '⛽ LOG REFUEL & RECEIPT',
-      photoBtn: '📷 TAKE CARGO PHOTO',
-      signBtn: '✍️ SIGN SCREEN',
-      submitPodBtn: '✅ COMPLETE & SUBMIT',
-      sosBtn: '🆘 EMERGENCY HELP',
-      audioPrompt: 'John, your truck RAB 123A is near Rusumo Border. Tap yellow button at border, or green button when you reach Kigali destination.',
+      step3: '3. Kigali Hub',
+      borderBtn: 'AT BORDER CHECKPOINT',
+      arrivedBtn: 'ARRIVED AT DESTINATION',
+      checkpointBtn: 'SEND CHECKPOINT PING',
+      refuelBtn: 'LOG REFUEL & RECEIPT',
+      photoBtn: 'TAKE CARGO PHOTO',
+      signBtn: 'SIGN SCREEN',
+      submitPodBtn: 'COMPLETE & SUBMIT POD',
+      sosBtn: 'EMERGENCY DISPATCH HELP',
+      audioPrompt: 'John, your truck RAB 123A is near Rusumo Border. Tap At Border button or Arrived when at Kigali destination.',
       photoDone: '✓ Photo Attached',
       refuelDone: '✓ Refuel Logged to ERP',
     },
@@ -76,18 +81,18 @@ export default function DriverMobileApp() {
       origin: 'Mwanzo: Bandari ya Dar es Salaam',
       destination: 'Mwisho: Kigali, Rwanda',
       payload: 'Mzigo: Bidhaa za Baridi',
-      step1: '1. Ondoka Bandarini',
+      step1: '1. Bandari Dar',
       step2: '2. Ukaguzi Mpakanai',
       step3: '3. Kituo cha Kigali',
-      borderBtn: '🛂 NIPO MPAKANAI',
-      arrivedBtn: '🏁 NIMEFIKA KIGALI',
-      checkpointBtn: '🚩 UKAGUZI',
-      refuelBtn: '⛽ WEKA MAFUTA NA RISITI',
-      photoBtn: '📷 PIGA PICHA MZUGO',
-      signBtn: '✍️ WEKA SAHINI',
-      submitPodBtn: '✅ MALIZA NA TUMA',
-      sosBtn: '🆘 MSAADA WA DHARURA',
-      audioPrompt: 'John, gari yako RAB 123A ipo Rusumo. Bonyeza kitufe cha manjano mpakanai, au cha kijani ukifika Kigali.',
+      borderBtn: 'NIPO MPAKANAI',
+      arrivedBtn: 'NIMEFIKA KIGALI',
+      checkpointBtn: 'TUMA UKAGUZI',
+      refuelBtn: 'WEKA MAFUTA NA RISITI',
+      photoBtn: 'PIGA PICHA MZUGO',
+      signBtn: 'WEKA SAHINI',
+      submitPodBtn: 'MALIZA NA TUMA POD',
+      sosBtn: 'MSAADA WA DHARURA',
+      audioPrompt: 'John, gari yako RAB 123A ipo Rusumo. Bonyeza Nipo Mpakanai, au Nimefika ukifika Kigali.',
       photoDone: '✓ Picha Imepigwa',
       refuelDone: '✓ Mafuta Yamehifadhiwa',
     },
@@ -98,18 +103,18 @@ export default function DriverMobileApp() {
       origin: 'Ahahagurukwa: Dar es Salaam',
       destination: 'Aho Cherekejwe: Kigali, Rwanda',
       payload: 'Mzigo: Ibicuruzwa bikonje',
-      step1: '1. Guhaguruka Bandari',
-      step2: '2. Kugera ku Mupaka',
+      step1: '1. Bandari Dar',
+      step2: '2. Ku Mupaka',
       step3: '3. Kugera Kigali',
-      borderBtn: '🛂 NGEZE KU MUPAKA',
-      arrivedBtn: '🏁 NAGEZE KIGALI',
-      checkpointBtn: '🚩 ISUZUMA',
-      refuelBtn: '⛽ GUFATIRA MAFUTA NA RISITI',
-      photoBtn: '📷 FATA IFOTO Y\'IBIZIGO',
-      signBtn: '✍️ SHYIRAHO SINIYA',
-      submitPodBtn: '✅ OHEREZA POD',
-      sosBtn: '🆘 TABARA / MSAADA',
-      audioPrompt: 'John, ikamyo yawe RAB 123A igeze Rusumo. Kanda ku kifungo cy\'umuhondo ku mupaka, cyangwa icy\'icyatsi wageze Kigali.',
+      borderBtn: 'NGEZE KU MUPAKA',
+      arrivedBtn: 'NAGEZE KIGALI',
+      checkpointBtn: 'OHEREZA ISUZUMA',
+      refuelBtn: 'GUFATIRA MAFUTA NA RISITI',
+      photoBtn: 'FATA IFOTO Y\'IBIZIGO',
+      signBtn: 'SHYIRAHO SINIYA',
+      submitPodBtn: 'OHEREZA POD',
+      sosBtn: 'TABARA / MSAADA',
+      audioPrompt: 'John, ikamyo yawe RAB 123A igeze Rusumo. Kanda Ngeze ku Mupaka, cyangwa Nageze Kigali.',
       photoDone: '✓ Ifoto Yafashwe',
       refuelDone: '✓ Mafuta Yiyandikishije',
     },
@@ -120,18 +125,18 @@ export default function DriverMobileApp() {
       origin: 'Départ: Port de Dar es Salaam',
       destination: 'Arrivée: Kigali, Rwanda',
       payload: 'Cargaison: Produits Réfrigérés',
-      step1: '1. Départ Port',
+      step1: '1. Port Dar',
       step2: '2. Contrôle Frontière',
       step3: '3. Centre Kigali',
-      borderBtn: '🛂 Á LA FRONTIÈRE',
-      arrivedBtn: '🏁 JE SUIS ARRIVÉ',
-      checkpointBtn: '🚩 POINT DE CONTRÔLE',
-      refuelBtn: '⛽ RECHARGE CARBURANT & REÇU',
-      photoBtn: '📷 PRENDRE PHOTO',
-      signBtn: '✍️ SIGNER L\'ÉCRAN',
-      submitPodBtn: '✅ VALIDER & ENVOYER',
-      sosBtn: '🆘 SOS URGENCE',
-      audioPrompt: 'John, votre camion RAB 123A est près de la frontière Rusumo. Appuyez sur le bouton jaune à la frontière ou vert à destination.',
+      borderBtn: 'Á LA FRONTIÈRE',
+      arrivedBtn: 'JE SUIS ARRIVÉ',
+      checkpointBtn: 'ENVOYER CHECKPOINT',
+      refuelBtn: 'RECHARGE CARBURANT & REÇU',
+      photoBtn: 'PRENDRE PHOTO',
+      signBtn: 'SIGNER L\'ÉCRAN',
+      submitPodBtn: 'VALIDER & ENVOYER POD',
+      sosBtn: 'SOS URGENCE DISPATCH',
+      audioPrompt: 'John, votre camion RAB 123A est près de la frontière Rusumo. Appuyez sur À la frontière ou Arrivé.',
       photoDone: '✓ Photo Capturée',
       refuelDone: '✓ Carburant Enregistré',
     },
@@ -184,7 +189,7 @@ export default function DriverMobileApp() {
 
   const handleSubmitPOD = () => {
     if (!recipientName.trim()) {
-      alert('Please write recipient name / Andika izina ry\'uwakiriye');
+      alert('Please enter recipient name / Andika izina ry\'uwakiriye');
       return;
     }
     setIsPODSubmitted(true);
@@ -226,29 +231,32 @@ export default function DriverMobileApp() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white border-2 border-sky-500/40 rounded-3xl overflow-hidden shadow-2xl space-y-0 my-3">
-      {/* Driver Language & Easy Mode Header */}
-      <div className="bg-white px-4 py-3 border-b border-slate-200 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="w-9 h-9 rounded-2xl bg-sky-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-sky-500/30">
-            🚛
+    <div className="max-w-md mx-auto bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl space-y-0 my-4">
+      {/* Driver Language & Profile Header */}
+      <div className="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between shadow-xs">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 rounded-xl bg-sky-600 flex items-center justify-center text-white font-bold shadow-sm shrink-0">
+            <Truck className="w-5 h-5 text-white" />
           </div>
           <div>
-            <div className="font-bold text-slate-900 text-xs">{text.consoleTitle}</div>
-            <div className="text-[11px] text-sky-400 font-extrabold">{text.driverName}</div>
+            <div className="font-bold text-white text-xs">{text.consoleTitle}</div>
+            <div className="text-[11px] text-sky-400 font-semibold flex items-center space-x-1 mt-0.5">
+              <span>{text.driverName}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse ml-1" />
+            </div>
           </div>
         </div>
 
-        {/* Easy Language Switcher */}
-        <div className="flex items-center space-x-1 bg-white p-1 rounded-xl border border-slate-200">
+        {/* Language Switcher Tabs */}
+        <div className="flex items-center space-x-1 bg-slate-800 p-1 rounded-lg border border-slate-700">
           {(['EN', 'SW', 'RW', 'FR'] as DriverLang[]).map((lang) => (
             <button
               key={lang}
               onClick={() => setDriverLang(lang)}
-              className={`px-2 py-1 rounded-lg text-[10px] font-extrabold transition-all ${
+              className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${
                 driverLang === lang
-                  ? 'bg-sky-600 text-white shadow-sm'
-                  : 'text-slate-500 hover:text-white'
+                  ? 'bg-sky-600 text-white shadow-xs'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               {lang}
@@ -257,119 +265,131 @@ export default function DriverMobileApp() {
         </div>
       </div>
 
-      {/* Voice Guidance / Audio Prompt Banner */}
-      <div className="bg-sky-950/60 border-b border-sky-500/30 p-3 flex items-center justify-between">
-        <div className="flex items-center space-x-2 text-xs font-semibold text-sky-200">
-          <Volume2 className={`w-4 h-4 text-sky-400 shrink-0 ${isSpeaking ? 'animate-bounce text-emerald-400' : ''}`} />
+      {/* Voice Guidance Banner */}
+      <div className="bg-sky-50 border-b border-sky-200 p-3 flex items-center justify-between">
+        <div className="flex items-center space-x-2 text-xs font-semibold text-sky-900">
+          <Volume2 className={`w-4 h-4 text-sky-600 shrink-0 ${isSpeaking ? 'animate-bounce text-emerald-600' : ''}`} />
           <span className="text-[11px] leading-tight line-clamp-1">{text.audioPrompt}</span>
         </div>
         <button
           onClick={handlePlayVoiceGuidance}
-          className="px-2.5 py-1 rounded-xl bg-sky-500 hover:bg-sky-400 text-white text-[10px] font-bold shrink-0 shadow-md flex items-center space-x-1"
+          className="px-3 py-1 rounded-lg bg-sky-600 hover:bg-sky-700 text-white text-[11px] font-bold shrink-0 shadow-xs flex items-center space-x-1 transition"
         >
-          <span>🔊 {isSpeaking ? 'Speaking...' : 'Listen'}</span>
+          <span>{isSpeaking ? 'Speaking...' : 'Listen'}</span>
         </button>
       </div>
 
       {activeShipment ? (
         <div className="p-4 space-y-4 text-xs">
           {/* Visual Step Tracker */}
-          <div className="p-3 bg-white rounded-2xl border border-slate-200 space-y-2">
-            <div className="flex items-center justify-between text-[11px] font-bold text-slate-700">
-              <span className="text-emerald-400">1. Dar Port ✓</span>
-              <span className="text-amber-400 animate-pulse">2. Border 📍</span>
-              <span className="text-slate-500">3. Kigali 🏁</span>
+          <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+            <div className="flex items-center justify-between text-[11px] font-bold">
+              <span className="text-emerald-700 flex items-center space-x-1">
+                <Check className="w-3.5 h-3.5" />
+                <span>{text.step1}</span>
+              </span>
+              <span className="text-amber-700 flex items-center space-x-1 font-extrabold animate-pulse">
+                <MapPin className="w-3.5 h-3.5" />
+                <span>{text.step2}</span>
+              </span>
+              <span className="text-slate-500">{text.step3}</span>
             </div>
-            <div className="w-full h-2 bg-slate-50 rounded-full overflow-hidden flex">
+            <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden flex">
               <div className="w-1/3 bg-emerald-500" />
               <div className="w-1/3 bg-amber-500 animate-pulse" />
-              <div className="w-1/3 bg-slate-700" />
+              <div className="w-1/3 bg-slate-300" />
             </div>
           </div>
 
-          {/* Active Cargo Card */}
-          <div className="p-3.5 bg-white rounded-2xl border border-sky-500/30 space-y-2">
+          {/* Active Cargo Info Card */}
+          <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="font-mono font-extrabold text-sky-400 text-base">{activeShipment.shipmentNumber}</span>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px] border border-emerald-500/30">
+              <div>
+                <span className="text-[10px] font-bold uppercase text-slate-500 block">SHIPMENT NO.</span>
+                <span className="font-mono font-extrabold text-sky-700 text-base">{activeShipment.shipmentNumber}</span>
+              </div>
+              <span className="px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-700 font-bold text-[10px] border border-emerald-200">
                 {activeShipment.status.replace(/_/g, ' ')}
               </span>
             </div>
 
-            <div className="text-slate-800 font-bold text-xs">{activeShipment.customerName}</div>
+            <div className="text-slate-900 font-bold text-xs flex items-center space-x-1.5 border-t border-slate-100 pt-2">
+              <span className="text-slate-500 font-normal">Customer:</span>
+              <span>{activeShipment.customerName}</span>
+            </div>
 
-            {/* Visual Route Cards */}
+            {/* Clean Route Cards */}
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 bg-emerald-950/40 border border-emerald-500/30 rounded-xl space-y-0.5">
-                <span className="text-[9px] uppercase font-bold text-emerald-400 block">START LOCATION</span>
+              <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg space-y-0.5">
+                <span className="text-[9px] uppercase font-bold text-slate-500 block">START LOCATION</span>
                 <div className="font-bold text-slate-900 truncate">{activeShipment.origin.name}</div>
               </div>
-              <div className="p-2.5 bg-sky-950/40 border border-sky-500/30 rounded-xl space-y-0.5">
-                <span className="text-[9px] uppercase font-bold text-sky-400 block">DESTINATION</span>
+              <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg space-y-0.5">
+                <span className="text-[9px] uppercase font-bold text-slate-500 block">DESTINATION</span>
                 <div className="font-bold text-slate-900 truncate">{activeShipment.destination.name}</div>
               </div>
             </div>
           </div>
 
-          {/* ULTRA-EASY EXTRA LARGE TOUCH BUTTONS */}
+          {/* ULTRA-EASY TOUCH ACTION BUTTONS */}
           <div className="space-y-2.5">
-            <div className="text-[11px] uppercase font-extrabold tracking-wider text-slate-500 text-center">
-              👇 TAP BIG BUTTON TO UPDATE STATUS
+            <div className="text-[10px] uppercase font-bold tracking-wider text-slate-500 text-center">
+              TAP BUTTON TO UPDATE DRIVER STATUS
             </div>
 
             {/* Big Yellow Border Button */}
             <button
               onClick={() => handleDriverStatusUpdate('BORDER_ARRIVED', 'Driver tapped Border Arrived button.')}
-              className="w-full py-4 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-sm rounded-2xl shadow-xl shadow-amber-500/20 flex items-center justify-center space-x-2 border-2 border-amber-300 transition-transform active:scale-95"
+              className="w-full py-3.5 bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold text-xs rounded-xl shadow-sm flex items-center justify-center space-x-2 border border-amber-600 transition-all active:scale-[0.98]"
             >
-              <span className="text-xl">🛂</span>
+              <Navigation className="w-4 h-4 text-slate-950" />
               <span className="tracking-wide uppercase">{text.borderBtn}</span>
             </button>
 
             {/* Big Green Destination Arrived Button */}
             <button
               onClick={() => handleDriverStatusUpdate('AT_DESTINATION', 'Driver tapped Arrived Destination button.')}
-              className="w-full py-4 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm rounded-2xl shadow-xl shadow-emerald-600/30 flex items-center justify-center space-x-2 border-2 border-emerald-400 transition-transform active:scale-95"
+              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs rounded-xl shadow-sm flex items-center justify-center space-x-2 border border-emerald-700 transition-all active:scale-[0.98]"
             >
-              <span className="text-xl">🏁</span>
+              <CheckCircle2 className="w-4 h-4 text-white" />
               <span className="tracking-wide uppercase">{text.arrivedBtn}</span>
             </button>
 
             {/* Fuel Refuel & Receipt Button */}
             <button
               onClick={() => setShowRefuelModal(true)}
-              className="w-full py-3.5 bg-sky-600 hover:bg-sky-500 text-white font-black text-xs rounded-2xl shadow-lg shadow-sky-600/30 flex items-center justify-center space-x-2 border-2 border-sky-400 transition-transform active:scale-95"
+              className="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-xs rounded-xl shadow-sm flex items-center justify-center space-x-2 border border-sky-700 transition-all active:scale-[0.98]"
             >
-              <Fuel className="w-4 h-4" />
+              <Fuel className="w-4 h-4 text-white" />
               <span className="tracking-wide uppercase">{text.refuelBtn}</span>
             </button>
 
             <button
               onClick={() => handleDriverStatusUpdate('CHECKPOINT', 'Driver passed border checkpoint inspection.')}
-              className="w-full py-2.5 bg-slate-50 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-xl text-center border border-slate-200 flex items-center justify-center space-x-1.5"
+              className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs rounded-xl text-center border border-slate-200 flex items-center justify-center space-x-1.5 transition"
             >
-              <span>🚩</span>
+              <Flag className="w-3.5 h-3.5 text-slate-600" />
               <span>{text.checkpointBtn}</span>
             </button>
           </div>
 
-          {/* Proof of Delivery (POD) */}
-          <div className="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
-            <div className="font-extrabold text-slate-800 text-xs flex items-center space-x-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          {/* Proof of Delivery (POD) Card */}
+          <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-3 shadow-xs">
+            <div className="font-bold text-slate-900 text-xs flex items-center space-x-2 border-b border-slate-100 pb-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>DELIVERY PROOF &amp; SIGNATURE</span>
             </div>
 
             {!isPODSubmitted ? (
               <div className="space-y-2.5">
                 <div>
-                  <label className="block text-[10px] text-slate-500 font-bold mb-1">RECIPIENT NAME / UWA KIRIYE</label>
+                  <label className="block text-[10px] text-slate-600 font-bold mb-1">RECIPIENT NAME / UWA KIRIYE</label>
                   <input
                     type="text"
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
                     placeholder="e.g. Claire Mutoni"
-                    className="w-full px-3.5 py-3 bg-white border-2 border-slate-200 focus:border-sky-500 rounded-xl text-xs text-slate-900 font-bold"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-lg text-xs text-slate-900 font-semibold"
                   />
                 </div>
 
@@ -380,38 +400,38 @@ export default function DriverMobileApp() {
                       setPhotoUploaded(true);
                       alert('📸 Cargo Photo Captured Successfully!');
                     }}
-                    className={`py-3 rounded-xl font-extrabold text-xs flex items-center justify-center space-x-1.5 border-2 transition ${
+                    className={`py-2.5 rounded-lg font-bold text-xs flex items-center justify-center space-x-1.5 border transition ${
                       photoUploaded
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                        : 'bg-white text-slate-800 border-slate-200 hover:border-sky-500'
+                        ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                     }`}
                   >
-                    <Camera className="w-4 h-4 text-sky-400" />
+                    <Camera className="w-4 h-4 text-sky-600" />
                     <span>{photoUploaded ? text.photoDone : text.photoBtn}</span>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => alert('✍️ Screen Signature Saved!')}
-                    className="py-3 bg-white text-slate-800 border-2 border-slate-200 hover:border-emerald-500 rounded-xl font-extrabold text-xs flex items-center justify-center space-x-1.5"
+                    className="py-2.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 rounded-lg font-bold text-xs flex items-center justify-center space-x-1.5 transition"
                   >
-                    <Edit3 className="w-4 h-4 text-emerald-400" />
+                    <Edit3 className="w-4 h-4 text-emerald-600" />
                     <span>{text.signBtn}</span>
                   </button>
                 </div>
 
                 <button
                   onClick={handleSubmitPOD}
-                  className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-sm rounded-xl flex items-center justify-center space-x-2 shadow-xl shadow-emerald-500/30 border-2 border-emerald-400 active:scale-95 transition-transform"
+                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl flex items-center justify-center space-x-2 shadow-xs border border-emerald-700 active:scale-[0.98] transition"
                 >
                   <Send className="w-4 h-4" />
                   <span>{text.submitPodBtn}</span>
                 </button>
               </div>
             ) : (
-              <div className="p-3 bg-emerald-500/20 border-2 border-emerald-500/40 rounded-xl text-emerald-300 font-black text-xs text-center space-y-1">
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 font-bold text-xs text-center space-y-0.5">
                 <div>✓ JOB COMPLETE &amp; POD SUBMITTED!</div>
-                <div className="text-[10px] text-emerald-400 font-mono">Invoice Released Automatically</div>
+                <div className="text-[10px] text-emerald-600 font-mono">Invoice Released Automatically</div>
               </div>
             )}
           </div>
@@ -420,9 +440,9 @@ export default function DriverMobileApp() {
           <div className="pt-2 border-t border-slate-200">
             <button
               onClick={() => setShowSOSModal(true)}
-              className="w-full py-3 bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border-2 border-rose-500/40 rounded-2xl font-black text-xs flex items-center justify-center space-x-2 shadow-lg"
+              className="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 transition"
             >
-              <ShieldAlert className="w-4 h-4 text-rose-400" />
+              <ShieldAlert className="w-4 h-4 text-rose-600" />
               <span>{text.sosBtn}</span>
             </button>
           </div>
@@ -433,33 +453,33 @@ export default function DriverMobileApp() {
 
       {/* Refuel & Receipt Photo Modal */}
       {showRefuelModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm p-4">
-          <div className="bg-white border-2 border-sky-500 rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-xl">
             <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-              <div className="flex items-center space-x-2 text-sky-400 font-bold text-xs">
-                <Fuel className="w-4 h-4" />
+              <div className="flex items-center space-x-2 text-sky-700 font-bold text-xs">
+                <Fuel className="w-4 h-4 text-sky-600" />
                 <span>LOG REFUEL &amp; RECEIPT PHOTO</span>
               </div>
-              <button onClick={() => setShowRefuelModal(false)} className="text-slate-500 hover:text-white">
+              <button onClick={() => setShowRefuelModal(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleDriverRefuelSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-bold mb-1 text-[10px]">1. FUEL STATION LOCATION</label>
+                <label className="block text-slate-600 font-bold mb-1 text-[10px]">1. FUEL STATION LOCATION</label>
                 <input
                   type="text"
                   required
                   value={refuelStation}
                   onChange={(e) => setRefuelStation(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 font-semibold"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-semibold"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1 text-[10px]">2. LITRES BOUGHT</label>
+                  <label className="block text-slate-600 font-bold mb-1 text-[10px]">2. LITRES BOUGHT</label>
                   <input
                     type="number"
                     required
@@ -468,29 +488,29 @@ export default function DriverMobileApp() {
                       setRefuelLitres(e.target.value);
                       setRefuelCost((Number(e.target.value) * 1.15).toFixed(2));
                     }}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sky-400 font-black text-sm"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sky-700 font-bold text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-bold mb-1 text-[10px]">TOTAL COST ($)</label>
+                  <label className="block text-slate-600 font-bold mb-1 text-[10px]">TOTAL COST ($)</label>
                   <input
                     type="number"
                     step="0.01"
                     value={refuelCost}
                     onChange={(e) => setRefuelCost(e.target.value)}
-                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 font-bold text-xs"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-bold text-xs"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-700 font-bold mb-1 text-[10px]">3. CURRENT ODOMETER KM</label>
+                <label className="block text-slate-600 font-bold mb-1 text-[10px]">3. CURRENT ODOMETER KM</label>
                 <input
                   type="number"
                   required
                   value={refuelOdometer}
                   onChange={(e) => setRefuelOdometer(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-900 font-mono font-bold"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-mono font-bold"
                 />
               </div>
 
@@ -502,23 +522,23 @@ export default function DriverMobileApp() {
                     setReceiptPhotoTaken(true);
                     alert('📸 Fuel Receipt Photo captured!');
                   }}
-                  className={`py-2.5 rounded-xl text-[11px] font-bold border flex items-center justify-center space-x-1 ${
+                  className={`py-2 rounded-lg text-[11px] font-bold border flex items-center justify-center space-x-1 ${
                     receiptPhotoTaken
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
-                      : 'bg-slate-50 text-slate-800 border-slate-200'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-slate-50 text-slate-700 border-slate-200'
                   }`}
                 >
-                  <Camera className="w-3.5 h-3.5 text-amber-400" />
-                  <span>{receiptPhotoTaken ? '✓ Receipt Attached' : '📷 Receipt Photo'}</span>
+                  <Camera className="w-3.5 h-3.5 text-amber-600" />
+                  <span>{receiptPhotoTaken ? '✓ Receipt Attached' : 'Receipt Photo'}</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => alert('📸 Dashboard Odometer Photo captured!')}
-                  className="py-2.5 rounded-xl text-[11px] font-bold bg-slate-50 text-slate-800 border border-slate-200 flex items-center justify-center space-x-1"
+                  className="py-2 rounded-lg text-[11px] font-bold bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center space-x-1"
                 >
-                  <Gauge className="w-3.5 h-3.5 text-sky-400" />
-                  <span>📷 Odometer Photo</span>
+                  <Gauge className="w-3.5 h-3.5 text-sky-600" />
+                  <span>Odometer Photo</span>
                 </button>
               </div>
 
@@ -526,14 +546,14 @@ export default function DriverMobileApp() {
                 <button
                   type="button"
                   onClick={() => setShowRefuelModal(false)}
-                  className="flex-1 py-2.5 bg-slate-50 text-slate-700 rounded-xl font-bold"
+                  className="flex-1 py-2 bg-slate-100 text-slate-700 rounded-lg font-bold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submittingRefuel}
-                  className="flex-1 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-extrabold shadow-lg shadow-sky-600/30"
+                  className="flex-1 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-bold shadow-xs transition"
                 >
                   {submittingRefuel ? 'Sending...' : 'SEND REFUEL LOG'}
                 </button>
@@ -545,28 +565,28 @@ export default function DriverMobileApp() {
 
       {/* SOS Emergency Call Modal */}
       {showSOSModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm p-4">
-          <div className="bg-white border-2 border-rose-500 rounded-3xl w-full max-w-sm p-6 space-y-4 text-center shadow-2xl">
-            <div className="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center mx-auto text-xl">
-              🆘
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-sm p-6 space-y-4 text-center shadow-xl">
+            <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto text-xl border border-rose-200">
+              <ShieldAlert className="w-6 h-6 text-rose-600" />
             </div>
             <h3 className="font-extrabold text-slate-900 text-sm">EMERGENCY DISPATCHER HELP</h3>
             <p className="text-xs text-slate-500">
               Need immediate assistance with breakdown, border delay, or accident?
             </p>
-            <div className="p-3 bg-white rounded-2xl border border-slate-200 text-xs font-mono text-sky-400 font-bold">
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-mono text-sky-700 font-bold">
               Dispatch Hotline: +250 788 100 002
             </div>
             <div className="flex space-x-2 pt-2">
               <button
                 onClick={() => setShowSOSModal(false)}
-                className="flex-1 py-2.5 bg-slate-50 text-slate-700 rounded-xl font-bold text-xs"
+                className="flex-1 py-2 bg-slate-100 text-slate-700 rounded-lg font-bold text-xs"
               >
                 Close
               </button>
               <a
                 href="tel:+250788100002"
-                className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-1"
+                className="flex-1 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg font-bold text-xs flex items-center justify-center space-x-1 transition"
               >
                 <PhoneCall className="w-3.5 h-3.5" />
                 <span>Call Dispatch</span>
