@@ -22,30 +22,30 @@ export default function CustomerPortal() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Hero Banner */}
-      <div className="bg-gradient-to-r from-sky-900 via-slate-900 to-indigo-900 p-6 rounded-2xl border border-sky-500/20 shadow-2xl space-y-3">
+      <div className="p-5 sm:p-6 rounded-2xl border border-sky-200 dark:border-sky-500/20 bg-white dark:bg-slate-900 shadow-xl space-y-3 transition-colors">
         <div className="flex items-center space-x-2">
-          <ShieldCheck className="w-5 h-5 text-sky-400" />
-          <h1 className="text-lg font-bold text-white">Customer Self-Service Tracking Portal</h1>
+          <ShieldCheck className="w-5 h-5 text-sky-600 dark:text-sky-400 shrink-0" />
+          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Customer Self-Service Tracking Portal</h1>
         </div>
-        <p className="text-xs text-slate-300 max-w-xl">
+        <p className="text-xs text-slate-600 dark:text-slate-300 max-w-xl">
           Track your freight shipments live, inspect driver ETAs, download Bill of Lading documents, and view proof of delivery.
         </p>
 
         {/* Tracking Input Bar */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-2">
           <input
             type="text"
             value={searchNumber}
             onChange={(e) => setSearchNumber(e.target.value)}
             placeholder="Enter Shipment Number (e.g. SHP-2026-10001)"
-            className="flex-1 px-4 py-2.5 bg-slate-950/90 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-400 font-mono focus:outline-none focus:border-sky-500 min-w-0"
+            className="flex-1 px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 font-mono focus:outline-none focus:border-sky-500 min-w-0"
           />
           <button
             onClick={handleSearch}
-            className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-sky-500/30 flex items-center justify-center space-x-1 shrink-0"
+            className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-sky-500/30 flex items-center justify-center space-x-1.5 shrink-0"
           >
-            <Search className="w-4 h-4" />
-            <span>Track Freight</span>
+            <Search className="w-4 h-4 text-white" />
+            <span className="text-white font-bold">Track Freight</span>
           </button>
         </div>
       </div>

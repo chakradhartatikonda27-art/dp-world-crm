@@ -240,24 +240,24 @@ export default function ControlTowerDashboard() {
       </div>
 
       {/* Active Shipments Section */}
-      <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+      <div className="space-y-4 pt-2">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center space-x-2">
-            <h2 className="text-sm font-bold text-slate-100 uppercase tracking-wider">Active Operations Roster</h2>
-            <span className="text-xs text-slate-500">({shipments.length} records)</span>
+            <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">Active Operations Roster</h2>
+            <span className="text-xs text-slate-500 font-mono">({shipments.length} records)</span>
           </div>
 
-          <div className="flex items-center space-x-2 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-2">
             {/* Status Filter Tabs */}
-            <div className="flex items-center bg-slate-900 border border-slate-800 p-1 rounded-lg text-xs font-semibold overflow-x-auto">
+            <div className="flex flex-wrap items-center bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-1 rounded-xl text-xs font-semibold">
               {['ALL', 'IN_TRANSIT', 'BORDER_PROCESSING', 'DELAYED', 'DELIVERED'].map((st) => (
                 <button
                   key={st}
                   onClick={() => setFilterStatus(st)}
-                  className={`px-2.5 py-1 rounded-md transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-[11px] transition-all ${
                     filterStatus === st
-                      ? 'bg-sky-600 text-white shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-sky-600 text-white shadow-sm font-bold'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                   }`}
                 >
                   {st.replace(/_/g, ' ')}
@@ -267,9 +267,9 @@ export default function ControlTowerDashboard() {
 
             <button
               onClick={() => setIsCreateOpen(true)}
-              className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg text-xs font-semibold flex items-center space-x-1 shadow-md shadow-sky-500/20 shrink-0"
+              className="px-3.5 py-1.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1 shadow-md shadow-sky-500/20 shrink-0"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-4 h-4" />
               <span>New Booking</span>
             </button>
           </div>

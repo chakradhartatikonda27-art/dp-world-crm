@@ -117,7 +117,9 @@ body {
   border-color: #f1f5f9 !important;
 }
 
-/* Retain white text on solid buttons & badges */
+/* Retain white text on solid buttons, text-white elements & badges */
+.theme-light .text-white,
+.theme-light .text-white *,
 .theme-light .bg-sky-600,
 .theme-light .bg-sky-500,
 .theme-light .bg-indigo-600,

@@ -85,14 +85,14 @@ export default function ShipmentsPage() {
           />
         </div>
 
-        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto text-xs">
-          <Filter className="w-3.5 h-3.5 text-slate-400" />
+        <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto text-xs">
+          <Filter className="w-3.5 h-3.5 text-slate-400 shrink-0" />
           {['ALL', 'BOOKED', 'IN_TRANSIT', 'CHECKPOINT', 'BORDER_PROCESSING', 'DELIVERED', 'DELAYED'].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1.5 rounded-lg font-semibold transition-all ${
-                statusFilter === st ? 'bg-sky-600 text-white' : 'bg-slate-950 text-slate-400 hover:text-white'
+              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
+                statusFilter === st ? 'bg-sky-600 text-white shadow-sm' : 'bg-slate-950 dark:bg-slate-950 text-slate-400 hover:text-white'
               }`}
             >
               {st.replace(/_/g, ' ')}
