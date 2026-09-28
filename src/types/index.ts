@@ -298,12 +298,18 @@ export interface DocumentItem {
   id: string;
   organizationId: string;
   shipmentId: string;
-  title: string;
-  documentType: 'BILL_OF_LADING' | 'COMMERCIAL_INVOICE' | 'PACKING_LIST' | 'CUSTOMS' | 'POD' | 'OTHER';
+  shipmentNumber?: string;
+  title?: string;
+  docType?: string;
+  documentType?: 'BILL_OF_LADING' | 'COMMERCIAL_INVOICE' | 'PACKING_LIST' | 'CUSTOMS' | 'POD' | 'OTHER';
+  fileName?: string;
   fileUrl: string;
   uploadedBy: string;
-  uploadedAt: string;
-  verificationStatus: 'PENDING' | 'VERIFIED' | 'REJECTED';
+  uploadedAt?: string;
+  createdAt?: string;
+  clearanceStatus?: string;
+  verificationStatus?: 'PENDING' | 'VERIFIED' | 'REJECTED';
+  notes?: string;
   ocrData?: Record<string, any>;
 }
 

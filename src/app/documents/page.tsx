@@ -109,9 +109,9 @@ export default function DocumentsPage() {
 
   const openEditModal = (doc: DocumentItem) => {
     setEditingDoc(doc);
-    setEditTitle(doc.title);
-    setEditType(doc.documentType as any);
-    setEditStatus(doc.verificationStatus as any);
+    setEditTitle(doc.title || doc.fileName || doc.docType || '');
+    setEditType((doc.documentType || 'CUSTOMS') as any);
+    setEditStatus((doc.verificationStatus || 'VERIFIED') as any);
   };
 
   const handleToggleVerification = async (docId: string, currentStatus: string) => {
@@ -168,18 +168,18 @@ export default function DocumentsPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-[10px] font-bold text-sky-600 dark:text-sky-400 px-2 py-0.5 rounded bg-sky-500/10">
-                    {doc.documentType.replace(/_/g, ' ')}
+                    {(doc.documentType || doc.docType || 'CUSTOMS').replace(/_/g, ' ')}
                   </span>
                   <div className="flex items-center space-x-1">
                     <button
-                      onClick={() => handleToggleVerification(doc.id, doc.verificationStatus)}
+                      onClick={() => handleToggleVerification(doc.id, doc.verificationStatus || 'VERIFIED')}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
-                        doc.verificationStatus === 'VERIFIED'
+                        (doc.verificationStatus || 'VERIFIED') === 'VERIFIED'
                           ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
                           : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
                       }`}
                     >
-                      {doc.verificationStatus}
+                      {doc.verificationStatus || doc.clearanceStatus || 'VERIFIED'}
                     </button>
                     <button
                       onClick={() => openEditModal(doc)}
@@ -198,10 +198,10 @@ export default function DocumentsPage() {
                   </div>
                 </div>
 
-                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-xs line-clamp-2">{doc.title}</h3>
+                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-xs line-clamp-2">{doc.title || doc.fileName || doc.docType}</h3>
                 <div className="text-[11px] text-slate-500 dark:text-slate-400 space-y-0.5">
                   <div>Uploaded by: <span className="text-slate-700 dark:text-slate-300 font-medium">{doc.uploadedBy}</span></div>
-                  <div>Date: <span className="font-mono">{doc.uploadedAt.split('T')[0]}</span></div>
+                  <div>Date: <span className="font-mono">{(doc.uploadedAt || doc.createdAt || new Date().toISOString()).split('T')[0]}</span></div>
                 </div>
               </div>
 
