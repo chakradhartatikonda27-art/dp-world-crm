@@ -44,7 +44,7 @@ export default function ExceptionsPage() {
         {exceptions.map((exc) => (
           <div key={exc.id} className="p-4 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xl">
             <div className="space-y-1">
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-1.5">
                 <span className="font-mono font-bold text-sky-400 text-sm">{exc.shipmentNumber}</span>
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                   exc.severity === 'CRITICAL' ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'

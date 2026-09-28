@@ -16,24 +16,24 @@ export default function FleetPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
-            <TruckIcon className="w-5 h-5 text-sky-400" />
-            <span>Fleet & Vehicle Maintenance Roster</span>
+          <h1 className="text-lg sm:text-xl font-bold text-slate-100 flex items-center space-x-2">
+            <TruckIcon className="w-5 h-5 text-sky-400 shrink-0" />
+            <span>Fleet &amp; Vehicle Maintenance Roster</span>
           </h1>
           <p className="text-xs text-slate-400 mt-1">
             Real-time vehicle status, odometer tracking, maintenance schedules, and fuel utilization metrics.
           </p>
         </div>
 
-        <button className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-lg shadow-sky-500/20">
+        <button className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-lg shadow-sky-500/20 shrink-0">
           <Plus className="w-4 h-4" />
           <span>Add New Vehicle</span>
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {trucks.map((truck) => (
           <div key={truck.id} className="p-4 bg-slate-900 border border-slate-800 rounded-2xl space-y-3 shadow-xl">
             <div className="flex items-center justify-between">

@@ -19,15 +19,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <html lang="en">
+    <html lang="en" className="w-full max-w-full overflow-x-hidden">
       <head>
         <title>LogisticsOS - Multi-Tenant ERP &amp; Control Tower</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </head>
-      <body className="antialiased font-sans min-h-screen overflow-x-hidden">
+      <body className="antialiased font-sans min-h-screen w-full max-w-full overflow-x-hidden">
         <LanguageProvider>
           <ThemeProvider>
-            <div className="min-h-screen flex flex-col">
+            <div className="min-h-screen flex flex-col w-full max-w-full overflow-x-hidden">
               <Navbar
                 currentOrgId={currentOrgId}
                 onOrgChange={setCurrentOrgId}
@@ -40,12 +40,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               />
 
-              <div className="flex-1 flex overflow-hidden relative">
+              <div className="flex-1 flex overflow-hidden relative w-full max-w-full">
                 <Sidebar
                   isMobileOpen={isMobileMenuOpen}
                   onCloseMobile={() => setIsMobileMenuOpen(false)}
                 />
-                <main className="flex-1 overflow-y-auto p-3 md:p-6 w-full max-w-full">
+                <main className="flex-1 overflow-y-auto overflow-x-hidden p-3 md:p-6 w-full max-w-full min-w-0">
                   {children}
                 </main>
               </div>

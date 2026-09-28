@@ -29,6 +29,7 @@ import {
   Settings,
   CheckCircle2,
   X,
+  Building,
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -107,9 +108,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
     <div className="flex flex-col h-full justify-between py-4 px-3">
       {/* Mobile Drawer Header */}
       <div className="flex items-center justify-between lg:hidden mb-2 pb-2 border-b border-slate-200 dark:border-slate-800">
-        <span className="font-bold text-xs tracking-wider uppercase text-slate-500">
-          Navigation Menu
-        </span>
+        <div className="flex items-center space-x-2">
+          <Building className="w-4 h-4 text-sky-500" />
+          <span className="font-bold text-xs tracking-wider uppercase text-slate-700 dark:text-slate-200">
+            DP World Rwanda
+          </span>
+        </div>
         <button
           onClick={onCloseMobile}
           className="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500"
@@ -187,17 +191,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
         {sidebarContent}
       </aside>
 
-      {/* Mobile / Tablet Overlay Drawer */}
+      {/* Mobile / Tablet Overlay Drawer (z-[9999] so it sits ABOVE map layers) */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-50 flex lg:hidden">
+        <div className="fixed inset-0 z-[9999] flex lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[9999]"
             onClick={onCloseMobile}
           />
 
           {/* Sliding Drawer Container */}
-          <div className={`relative w-72 max-w-[85vw] h-full shadow-2xl transition-all ${
+          <div className={`relative w-72 max-w-[85vw] h-full shadow-2xl transition-all z-[10000] ${
             isLight ? 'bg-white text-slate-800' : 'bg-slate-900 text-slate-200'
           }`}>
             {sidebarContent}

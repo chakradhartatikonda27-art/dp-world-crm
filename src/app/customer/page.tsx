@@ -32,17 +32,17 @@ export default function CustomerPortal() {
         </p>
 
         {/* Tracking Input Bar */}
-        <div className="flex items-center space-x-2 pt-2">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-2">
           <input
             type="text"
             value={searchNumber}
             onChange={(e) => setSearchNumber(e.target.value)}
             placeholder="Enter Shipment Number (e.g. SHP-2026-10001)"
-            className="flex-1 px-4 py-2.5 bg-slate-950/90 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-400 font-mono focus:outline-none focus:border-sky-500"
+            className="flex-1 px-4 py-2.5 bg-slate-950/90 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-400 font-mono focus:outline-none focus:border-sky-500 min-w-0"
           />
           <button
             onClick={handleSearch}
-            className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-sky-500/30 flex items-center space-x-1"
+            className="px-5 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-sky-500/30 flex items-center justify-center space-x-1 shrink-0"
           >
             <Search className="w-4 h-4" />
             <span>Track Freight</span>

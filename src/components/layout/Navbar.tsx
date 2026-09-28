@@ -6,7 +6,6 @@ import {
   UserCheck,
   Search,
   Command,
-  Bell,
   Sparkles,
   ShieldCheck,
   ChevronDown,
@@ -18,7 +17,7 @@ import {
 import { UserRole } from '@/types';
 import { DPWorldLogo } from '@/components/common/DPWorldLogo';
 import { useTheme } from '@/context/ThemeContext';
-import { useLanguage, Language } from '@/context/LanguageContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface NavbarProps {
   currentOrgId: string;
@@ -77,44 +76,43 @@ export const Navbar: React.FC<NavbarProps> = ({
   const currentOrg = orgs.find((o) => o.id === currentOrgId) || orgs[0];
 
   return (
-    <header className={`h-16 px-3 md:px-4 flex items-center justify-between sticky top-0 z-40 border-b transition-colors ${
+    <header className={`h-16 px-2.5 sm:px-4 flex items-center justify-between sticky top-0 z-40 border-b transition-colors w-full max-w-full overflow-hidden ${
       isLight ? 'bg-white border-slate-200 text-slate-900 shadow-sm' : 'bg-slate-900 border-slate-800 text-white'
     }`}>
-      {/* Left: Mobile Menu Toggle, Official DP World Logo & Tenant Switcher */}
-      <div className="flex items-center space-x-2 md:space-x-4">
-        {/* Mobile Hamburger Drawer Button */}
+      {/* Left: Mobile Menu Toggle & DP World Logo */}
+      <div className="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
         {onToggleMobileMenu && (
           <button
             onClick={onToggleMobileMenu}
-            className={`p-2 rounded-lg border lg:hidden ${
+            className={`p-1.5 sm:p-2 rounded-lg border lg:hidden ${
               isLight ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700' : 'bg-slate-800 hover:bg-slate-700 border-slate-700 text-slate-300'
             }`}
             title="Toggle Navigation Menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         )}
 
-        <DPWorldLogo theme={isLight ? 'light' : 'dark'} className="h-6 md:h-8" />
+        <DPWorldLogo theme={isLight ? 'light' : 'dark'} className="h-5 sm:h-7 md:h-8" />
 
-        <div className={`h-6 w-px hidden sm:block ${isLight ? 'bg-slate-200' : 'bg-slate-800'}`} />
+        <div className={`h-5 w-px hidden sm:block ${isLight ? 'bg-slate-200' : 'bg-slate-800'}`} />
 
-        {/* Tenant Switcher */}
-        <div className="relative">
+        {/* Tenant Switcher (Hidden on small screens < sm to prevent header overflow) */}
+        <div className="relative hidden sm:block">
           <button
             onClick={() => {
               setShowOrgDropdown(!showOrgDropdown);
               setShowRoleDropdown(false);
               setShowLangDropdown(false);
             }}
-            className={`flex items-center space-x-1.5 md:space-x-2 text-xs font-medium px-2 md:px-3 py-1.5 rounded-lg border transition-all ${
+            className={`flex items-center space-x-1.5 text-xs font-medium px-2.5 py-1.5 rounded-lg border transition-all ${
               isLight
                 ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300'
                 : 'bg-slate-800/80 hover:bg-slate-800 text-slate-200 border-slate-700/60'
             }`}
           >
             <Building2 className="w-3.5 h-3.5 text-sky-600 shrink-0" />
-            <span className="truncate max-w-[100px] sm:max-w-[160px] font-semibold">{currentOrg.name}</span>
+            <span className="truncate max-w-[110px] md:max-w-[160px] font-semibold">{currentOrg.name}</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </button>
 
@@ -151,8 +149,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Center: Search & Command Palette */}
-      <div className="flex-1 max-w-xl mx-4 lg:mx-6 hidden lg:block">
+      {/* Center: Search & Command Palette (Hidden on mobile/tablet < lg) */}
+      <div className="flex-1 max-w-xl mx-4 hidden lg:block">
         <div className="relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -179,8 +177,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {/* Right: Language Switcher, Theme Toggle, AI Ops & Role Switcher */}
-      <div className="flex items-center space-x-1.5 md:space-x-2.5">
-        {/* Language Switcher Dropdown (EN / RW) */}
+      <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
+        {/* Language Switcher */}
         <div className="relative">
           <button
             onClick={() => {
@@ -188,18 +186,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               setShowOrgDropdown(false);
               setShowRoleDropdown(false);
             }}
-            className={`flex items-center space-x-1 px-2 py-1.5 rounded-lg border text-xs font-semibold ${
+            className={`flex items-center space-x-0.5 sm:space-x-1 px-1.5 sm:px-2 py-1.5 rounded-lg border text-xs font-semibold ${
               isLight ? 'bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-300' : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
             }`}
-            title="Switch Language / Kinyarwanda"
+            title="Switch Language"
           >
             <Globe className="w-3.5 h-3.5 text-sky-500" />
-            <span className="font-bold text-[11px]">{language === 'rw' ? '🇷🇼 RW' : '🇬🇧 EN'}</span>
-            <ChevronDown className="w-3 h-3 text-slate-400" />
+            <span className="font-bold text-[10px] sm:text-[11px]">{language === 'rw' ? '🇷🇼' : '🇬🇧'}</span>
+            <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:inline" />
           </button>
 
           {showLangDropdown && (
-            <div className={`absolute right-0 mt-2 w-44 rounded-xl shadow-2xl py-1 z-50 border ${
+            <div className={`absolute right-0 mt-2 w-40 rounded-xl shadow-2xl py-1 z-50 border ${
               isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-850 border-slate-700 text-white'
             }`}>
               <div className="px-3 py-1 text-[10px] uppercase font-semibold text-slate-400 border-b border-slate-100 dark:border-slate-800">
@@ -238,29 +236,26 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={handleToggleTheme}
             title={isLight ? 'Switch to Dark Theme' : 'Switch to White Background Theme'}
-            className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center space-x-1.5 transition-all ${
+            className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center space-x-1 transition-all ${
               isLight
                 ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-300'
                 : 'bg-slate-800 hover:bg-slate-700 text-amber-300 border-slate-700'
             }`}
           >
             {isLight ? <Moon className="w-4 h-4 text-slate-700" /> : <Sun className="w-4 h-4 text-amber-400" />}
-            <span className="hidden xl:inline text-[11px] font-bold">
-              {isLight ? t('whiteTheme') : t('darkTheme')}
-            </span>
           </button>
         )}
 
         {/* AI Operations Assistant Button */}
         <button
           onClick={onOpenAI}
-          className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold shadow-md shadow-sky-500/20 transition-all"
+          className="flex items-center space-x-1 px-2 sm:px-2.5 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-xs font-semibold shadow-md shadow-sky-500/20 transition-all"
         >
           <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-          <span className="hidden sm:inline">{t('aiOps')}</span>
+          <span className="hidden md:inline">{t('aiOps')}</span>
         </button>
 
-        {/* Role Selector */}
+        {/* Role Selector (Hidden on mobile < md) */}
         <div className="relative hidden md:block">
           <button
             onClick={() => {
