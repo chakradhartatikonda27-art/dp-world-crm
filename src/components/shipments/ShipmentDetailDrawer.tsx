@@ -104,7 +104,7 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
           )}
 
           {/* Details Grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800 space-y-1">
               <span className="text-[10px] text-slate-500 uppercase font-semibold block">Origin Point</span>
               <div className="text-xs font-bold text-slate-200">{shipment.origin.name}</div>
@@ -122,7 +122,7 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
             <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
               <span className="text-[10px] text-slate-500 uppercase font-semibold block">Cargo Type</span>
               <span className="text-slate-200 font-semibold">{shipment.cargoType}</span>
@@ -141,7 +141,7 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div className="p-3 bg-slate-950/60 rounded-xl border border-slate-800">
               <span className="text-[10px] text-slate-500 uppercase font-semibold block">Container #</span>
               <span className="text-sky-400 font-mono font-semibold">{shipment.containerNumber || 'N/A'}</span>

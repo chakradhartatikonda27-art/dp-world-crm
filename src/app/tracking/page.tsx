@@ -67,14 +67,14 @@ export default function LiveTrackingPage() {
       </div>
 
       {/* Map & Live Telemetry Stream Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[640px]">
+      <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 sm:gap-6 min-h-[700px] lg:h-[640px]">
         {/* Map Container */}
-        <div className="lg:col-span-2 h-full">
+        <div className="h-[360px] sm:h-[460px] lg:h-full lg:col-span-2">
           <ControlTowerMap vehicles={vehicles} />
         </div>
 
         {/* Live Active Telemetry & Geofence Panel */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col h-full overflow-hidden shadow-xl">
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col h-[400px] lg:h-full overflow-hidden shadow-xl">
           <div className="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
             <h2 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
               <Truck className="w-4 h-4 text-sky-400" />

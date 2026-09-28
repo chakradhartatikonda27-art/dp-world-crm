@@ -55,7 +55,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-5 space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="p-5 space-y-4 text-xs overflow-y-auto flex-1">
           <div>
             <label className="block text-slate-400 mb-1 font-semibold">Select Customer</label>
             <select
