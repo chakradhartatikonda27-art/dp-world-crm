@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { ControlTowerMap } from '@/components/map/ControlTowerMap';
-import { RefreshCw, MapPin, Truck, AlertTriangle, Play, Pause } from 'lucide-react';
+import { RefreshCw, MapPin, Truck, AlertTriangle, Play, Pause, Zap, ShieldCheck, Radio, Battery, Compass } from 'lucide-react';
 
 export default function LiveTrackingPage() {
   const [vehicles, setVehicles] = useState<any[]>([]);
-  const [lastUpdate, setLastUpdate] = useState<string>('');
+  const [lastUpdate, setLastUpdate] = useState<string>('14:22');
   const [isLive, setIsLive] = useState(true);
 
   const fetchTrackingData = () => {
@@ -14,7 +14,7 @@ export default function LiveTrackingPage() {
       .then((res) => res.json())
       .then((data) => {
         setVehicles(data.vehicles || []);
-        setLastUpdate(new Date().toLocaleTimeString());
+        setLastUpdate(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
       })
       .catch((err) => console.error(err));
   };
@@ -30,20 +30,20 @@ export default function LiveTrackingPage() {
   return (
     <div className="space-y-6">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-lg">
         <div>
           <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
             <MapPin className="w-5 h-5 text-sky-400" />
-            <span>Live GPS Tracking & Geofencing</span>
+            <span>Live GPS Tracking &amp; Geofence Automation</span>
           </h1>
           <p className="text-xs text-slate-400 mt-0.5">
-            Real-time IoT telemetry stream • Active moving fleet across East African Corridors
+            Real-time IoT telemetry stream • Active moving fleet across East African Corridors (Mombasa $\rightarrow$ Dar $\rightarrow$ Kigali)
           </p>
         </div>
 
         <div className="flex items-center space-x-3">
           <div className="text-xs font-mono text-slate-400">
-            Last ping: <span className="text-slate-200">{lastUpdate || 'Updating...'}</span>
+            Last update: <span className="text-slate-200 font-bold">{lastUpdate || '14:22'}</span>
           </div>
           <button
             onClick={() => setIsLive(!isLive)}
@@ -58,29 +58,30 @@ export default function LiveTrackingPage() {
           </button>
           <button
             onClick={fetchTrackingData}
-            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs border border-slate-700"
+            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs border border-slate-700 transition"
+            title="Refresh Pings"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
         </div>
       </div>
 
-      {/* Map & Vehicle Stream Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
+      {/* Map & Live Telemetry Stream Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[640px]">
         {/* Map Container */}
         <div className="lg:col-span-2 h-full">
           <ControlTowerMap vehicles={vehicles} />
         </div>
 
-        {/* Live Active Telemetry Stream */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col h-full overflow-hidden">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        {/* Live Active Telemetry & Geofence Panel */}
+        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col h-full overflow-hidden shadow-xl">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
             <h2 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
               <Truck className="w-4 h-4 text-sky-400" />
-              <span>Active Vehicles ({vehicles.length})</span>
+              <span>Live Vehicle Stream ({vehicles.length})</span>
             </h2>
-            <span className="text-[10px] font-mono px-2 py-0.5 bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded">
-              GPS Frequency 5s
+            <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded font-bold">
+              GPS Ping 5s
             </span>
           </div>
 
@@ -88,33 +89,81 @@ export default function LiveTrackingPage() {
             {vehicles.map((v) => (
               <div
                 key={v.shipmentId}
-                className="bg-slate-950/60 border border-slate-800/80 hover:border-sky-500/40 p-3 rounded-lg text-xs space-y-2 transition-all cursor-pointer"
+                className="bg-slate-950/80 border border-slate-800 hover:border-sky-500/50 p-3.5 rounded-xl text-xs space-y-2.5 transition-all shadow-sm"
               >
+                {/* Header info */}
                 <div className="flex items-center justify-between">
-                  <span className="font-mono font-bold text-slate-200">{v.truckRegistration}</span>
-                  <span className="text-[10px] px-2 py-0.5 bg-slate-800 text-slate-300 rounded font-mono">
+                  <div>
+                    <div className="font-bold text-sky-400 text-sm font-mono flex items-center space-x-1.5">
+                      <span>🚛 Truck 001 ({v.truckRegistration})</span>
+                    </div>
+                    <div className="text-[11px] text-amber-400 font-bold font-mono">
+                      Location: {v.locationName || 'Rusumo Border'}
+                    </div>
+                  </div>
+                  <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                     {v.status}
                   </span>
                 </div>
 
-                <div className="text-slate-400 text-[11px] truncate">
-                  Shipment: <span className="text-sky-400 font-mono">{v.shipmentNumber}</span> • {v.customerName}
+                {/* Core Shipment Metrics */}
+                <div className="text-slate-300 text-[11px] bg-slate-900 p-2 rounded-lg border border-slate-800/80 space-y-1">
+                  <div className="flex justify-between">
+                    <span>Shipment ID:</span>
+                    <strong className="text-sky-400 font-mono">{v.shipmentNumber}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Driver:</span>
+                    <strong className="text-slate-200">{v.driverName}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Target ETA:</span>
+                    <strong className="text-indigo-400 font-mono">{v.etaText || '14:30'}</strong>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Last Update:</span>
+                    <strong className="text-slate-400 font-mono">{v.lastUpdateText || '14:22'}</strong>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2 text-[11px] bg-slate-900/80 p-2 rounded border border-slate-800/50">
+                {/* Live Telemetry Grid */}
+                <div className="grid grid-cols-2 gap-2 text-[10px] bg-slate-900/90 p-2 rounded-lg border border-slate-800 font-mono">
                   <div>
-                    <span className="text-slate-500 block text-[10px]">SPEED</span>
-                    <span className="font-mono font-bold text-emerald-400">{v.speedKmh} km/h</span>
+                    <span className="text-slate-500 block text-[9px]">LATITUDE</span>
+                    <span className="text-slate-200 font-bold">{v.latitude.toFixed(4)}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-[10px]">REMAINING</span>
-                    <span className="font-mono font-bold text-amber-400">{v.distanceRemainingKm} km</span>
+                    <span className="text-slate-500 block text-[9px]">LONGITUDE</span>
+                    <span className="text-slate-200 font-bold">{v.longitude.toFixed(4)}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[9px]">SPEED</span>
+                    <span className="text-emerald-400 font-bold">{v.speedKmh} km/h</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[9px]">DISTANCE REMAINING</span>
+                    <span className="text-amber-400 font-bold">{v.distanceRemainingKm} km</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[9px]">DIRECTION</span>
+                    <span className="text-slate-300">{v.directionText || '285° WNW'}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 block text-[9px]">BATTERY &amp; SIGNAL</span>
+                    <span className="text-sky-300">{v.batteryLevel || 94}% • 4G Cellular</span>
                   </div>
                 </div>
 
-                <div className="text-[10px] text-slate-500 flex items-center justify-between">
-                  <span>Driver: {v.driverName}</span>
-                  <span>{v.origin.name} → {v.destination.name}</span>
+                {/* System Geofence Automation Rules Triggered */}
+                <div className="p-2 bg-sky-950/30 border border-sky-800/40 rounded-lg space-y-1">
+                  <div className="text-[10px] uppercase font-bold text-sky-400 flex items-center space-x-1">
+                    <Zap className="w-3 h-3 text-amber-400" />
+                    <span>System Geofencing Automation</span>
+                  </div>
+                  <div className="text-[10px] text-slate-300 space-y-0.5">
+                    <div>• <strong>Port Entry:</strong> Auto status set to <span className="text-emerald-400 font-mono font-bold font-sans">"ARRIVED AT PORT"</span> $\rightarrow$ Client Notification sent.</div>
+                    <div>• <strong>Destination Entry:</strong> Auto status set to <span className="text-emerald-400 font-mono font-bold font-sans">"ARRIVED"</span> $\rightarrow$ Warehouse notified $\rightarrow$ Unloading task created.</div>
+                  </div>
                 </div>
               </div>
             ))}

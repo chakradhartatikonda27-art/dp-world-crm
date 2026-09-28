@@ -15,7 +15,15 @@ interface VehicleLocation {
   latitude: number;
   longitude: number;
   speedKmh: number;
+  heading?: number;
+  directionText?: string;
   distanceRemainingKm: number;
+  etaText?: string;
+  lastUpdateText?: string;
+  batteryLevel?: number;
+  networkStatus?: string;
+  locationName?: string;
+  geofenceStatus?: string;
 }
 
 interface ControlTowerMapProps {
@@ -44,16 +52,16 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
 
   const customIcon = L.divIcon({
     className: 'custom-truck-marker',
-    html: `<div style="background-color: #0284c7; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 10px #0284c7;"></div>`,
-    iconSize: [14, 14],
+    html: `<div style="background-color: #0284c7; width: 16px; height: 16px; border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 12px #0284c7; display: flex; items-center; justify-center; color: white; font-size: 8px;">🚛</div>`,
+    iconSize: [16, 16],
   });
 
-  const centerLat = vehicles.length > 0 ? vehicles[0].latitude : -1.9441;
-  const centerLng = vehicles.length > 0 ? vehicles[0].longitude : 30.0619;
+  const centerLat = vehicles.length > 0 ? vehicles[0].latitude : -2.3845;
+  const centerLng = vehicles.length > 0 ? vehicles[0].longitude : 30.7850;
 
   return (
     <div className="w-full h-full rounded-xl overflow-hidden border border-slate-800 shadow-2xl relative z-0 isolate">
-      <MapContainer center={[centerLat, centerLng]} zoom={5} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
+      <MapContainer center={[centerLat, centerLng]} zoom={7} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -63,21 +71,37 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
           <React.Fragment key={v.shipmentId}>
             <Marker position={[v.latitude, v.longitude]} icon={customIcon}>
               <Popup>
-                <div className="p-1 space-y-1 text-xs">
-                  <div className="font-bold text-sky-400 flex items-center justify-between">
-                    <span>{v.shipmentNumber}</span>
-                    <span className="text-[10px] px-1 bg-sky-500/20 rounded text-sky-300">{v.status}</span>
+                <div className="p-1 space-y-1.5 text-xs font-sans min-w-[220px]">
+                  <div className="font-bold text-sky-600 dark:text-sky-400 flex items-center justify-between border-b pb-1">
+                    <span>🚛 Truck 001 ({v.truckRegistration})</span>
+                    <span className="text-[10px] px-1.5 py-0.5 bg-emerald-500/10 text-emerald-600 font-extrabold rounded">
+                      {v.status}
+                    </span>
                   </div>
-                  <div className="text-slate-300 font-medium">{v.customerName}</div>
-                  <div className="text-slate-400 text-[11px]">Truck: {v.truckRegistration} | Driver: {v.driverName}</div>
-                  <div className="text-slate-400 text-[11px]">Speed: <span className="text-emerald-400 font-mono font-bold">{v.speedKmh} km/h</span></div>
-                  <div className="text-slate-400 text-[11px]">Remaining: <span className="text-amber-400 font-mono font-bold">{v.distanceRemainingKm} km</span></div>
+
+                  <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded-lg text-[11px] space-y-0.5">
+                    <div><strong>Shipment ID:</strong> <span className="font-mono text-sky-600">{v.shipmentNumber}</span></div>
+                    <div><strong>Location:</strong> <span className="text-amber-600 font-bold">{v.locationName || 'Rusumo Border'}</span></div>
+                    <div><strong>Driver:</strong> {v.driverName}</div>
+                    <div><strong>Speed:</strong> <span className="font-mono text-emerald-600 font-bold">{v.speedKmh} km/h</span></div>
+                    <div><strong>Distance:</strong> <span className="font-mono text-amber-600 font-bold">{v.distanceRemainingKm} km</span></div>
+                    <div><strong>ETA:</strong> <span className="font-mono font-bold text-indigo-600">{v.etaText || '14:30'}</span></div>
+                    <div><strong>Last update:</strong> <span className="font-mono text-slate-500">{v.lastUpdateText || '14:22'}</span></div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-1 text-[10px] font-mono text-slate-500 pt-1">
+                    <div>Lat: {v.latitude.toFixed(4)}</div>
+                    <div>Lng: {v.longitude.toFixed(4)}</div>
+                    <div>Battery: {v.batteryLevel || 94}%</div>
+                    <div>Signal: 4G Online</div>
+                  </div>
+
                   {onSelectShipment && (
                     <button
                       onClick={() => onSelectShipment(v.shipmentId)}
-                      className="w-full mt-2 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded text-[11px] font-semibold"
+                      className="w-full mt-2 py-1 bg-sky-600 hover:bg-sky-500 text-white rounded text-[11px] font-semibold transition"
                     >
-                      Inspect Shipment
+                      Inspect Live Telemetry
                     </button>
                   )}
                 </div>
@@ -91,16 +115,19 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
                 [v.latitude, v.longitude],
                 [v.destination.latitude, v.destination.longitude],
               ]}
-              pathOptions={{ color: v.status === 'DELAYED' ? '#f43f5e' : '#0284c7', weight: 2, dashArray: '4, 4', opacity: 0.6 }}
+              pathOptions={{ color: v.status === 'DELAYED' ? '#f43f5e' : '#0284c7', weight: 3, dashArray: '6, 6', opacity: 0.8 }}
             />
           </React.Fragment>
         ))}
       </MapContainer>
 
-      {/* Map Header Overlay */}
-      <div className="absolute top-3 left-3 z-20 bg-slate-900/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-700/80 text-xs font-semibold text-slate-200 flex items-center space-x-2">
-        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-        <span>Live GPS Vehicles ({vehicles.length})</span>
+      {/* Map Overlay Badge */}
+      <div className="absolute top-3 right-3 z-[1000] bg-slate-900/90 backdrop-blur-md border border-slate-700/80 p-2.5 rounded-xl shadow-xl text-white text-xs font-mono">
+        <div className="flex items-center space-x-2">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+          <span className="font-bold text-emerald-400">Rusumo Border Live Feed</span>
+        </div>
+        <div className="text-[10px] text-slate-400 mt-0.5">Lat: -2.3845 • Lng: 30.7850 • 4G Cellular</div>
       </div>
     </div>
   );

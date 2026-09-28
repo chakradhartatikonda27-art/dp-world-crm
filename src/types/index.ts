@@ -222,6 +222,7 @@ export interface GPSPosition {
   heading: number;
   altitude: number;
   batteryLevel: number;
+  networkStatus?: string;
   timestamp: string;
   source: 'DRIVER_APP' | 'OBD2_HARNESS' | 'SIM_TRIANGULATION';
 }

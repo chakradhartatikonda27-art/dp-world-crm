@@ -476,6 +476,30 @@ class LogisticsDatabase {
     // 8. Default Automation Rules
     this.workflowRules = [
       {
+        id: 'wf-geofence-1',
+        organizationId: 'org-dpw-rwanda',
+        name: 'Truck Enters Port → Status: "ARRIVED AT PORT" + Client Notification',
+        eventType: 'PORT_GEOFENCE_ENTRY',
+        conditionJson: { field: 'geofence_type', operator: 'EQUALS', value: 'PORT' },
+        actionType: 'UPDATE_STATUS',
+        actionPayload: { nextStatus: 'ARRIVED_AT_PORT', notifyClient: true, channel: 'SMS_AND_WHATSAPP' },
+        active: true,
+        triggerCount: 88,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: 'wf-geofence-2',
+        organizationId: 'org-dpw-rwanda',
+        name: 'Truck Enters Destination → Status: "ARRIVED" + Warehouse Notified + Unloading Task Created',
+        eventType: 'DESTINATION_GEOFENCE_ENTRY',
+        conditionJson: { field: 'geofence_type', operator: 'EQUALS', value: 'DESTINATION' },
+        actionType: 'UPDATE_STATUS',
+        actionPayload: { nextStatus: 'ARRIVED', notifyWarehouse: true, autoCreateDockTask: true },
+        active: true,
+        triggerCount: 64,
+        createdAt: new Date().toISOString(),
+      },
+      {
         id: 'wf-1',
         organizationId: org1Id,
         name: 'Stationary Truck Delay Alert (>90m)',
