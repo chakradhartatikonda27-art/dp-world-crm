@@ -44,6 +44,28 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, name, phone, licenseNumber, licenseExpiry, status } = body;
+    const driver = db.drivers.find((d) => d.id === id);
+
+    if (!driver) {
+      return NextResponse.json({ error: 'Driver not found' }, { status: 404 });
+    }
+
+    if (name) driver.name = name;
+    if (phone) driver.phone = phone;
+    if (licenseNumber) driver.licenseNumber = licenseNumber;
+    if (licenseExpiry) driver.licenseExpiry = licenseExpiry;
+    if (status) driver.status = status;
+
+    return NextResponse.json({ success: true, driver });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -57,6 +79,19 @@ export async function PATCH(request: Request) {
     if (status) driver.status = status;
 
     return NextResponse.json({ success: true, driver });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Driver ID required' }, { status: 400 });
+
+    db.drivers = db.drivers.filter((d) => d.id !== id);
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

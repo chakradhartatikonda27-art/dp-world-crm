@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Route as RouteIcon, MapPin, ArrowRight, Plus, X, RefreshCw, ShieldAlert, CheckCircle } from 'lucide-react';
+import { Route as RouteIcon, MapPin, ArrowRight, Plus, X, RefreshCw, Trash2 } from 'lucide-react';
 import { CorridorRoute, RouteCheckpoint } from '@/types';
 
 export default function RoutesPage() {
@@ -64,6 +64,24 @@ export default function RoutesPage() {
       console.error(err);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDeleteCheckpoint = async (corridorId: string, checkpointId: string) => {
+    if (!confirm('Are you sure you want to remove this checkpoint?')) return;
+    try {
+      const res = await fetch(`/api/v1/routes?corridorId=${corridorId}&checkpointId=${checkpointId}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.corridor && viewingCorridor?.id === corridorId) {
+          setViewingCorridor(data.corridor);
+        }
+        fetchCorridors();
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -271,17 +289,26 @@ export default function RoutesPage() {
                         </div>
                       </div>
                     </div>
-                    <span
-                      className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
-                        cp.status === 'NORMAL'
-                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                          : cp.status === 'QUEUE'
-                          ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
-                          : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
-                      }`}
-                    >
-                      {cp.status}
-                    </span>
+                    <div className="flex items-center space-x-2">
+                      <span
+                        className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
+                          cp.status === 'NORMAL'
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                            : cp.status === 'QUEUE'
+                            ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                            : 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/30'
+                        }`}
+                      >
+                        {cp.status}
+                      </span>
+                      <button
+                        onClick={() => handleDeleteCheckpoint(viewingCorridor.id, cp.id)}
+                        className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition"
+                        title="Remove Checkpoint"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (

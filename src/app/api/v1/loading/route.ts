@@ -37,6 +37,30 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, name, shipment, truck, operator, status, progress } = body;
+    const docks = db.getLoadingDocksByOrg('org-apex-001');
+    const dock = docks.find((d: any) => d.id === id);
+
+    if (!dock) {
+      return NextResponse.json({ error: 'Loading dock not found' }, { status: 404 });
+    }
+
+    if (name) dock.name = name;
+    if (shipment) dock.shipment = shipment;
+    if (truck) dock.truck = truck;
+    if (operator) dock.operator = operator;
+    if (status) dock.status = status;
+    if (progress !== undefined) dock.progress = Number(progress);
+
+    return NextResponse.json({ success: true, loadingDock: dock });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -57,6 +81,24 @@ export async function PATCH(request: Request) {
     }
 
     return NextResponse.json({ success: true, loadingDock: dock });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Dock ID required' }, { status: 400 });
+
+    const docks = db.getLoadingDocksByOrg('org-apex-001');
+    const idx = docks.findIndex((d: any) => d.id === id);
+    if (idx !== -1) {
+      docks.splice(idx, 1);
+    }
+
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

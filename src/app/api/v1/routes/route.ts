@@ -43,3 +43,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const corridorId = searchParams.get('corridorId');
+    const checkpointId = searchParams.get('checkpointId');
+
+    const corridors = db.getCorridorsByOrg('org-apex-001');
+    const corridor = corridors.find((c: any) => c.id === corridorId);
+
+    if (!corridor) {
+      return NextResponse.json({ error: 'Corridor not found' }, { status: 404 });
+    }
+
+    if (checkpointId && corridor.checkpoints) {
+      corridor.checkpoints = corridor.checkpoints.filter((cp: any) => cp.id !== checkpointId);
+      corridor.checkpointsCount = corridor.checkpoints.length;
+    }
+
+    return NextResponse.json({ success: true, corridor });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}

@@ -55,3 +55,46 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, skuCode, description, binLocation, quantity, weightKg, status, unitType } = body;
+    const inventory = db.getInventoryByOrg('org-apex-001');
+    const item = inventory.find((i: any) => i.id === id);
+
+    if (!item) {
+      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+    }
+
+    if (skuCode) item.skuCode = skuCode;
+    if (description) item.description = description;
+    if (binLocation) item.binLocation = binLocation;
+    if (quantity !== undefined) item.quantity = Number(quantity);
+    if (weightKg !== undefined) item.weightKg = Number(weightKg);
+    if (status) item.status = status;
+    if (unitType) item.unitType = unitType;
+
+    return NextResponse.json({ success: true, item });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Item ID required' }, { status: 400 });
+
+    const inventory = db.getInventoryByOrg('org-apex-001');
+    const idx = inventory.findIndex((i: any) => i.id === id);
+    if (idx !== -1) {
+      inventory.splice(idx, 1);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}

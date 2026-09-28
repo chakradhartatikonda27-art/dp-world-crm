@@ -37,6 +37,29 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, name, code, email, phone, address, creditLimit } = body;
+    const customer = db.customers.find((c) => c.id === id);
+
+    if (!customer) {
+      return NextResponse.json({ error: 'Client not found' }, { status: 404 });
+    }
+
+    if (name) customer.name = name;
+    if (code) customer.code = code;
+    if (email) customer.email = email;
+    if (phone) customer.phone = phone;
+    if (address) customer.address = address;
+    if (creditLimit !== undefined) customer.creditLimit = Number(creditLimit);
+
+    return NextResponse.json({ success: true, client: customer });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -50,6 +73,19 @@ export async function PATCH(request: Request) {
     if (creditLimit !== undefined) customer.creditLimit = Number(creditLimit);
 
     return NextResponse.json({ success: true, client: customer });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Client ID required' }, { status: 400 });
+
+    db.customers = db.customers.filter((c) => c.id !== id);
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

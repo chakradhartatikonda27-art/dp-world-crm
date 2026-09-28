@@ -65,6 +65,34 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, customerName, origin, destination, cargoType, weightTons, ratePerTon, status, expiryDate } = body;
+    const quote = quotesStore.find((q) => q.id === id);
+
+    if (!quote) {
+      return NextResponse.json({ error: 'Quote not found' }, { status: 404 });
+    }
+
+    if (customerName) quote.customerName = customerName;
+    if (origin) quote.origin = origin;
+    if (destination) quote.destination = destination;
+    if (cargoType) quote.cargoType = cargoType;
+    if (weightTons !== undefined) quote.weightTons = Number(weightTons);
+    if (ratePerTon !== undefined) quote.ratePerTon = Number(ratePerTon);
+    if (weightTons !== undefined || ratePerTon !== undefined) {
+      quote.totalPrice = (quote.weightTons || 0) * (quote.ratePerTon || 0);
+    }
+    if (status) quote.status = status;
+    if (expiryDate) quote.expiryDate = expiryDate;
+
+    return NextResponse.json({ success: true, quote });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -78,6 +106,19 @@ export async function PATCH(request: Request) {
     if (status) quote.status = status;
 
     return NextResponse.json({ success: true, quote });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Quote ID required' }, { status: 400 });
+
+    quotesStore = quotesStore.filter((q) => q.id !== id);
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

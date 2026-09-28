@@ -44,6 +44,31 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, registrationNumber, vehicleType, make, model, year, capacityTons, odometerKm, status } = body;
+    const truck = db.trucks.find((t) => t.id === id);
+
+    if (!truck) {
+      return NextResponse.json({ error: 'Truck not found' }, { status: 404 });
+    }
+
+    if (registrationNumber) truck.registrationNumber = registrationNumber;
+    if (vehicleType) truck.vehicleType = vehicleType;
+    if (make) truck.make = make;
+    if (model) truck.model = model;
+    if (year) truck.year = Number(year);
+    if (capacityTons) truck.capacityTons = Number(capacityTons);
+    if (odometerKm !== undefined) truck.odometerKm = Number(odometerKm);
+    if (status) truck.status = status;
+
+    return NextResponse.json({ success: true, truck });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -57,6 +82,19 @@ export async function PATCH(request: Request) {
     if (status) truck.status = status;
 
     return NextResponse.json({ success: true, truck });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Truck ID required' }, { status: 400 });
+
+    db.trucks = db.trucks.filter((t) => t.id !== id);
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

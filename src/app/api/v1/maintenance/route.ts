@@ -33,13 +33,36 @@ export async function POST(request: Request) {
     const orders = db.getMaintenanceByOrg('org-apex-001');
     orders.unshift(newOrder);
 
-    // Also update truck status to MAINTENANCE if in service
     const truck = db.trucks.find((t) => t.registrationNumber === body.truckReg || t.id === body.truckId);
     if (truck) {
       truck.status = 'MAINTENANCE';
     }
 
     return NextResponse.json({ success: true, maintenanceOrder: newOrder }, { status: 201 });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, serviceType, scheduledDate, estimatedCost, serviceCenter, status, notes } = body;
+    const orders = db.getMaintenanceByOrg('org-apex-001');
+    const order = orders.find((o: any) => o.id === id);
+
+    if (!order) {
+      return NextResponse.json({ error: 'Work order not found' }, { status: 404 });
+    }
+
+    if (serviceType) order.serviceType = serviceType;
+    if (scheduledDate) order.scheduledDate = scheduledDate;
+    if (estimatedCost !== undefined) order.estimatedCost = Number(estimatedCost);
+    if (serviceCenter) order.serviceCenter = serviceCenter;
+    if (status) order.status = status;
+    if (notes) order.notes = notes;
+
+    return NextResponse.json({ success: true, maintenanceOrder: order });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
@@ -68,6 +91,24 @@ export async function PATCH(request: Request) {
     }
 
     return NextResponse.json({ success: true, maintenanceOrder: order });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Order ID required' }, { status: 400 });
+
+    const orders = db.getMaintenanceByOrg('org-apex-001');
+    const idx = orders.findIndex((o: any) => o.id === id);
+    if (idx !== -1) {
+      orders.splice(idx, 1);
+    }
+
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

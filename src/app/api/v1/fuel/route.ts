@@ -45,3 +45,43 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, truck, station, litres, totalCost } = body;
+    const fuelRecords = db.getFuelRecordsByOrg('org-apex-001');
+    const record = fuelRecords.find((f: any) => f.id === id);
+
+    if (!record) {
+      return NextResponse.json({ error: 'Fuel record not found' }, { status: 404 });
+    }
+
+    if (truck) record.truck = truck;
+    if (station) record.station = station;
+    if (litres) record.litres = Number(litres);
+    if (totalCost) record.totalCost = Number(totalCost);
+
+    return NextResponse.json({ success: true, fuelRecord: record });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
+
+    const fuelRecords = db.getFuelRecordsByOrg('org-apex-001');
+    const idx = fuelRecords.findIndex((f: any) => f.id === id);
+    if (idx !== -1) {
+      fuelRecords.splice(idx, 1);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}

@@ -1,22 +1,30 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Wrench, Plus, X, RefreshCw, CheckCircle2, Clock } from 'lucide-react';
+import { Wrench, Plus, X, RefreshCw, Edit3, Trash2 } from 'lucide-react';
 import { MaintenanceOrder } from '@/types';
 
 export default function MaintenancePage() {
   const [workOrders, setWorkOrders] = useState<MaintenanceOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [showScheduleModal, setShowScheduleModal] = useState(false);
+  const [editingOrder, setEditingOrder] = useState<MaintenanceOrder | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Form state
+  // Form state for schedule
   const [truckReg, setTruckReg] = useState('KA01AB4455');
   const [serviceType, setServiceType] = useState('Brake Pad Replacement & Engine Oil');
   const [serviceCenter, setServiceCenter] = useState('Kigali Volvo Service Depot');
   const [scheduledDate, setScheduledDate] = useState('2026-10-02');
   const [estimatedCost, setEstimatedCost] = useState('450');
   const [notes, setNotes] = useState('Routine preventive maintenance.');
+
+  // Form state for edit
+  const [editServiceType, setEditServiceType] = useState('');
+  const [editServiceCenter, setEditServiceCenter] = useState('');
+  const [editScheduledDate, setEditScheduledDate] = useState('');
+  const [editCost, setEditCost] = useState('');
+  const [editStatus, setEditStatus] = useState<MaintenanceOrder['status']>('SCHEDULED');
 
   const orgId = 'org-apex-001';
 
@@ -63,6 +71,55 @@ export default function MaintenancePage() {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleEditOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingOrder) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/v1/maintenance', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: editingOrder.id,
+          serviceType: editServiceType.trim(),
+          serviceCenter: editServiceCenter.trim(),
+          scheduledDate: editScheduledDate,
+          estimatedCost: Number(editCost),
+          status: editStatus,
+        }),
+      });
+      if (res.ok) {
+        setEditingOrder(null);
+        fetchMaintenance();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleDeleteOrder = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this work order?')) return;
+    try {
+      const res = await fetch(`/api/v1/maintenance?id=${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        fetchMaintenance();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const openEditModal = (o: MaintenanceOrder) => {
+    setEditingOrder(o);
+    setEditServiceType(o.serviceType);
+    setEditServiceCenter(o.serviceCenter);
+    setEditScheduledDate(o.scheduledDate);
+    setEditCost(o.estimatedCost.toString());
+    setEditStatus(o.status);
   };
 
   const handleUpdateStatus = async (orderId: string, currentStatus: string) => {
@@ -148,12 +205,28 @@ export default function MaintenancePage() {
                       </span>
                     </td>
                     <td className="p-3 text-right font-sans">
-                      <button
-                        onClick={() => handleUpdateStatus(w.id, w.status)}
-                        className="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded text-[10px] font-semibold border border-slate-200 dark:border-slate-700"
-                      >
-                        {w.status === 'SCHEDULED' ? 'Start Service' : w.status === 'IN_SERVICE' ? 'Complete Service' : 'Reset Status'}
-                      </button>
+                      <div className="flex items-center justify-end space-x-1.5">
+                        <button
+                          onClick={() => handleUpdateStatus(w.id, w.status)}
+                          className="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 rounded text-[10px] font-semibold border border-slate-200 dark:border-slate-700"
+                        >
+                          {w.status === 'SCHEDULED' ? 'Start' : w.status === 'IN_SERVICE' ? 'Complete' : 'Reset'}
+                        </button>
+                        <button
+                          onClick={() => openEditModal(w)}
+                          className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                          title="Edit Work Order"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteOrder(w.id)}
+                          className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                          title="Delete Work Order"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -170,7 +243,7 @@ export default function MaintenancePage() {
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Wrench className="w-4 h-4 text-sky-500" />
-                <span>Schedule Fleet Maintenance</span>
+                <span>Schedule Work Order</span>
               </h3>
               <button onClick={() => setShowScheduleModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-5 h-5" />
@@ -179,11 +252,10 @@ export default function MaintenancePage() {
 
             <form onSubmit={handleScheduleMaintenance} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Truck Registration *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Truck Reg *</label>
                 <input
                   type="text"
                   required
-                  placeholder="KA01AB4455"
                   value={truckReg}
                   onChange={(e) => setTruckReg(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -191,11 +263,10 @@ export default function MaintenancePage() {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Service Description *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Service Type *</label>
                 <input
                   type="text"
                   required
-                  placeholder="Brake Pad Replacement & Engine Oil"
                   value={serviceType}
                   onChange={(e) => setServiceType(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -206,7 +277,6 @@ export default function MaintenancePage() {
                 <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Workshop / Service Center</label>
                 <input
                   type="text"
-                  placeholder="Kigali Volvo Service Depot"
                   value={serviceCenter}
                   onChange={(e) => setServiceCenter(e.target.value)}
                   className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
@@ -224,7 +294,7 @@ export default function MaintenancePage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Estimated Cost ($)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Est. Cost ($)</label>
                   <input
                     type="number"
                     value={estimatedCost}
@@ -232,16 +302,6 @@ export default function MaintenancePage() {
                     className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Maintenance Notes</label>
-                <textarea
-                  rows={2}
-                  value={notes}
-                  onChange={(e) => setNotes(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
-                />
               </div>
 
               <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
@@ -257,7 +317,99 @@ export default function MaintenancePage() {
                   disabled={submitting}
                   className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
                 >
-                  {submitting ? 'Scheduling...' : 'Schedule Service'}
+                  {submitting ? 'Saving...' : 'Schedule Order'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Maintenance Modal */}
+      {editingOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+                <Edit3 className="w-4 h-4 text-sky-500" />
+                <span>Edit Work Order ({editingOrder.id})</span>
+              </h3>
+              <button onClick={() => setEditingOrder(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleEditOrderSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Service Description</label>
+                <input
+                  type="text"
+                  required
+                  value={editServiceType}
+                  onChange={(e) => setEditServiceType(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Service Center</label>
+                <input
+                  type="text"
+                  required
+                  value={editServiceCenter}
+                  onChange={(e) => setEditServiceCenter(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Scheduled Date</label>
+                  <input
+                    type="date"
+                    value={editScheduledDate}
+                    onChange={(e) => setEditScheduledDate(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Est. Cost ($)</label>
+                  <input
+                    type="number"
+                    value={editCost}
+                    onChange={(e) => setEditCost(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Status</label>
+                  <select
+                    value={editStatus}
+                    onChange={(e) => setEditStatus(e.target.value as any)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  >
+                    <option value="SCHEDULED">SCHEDULED</option>
+                    <option value="IN_SERVICE">IN_SERVICE</option>
+                    <option value="COMPLETED">COMPLETED</option>
+                    <option value="CANCELLED">CANCELLED</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setEditingOrder(null)}
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                >
+                  {submitting ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
             </form>

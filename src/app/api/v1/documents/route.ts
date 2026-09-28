@@ -75,6 +75,26 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, title, documentType, verificationStatus } = body;
+    const doc = db.documents.find((d) => d.id === id);
+
+    if (!doc) {
+      return NextResponse.json({ error: 'Document not found' }, { status: 404 });
+    }
+
+    if (title) doc.title = title;
+    if (documentType) doc.documentType = documentType;
+    if (verificationStatus) doc.verificationStatus = verificationStatus;
+
+    return NextResponse.json({ success: true, document: doc });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -88,6 +108,19 @@ export async function PATCH(request: Request) {
     if (verificationStatus) doc.verificationStatus = verificationStatus;
 
     return NextResponse.json({ success: true, document: doc });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Document ID required' }, { status: 400 });
+
+    db.documents = db.documents.filter((d) => d.id !== id);
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

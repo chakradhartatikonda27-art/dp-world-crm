@@ -54,6 +54,35 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, customerName, subtotalAmount, dueDate, status } = body;
+    const invoices = db.getInvoicesByOrg('org-apex-001');
+    const invoice = invoices.find((i) => i.id === id);
+
+    if (!invoice) {
+      return NextResponse.json({ error: 'Invoice not found' }, { status: 404 });
+    }
+
+    if (customerName) invoice.customerName = customerName;
+    if (subtotalAmount !== undefined) {
+      invoice.subtotalAmount = Number(subtotalAmount);
+      invoice.taxAmount = +(invoice.subtotalAmount * 0.18).toFixed(2);
+      invoice.totalAmount = +(invoice.subtotalAmount + invoice.taxAmount).toFixed(2);
+    }
+    if (dueDate) invoice.dueDate = dueDate;
+    if (status) {
+      invoice.status = status;
+      if (status === 'PAID') invoice.paidAmount = invoice.totalAmount;
+    }
+
+    return NextResponse.json({ success: true, invoice });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -74,6 +103,19 @@ export async function PATCH(request: Request) {
     }
 
     return NextResponse.json({ success: true, invoice });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Invoice ID required' }, { status: 400 });
+
+    db.invoices = db.invoices.filter((i) => i.id !== id);
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

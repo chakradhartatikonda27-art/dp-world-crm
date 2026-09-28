@@ -37,6 +37,27 @@ export async function POST(request: Request) {
   }
 }
 
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, name, eventType, actionType, active } = body;
+    const rule = db.workflowRules.find((r) => r.id === id);
+
+    if (!rule) {
+      return NextResponse.json({ error: 'Rule not found' }, { status: 404 });
+    }
+
+    if (name) rule.name = name;
+    if (eventType) rule.eventType = eventType;
+    if (actionType) rule.actionType = actionType;
+    if (active !== undefined) rule.active = active;
+
+    return NextResponse.json({ success: true, rule });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
 export async function PATCH(request: Request) {
   try {
     const body = await request.json();
@@ -50,6 +71,19 @@ export async function PATCH(request: Request) {
     if (active !== undefined) rule.active = active;
 
     return NextResponse.json({ success: true, rule });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Rule ID required' }, { status: 400 });
+
+    db.workflowRules = db.workflowRules.filter((r) => r.id !== id);
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

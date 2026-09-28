@@ -60,3 +60,39 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+    const { id, name, serviceType, fleetSize, phone, email, status } = body;
+    const vendor = vendorsStore.find((v) => v.id === id);
+
+    if (!vendor) {
+      return NextResponse.json({ error: 'Vendor not found' }, { status: 404 });
+    }
+
+    if (name) vendor.name = name;
+    if (serviceType) vendor.serviceType = serviceType;
+    if (fleetSize !== undefined) vendor.fleetSize = Number(fleetSize);
+    if (phone) vendor.phone = phone;
+    if (email) vendor.email = email;
+    if (status) vendor.status = status;
+
+    return NextResponse.json({ success: true, vendor });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: 'Vendor ID required' }, { status: 400 });
+
+    vendorsStore = vendorsStore.filter((v) => v.id !== id);
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
