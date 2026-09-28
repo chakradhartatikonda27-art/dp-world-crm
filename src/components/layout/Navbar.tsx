@@ -77,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header
-      className={`h-16 px-2.5 sm:px-4 flex items-center justify-between sticky top-0 z-40 border-b transition-colors w-full max-w-full overflow-hidden ${
+      className={`h-16 px-2.5 sm:px-4 flex items-center justify-between sticky top-0 z-[70] border-b transition-colors w-full max-w-full ${
         isLight ? 'bg-white border-slate-200 text-slate-900 shadow-sm' : 'bg-slate-900 border-slate-800 text-white'
       }`}
     >
@@ -120,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {showOrgDropdown && (
             <div
-              className={`absolute left-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-50 border ${
+              className={`absolute left-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[80] border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
@@ -208,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {showLangDropdown && (
             <div
-              className={`absolute right-0 mt-2 w-44 rounded-2xl shadow-2xl py-1 z-50 border ${
+              className={`absolute right-0 mt-2 w-44 rounded-2xl shadow-2xl py-1 z-[80] border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
@@ -275,7 +275,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span className="hidden sm:inline">{t('aiOps')}</span>
         </button>
 
-        {/* Role Selector Button & Dropdown (Uniform corporate styling matching Tenant Switcher) */}
+        {/* Role Selector Button & Dropdown */}
         <div className="relative">
           <button
             onClick={() => {
@@ -298,7 +298,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {showRoleDropdown && (
             <div
-              className={`absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-50 border ${
+              className={`absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[80] border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >

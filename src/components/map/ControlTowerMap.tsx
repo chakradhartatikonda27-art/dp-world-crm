@@ -52,7 +52,7 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
   const centerLng = vehicles.length > 0 ? vehicles[0].longitude : 30.0619;
 
   return (
-    <div className="w-full h-full rounded-xl overflow-hidden border border-slate-800 shadow-2xl relative">
+    <div className="w-full h-full rounded-xl overflow-hidden border border-slate-800 shadow-2xl relative z-0 isolate">
       <MapContainer center={[centerLat, centerLng]} zoom={5} scrollWheelZoom={true} style={{ height: '100%', width: '100%' }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -98,7 +98,7 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
       </MapContainer>
 
       {/* Map Header Overlay */}
-      <div className="absolute top-3 left-3 z-[400] bg-slate-900/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-700/80 text-xs font-semibold text-slate-200 flex items-center space-x-2">
+      <div className="absolute top-3 left-3 z-20 bg-slate-900/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-700/80 text-xs font-semibold text-slate-200 flex items-center space-x-2">
         <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
         <span>Live GPS Vehicles ({vehicles.length})</span>
       </div>
