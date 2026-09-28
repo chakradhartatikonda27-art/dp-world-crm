@@ -123,9 +123,9 @@ export default function InvoicesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2">
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
             <Receipt className="w-5 h-5 text-emerald-500 shrink-0" />
             <span>Finance &amp; Automated Freight Invoicing</span>
           </h1>
@@ -145,7 +145,7 @@ export default function InvoicesPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="p-4 bg-white border border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
+        <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between shadow-sm">
           <div>
             <div className="text-[10px] text-slate-500 uppercase font-semibold">Total Invoice Revenue</div>
             <div className="text-2xl font-bold font-mono text-emerald-600 mt-1">
@@ -157,7 +157,7 @@ export default function InvoicesPage() {
           </div>
         </div>
 
-        <div className="p-4 bg-white border border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
+        <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex items-center justify-between shadow-sm">
           <div>
             <div className="text-[10px] text-slate-500 uppercase font-semibold">Outstanding Unpaid Balance</div>
             <div className="text-2xl font-bold font-mono text-amber-600 mt-1">
@@ -176,11 +176,11 @@ export default function InvoicesPage() {
           <RefreshCw className="w-6 h-6 animate-spin text-emerald-500" />
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto min-w-full">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-50 text-slate-500 uppercase text-[10px] font-semibold">
+                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-500 uppercase text-[10px] font-semibold">
                   <th className="p-3">Invoice #</th>
                   <th className="p-3">Customer</th>
                   <th className="p-3">Shipment #</th>
@@ -190,11 +190,11 @@ export default function InvoicesPage() {
                   <th className="p-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-700 font-mono">
+              <tbody className="divide-y divide-slate-100 text-slate-700 dark:text-slate-300 font-mono">
                 {invoices.map((inv) => (
-                  <tr key={inv.id} className="hover:bg-slate-50/60 transition">
+                  <tr key={inv.id} className="hover:bg-slate-50 dark:bg-slate-950/60 transition">
                     <td className="p-3 font-bold text-sky-600">{inv.invoiceNumber}</td>
-                    <td className="p-3 font-sans font-medium text-slate-900">{inv.customerName}</td>
+                    <td className="p-3 font-sans font-medium text-slate-900 dark:text-slate-100">{inv.customerName}</td>
                     <td className="p-3 text-slate-500">{inv.shipmentNumber}</td>
                     <td className="p-3 text-emerald-600 font-bold">${inv.totalAmount.toLocaleString()}</td>
                     <td className="p-3 font-sans">
@@ -215,7 +215,7 @@ export default function InvoicesPage() {
                       <button
                         onClick={() => setViewingInvoice(inv)}
                         title="View & Print Invoice Bill"
-                        className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg border border-slate-200"
+                        className="p-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-lg border border-slate-200 dark:border-slate-800"
                       >
                         <Eye className="w-3.5 h-3.5" />
                       </button>
@@ -240,44 +240,44 @@ export default function InvoicesPage() {
 
       {/* Create Invoice Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Receipt className="w-4 h-4 text-emerald-500" />
                 <span>Create Customer Freight Invoice</span>
               </h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-500 hover:text-slate-600">
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-500 hover:text-slate-600 dark:text-slate-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleCreateInvoice} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Customer Name *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Customer Name *</label>
                 <input
                   type="text"
                   required
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Shipment Number *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Shipment Number *</label>
                 <input
                   type="text"
                   required
                   value={shipmentNumber}
                   onChange={(e) => setShipmentNumber(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Subtotal Amount ($)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Subtotal Amount ($)</label>
                   <input
                     type="number"
                     value={subtotalAmount}
@@ -285,35 +285,35 @@ export default function InvoicesPage() {
                       setSubtotalAmount(e.target.value);
                       setTaxAmount((Number(e.target.value) * 0.18).toFixed(2));
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Tax Amount (18% VAT)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Tax Amount (18% VAT)</label>
                   <input
                     type="number"
                     value={taxAmount}
                     onChange={(e) => setTaxAmount(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Due Date</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Due Date</label>
                 <input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
@@ -332,16 +332,16 @@ export default function InvoicesPage() {
 
       {/* View Freight Bill Printable Modal */}
       {viewingInvoice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-2xl p-6 sm:p-8 space-y-6 shadow-2xl my-8">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-2xl p-6 sm:p-8 space-y-6 shadow-2xl my-8">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
               <div>
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-lg bg-sky-600 flex items-center justify-center font-bold text-white text-xs">
                     DP
                   </div>
                   <div>
-                    <h2 className="font-bold text-slate-900 text-base">DP WORLD RWANDA</h2>
+                    <h2 className="font-bold text-slate-900 dark:text-slate-100 text-base">DP WORLD RWANDA</h2>
                     <p className="text-[10px] text-slate-500">Logistics &amp; Container Depot Systems</p>
                   </div>
                 </div>
@@ -355,12 +355,12 @@ export default function InvoicesPage() {
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div>
                 <span className="text-[10px] uppercase text-slate-500 font-semibold block">Billed To</span>
-                <div className="font-bold text-slate-900 mt-0.5">{viewingInvoice.customerName}</div>
+                <div className="font-bold text-slate-900 dark:text-slate-100 mt-0.5">{viewingInvoice.customerName}</div>
                 <div className="text-slate-500">Shipment Ref: {viewingInvoice.shipmentNumber}</div>
               </div>
               <div className="text-right">
                 <span className="text-[10px] uppercase text-slate-500 font-semibold block">Payment Terms</span>
-                <div className="font-mono text-slate-700 mt-0.5">Due: {viewingInvoice.dueDate}</div>
+                <div className="font-mono text-slate-700 dark:text-slate-300 mt-0.5">Due: {viewingInvoice.dueDate}</div>
                 <span
                   className={`inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${
                     viewingInvoice.status === 'PAID' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
@@ -372,9 +372,9 @@ export default function InvoicesPage() {
             </div>
 
             {/* Line items */}
-            <div className="border border-slate-200 rounded-xl overflow-hidden text-xs">
+            <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden text-xs">
               <table className="w-full text-left">
-                <thead className="bg-slate-50 border-b border-slate-200 font-semibold text-slate-500">
+                <thead className="bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 font-semibold text-slate-500">
                   <tr>
                     <th className="p-3">Description</th>
                     <th className="p-3 text-center">Qty</th>
@@ -386,7 +386,7 @@ export default function InvoicesPage() {
                   {viewingInvoice.lineItems && viewingInvoice.lineItems.length > 0 ? (
                     viewingInvoice.lineItems.map((item, idx) => (
                       <tr key={idx}>
-                        <td className="p-3 font-sans text-slate-800">{item.description}</td>
+                        <td className="p-3 font-sans text-slate-800 dark:text-slate-200">{item.description}</td>
                         <td className="p-3 text-center">{item.quantity}</td>
                         <td className="p-3 text-right">${item.unitPrice.toLocaleString()}</td>
                         <td className="p-3 text-right font-bold">${item.total.toLocaleString()}</td>
@@ -394,7 +394,7 @@ export default function InvoicesPage() {
                     ))
                   ) : (
                     <tr>
-                      <td className="p-3 font-sans text-slate-800">Freight &amp; Cargo Handling Services</td>
+                      <td className="p-3 font-sans text-slate-800 dark:text-slate-200">Freight &amp; Cargo Handling Services</td>
                       <td className="p-3 text-center">1</td>
                       <td className="p-3 text-right">${viewingInvoice.subtotalAmount.toLocaleString()}</td>
                       <td className="p-3 text-right font-bold">${viewingInvoice.subtotalAmount.toLocaleString()}</td>
@@ -415,7 +415,7 @@ export default function InvoicesPage() {
                   <span>VAT (18%):</span>
                   <span>${viewingInvoice.taxAmount.toLocaleString()}</span>
                 </div>
-                <div className="flex justify-between font-bold text-slate-900 text-sm pt-2 border-t border-slate-200">
+                <div className="flex justify-between font-bold text-slate-900 dark:text-slate-100 text-sm pt-2 border-t border-slate-200 dark:border-slate-800">
                   <span>Total Amount:</span>
                   <span className="text-emerald-600">${viewingInvoice.totalAmount.toLocaleString()}</span>
                 </div>
@@ -423,7 +423,7 @@ export default function InvoicesPage() {
             </div>
 
             {/* Actions */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
               <a
                 href={getWhatsAppShareUrl(viewingInvoice)}
                 target="_blank"
@@ -445,7 +445,7 @@ export default function InvoicesPage() {
 
                 <button
                   onClick={() => setViewingInvoice(null)}
-                  className="px-3.5 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold"
+                  className="px-3.5 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold"
                 >
                   Close
                 </button>

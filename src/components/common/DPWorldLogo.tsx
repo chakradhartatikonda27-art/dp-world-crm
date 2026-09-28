@@ -26,7 +26,7 @@ export const DPWorldLogo: React.FC<DPWorldLogoProps> = ({
 
       <div className="flex flex-col">
         <div className="flex items-center space-x-1.5">
-          <span className={`font-black text-xl tracking-tight font-sans ${isLight ? 'text-slate-900' : 'text-white'}`}>
+          <span className={`font-black text-xl tracking-tight font-sans ${isLight ? 'text-slate-900 dark:text-slate-100' : 'text-white'}`}>
             DP WORLD
           </span>
         </div>

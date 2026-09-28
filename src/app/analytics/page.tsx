@@ -15,7 +15,7 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-bold text-slate-900 flex items-center space-x-2">
+        <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
           <BarChart3 className="w-5 h-5 text-sky-400" />
           <span>Productivity & Route SLA Analytics</span>
         </h1>
@@ -25,7 +25,7 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="p-4 bg-white border border-slate-200 rounded-2xl">
+        <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
           <div className="text-[10px] text-slate-500 uppercase font-semibold">On-Time Delivery Rate</div>
           <div className="text-2xl font-bold font-mono text-emerald-400 mt-1">94.2%</div>
           <div className="text-[10px] text-emerald-400 mt-1 flex items-center space-x-1">
@@ -34,19 +34,19 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <div className="p-4 bg-white border border-slate-200 rounded-2xl">
+        <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
           <div className="text-[10px] text-slate-500 uppercase font-semibold">Average Transit Time</div>
           <div className="text-2xl font-bold font-mono text-sky-400 mt-1">38.5 hrs</div>
           <div className="text-[10px] text-slate-500 mt-1">Across 100 active shipments</div>
         </div>
 
-        <div className="p-4 bg-white border border-slate-200 rounded-2xl">
+        <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
           <div className="text-[10px] text-slate-500 uppercase font-semibold">Avg Border Delay</div>
           <div className="text-2xl font-bold font-mono text-amber-400 mt-1">4.2 hrs</div>
           <div className="text-[10px] text-amber-400 mt-1">Primary Bottleneck: Malaba Border</div>
         </div>
 
-        <div className="p-4 bg-white border border-slate-200 rounded-2xl">
+        <div className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl">
           <div className="text-[10px] text-slate-500 uppercase font-semibold">Fleet Utilization</div>
           <div className="text-2xl font-bold font-mono text-indigo-400 mt-1">87.5%</div>
           <div className="text-[10px] text-slate-500 mt-1">44 of 50 trucks active</div>
@@ -54,8 +54,8 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Chart */}
-      <div className="p-5 bg-white border border-slate-200 rounded-2xl space-y-4 shadow-xl">
-        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Route Transit Duration & On-Time Performance</h3>
+      <div className="p-5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-4 shadow-xl">
+        <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Route Transit Duration & On-Time Performance</h3>
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={routePerformanceData}>

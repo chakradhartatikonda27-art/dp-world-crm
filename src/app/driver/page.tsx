@@ -231,7 +231,7 @@ export default function DriverMobileApp() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-xl space-y-0 my-4">
+    <div className="max-w-md mx-auto bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-xl space-y-0 my-4">
       {/* Driver Language & Profile Header */}
       <div className="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between shadow-xs">
         <div className="flex items-center space-x-3">
@@ -282,7 +282,7 @@ export default function DriverMobileApp() {
       {activeShipment ? (
         <div className="p-4 space-y-4 text-xs">
           {/* Visual Step Tracker */}
-          <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
+          <div className="p-3.5 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2.5">
             <div className="flex items-center justify-between text-[11px] font-bold">
               <span className="text-emerald-700 flex items-center space-x-1">
                 <Check className="w-3.5 h-3.5" />
@@ -302,7 +302,7 @@ export default function DriverMobileApp() {
           </div>
 
           {/* Active Cargo Info Card */}
-          <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-3 shadow-xs">
+          <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs">
             <div className="flex items-center justify-between">
               <div>
                 <span className="text-[10px] font-bold uppercase text-slate-500 block">SHIPMENT NO.</span>
@@ -313,20 +313,20 @@ export default function DriverMobileApp() {
               </span>
             </div>
 
-            <div className="text-slate-900 font-bold text-xs flex items-center space-x-1.5 border-t border-slate-100 pt-2">
+            <div className="text-slate-900 dark:text-slate-100 font-bold text-xs flex items-center space-x-1.5 border-t border-slate-100 pt-2">
               <span className="text-slate-500 font-normal">Customer:</span>
               <span>{activeShipment.customerName}</span>
             </div>
 
             {/* Clean Route Cards */}
             <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg space-y-0.5">
+              <div className="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg space-y-0.5">
                 <span className="text-[9px] uppercase font-bold text-slate-500 block">START LOCATION</span>
-                <div className="font-bold text-slate-900 truncate">{activeShipment.origin.name}</div>
+                <div className="font-bold text-slate-900 dark:text-slate-100 truncate">{activeShipment.origin.name}</div>
               </div>
-              <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg space-y-0.5">
+              <div className="p-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg space-y-0.5">
                 <span className="text-[9px] uppercase font-bold text-slate-500 block">DESTINATION</span>
-                <div className="font-bold text-slate-900 truncate">{activeShipment.destination.name}</div>
+                <div className="font-bold text-slate-900 dark:text-slate-100 truncate">{activeShipment.destination.name}</div>
               </div>
             </div>
           </div>
@@ -366,16 +366,16 @@ export default function DriverMobileApp() {
 
             <button
               onClick={() => handleDriverStatusUpdate('CHECKPOINT', 'Driver passed border checkpoint inspection.')}
-              className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs rounded-xl text-center border border-slate-200 flex items-center justify-center space-x-1.5 transition"
+              className="w-full py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 font-semibold text-xs rounded-xl text-center border border-slate-200 dark:border-slate-800 flex items-center justify-center space-x-1.5 transition"
             >
-              <Flag className="w-3.5 h-3.5 text-slate-600" />
+              <Flag className="w-3.5 h-3.5 text-slate-600 dark:text-slate-400" />
               <span>{text.checkpointBtn}</span>
             </button>
           </div>
 
           {/* Proof of Delivery (POD) Card */}
-          <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-3 shadow-xs">
-            <div className="font-bold text-slate-900 text-xs flex items-center space-x-2 border-b border-slate-100 pb-2">
+          <div className="p-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 space-y-3 shadow-xs">
+            <div className="font-bold text-slate-900 dark:text-slate-100 text-xs flex items-center space-x-2 border-b border-slate-100 pb-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600" />
               <span>DELIVERY PROOF &amp; SIGNATURE</span>
             </div>
@@ -383,13 +383,13 @@ export default function DriverMobileApp() {
             {!isPODSubmitted ? (
               <div className="space-y-2.5">
                 <div>
-                  <label className="block text-[10px] text-slate-600 font-bold mb-1">RECIPIENT NAME / UWA KIRIYE</label>
+                  <label className="block text-[10px] text-slate-600 dark:text-slate-400 font-bold mb-1">RECIPIENT NAME / UWA KIRIYE</label>
                   <input
                     type="text"
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
                     placeholder="e.g. Claire Mutoni"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 focus:border-sky-500 rounded-lg text-xs text-slate-900 font-semibold"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:border-sky-500 rounded-lg text-xs text-slate-900 dark:text-slate-100 font-semibold"
                   />
                 </div>
 
@@ -403,7 +403,7 @@ export default function DriverMobileApp() {
                     className={`py-2.5 rounded-lg font-bold text-xs flex items-center justify-center space-x-1.5 border transition ${
                       photoUploaded
                         ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
-                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                        : 'bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:bg-slate-800'
                     }`}
                   >
                     <Camera className="w-4 h-4 text-sky-600" />
@@ -413,7 +413,7 @@ export default function DriverMobileApp() {
                   <button
                     type="button"
                     onClick={() => alert('✍️ Screen Signature Saved!')}
-                    className="py-2.5 bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 rounded-lg font-bold text-xs flex items-center justify-center space-x-1.5 transition"
+                    className="py-2.5 bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:bg-slate-800 rounded-lg font-bold text-xs flex items-center justify-center space-x-1.5 transition"
                   >
                     <Edit3 className="w-4 h-4 text-emerald-600" />
                     <span>{text.signBtn}</span>
@@ -437,7 +437,7 @@ export default function DriverMobileApp() {
           </div>
 
           {/* SOS Emergency Button */}
-          <div className="pt-2 border-t border-slate-200">
+          <div className="pt-2 border-t border-slate-200 dark:border-slate-800">
             <button
               onClick={() => setShowSOSModal(true)}
               className="w-full py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 transition"
@@ -454,32 +454,32 @@ export default function DriverMobileApp() {
       {/* Refuel & Receipt Photo Modal */}
       {showRefuelModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-sm p-5 space-y-4 shadow-xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
               <div className="flex items-center space-x-2 text-sky-700 font-bold text-xs">
                 <Fuel className="w-4 h-4 text-sky-600" />
                 <span>LOG REFUEL &amp; RECEIPT PHOTO</span>
               </div>
-              <button onClick={() => setShowRefuelModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowRefuelModal(false)} className="text-slate-400 hover:text-slate-600 dark:text-slate-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleDriverRefuelSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-600 font-bold mb-1 text-[10px]">1. FUEL STATION LOCATION</label>
+                <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1 text-[10px]">1. FUEL STATION LOCATION</label>
                 <input
                   type="text"
                   required
                   value={refuelStation}
                   onChange={(e) => setRefuelStation(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-semibold"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-100 font-semibold"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2">
                 <div>
-                  <label className="block text-slate-600 font-bold mb-1 text-[10px]">2. LITRES BOUGHT</label>
+                  <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1 text-[10px]">2. LITRES BOUGHT</label>
                   <input
                     type="number"
                     required
@@ -488,29 +488,29 @@ export default function DriverMobileApp() {
                       setRefuelLitres(e.target.value);
                       setRefuelCost((Number(e.target.value) * 1.15).toFixed(2));
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sky-700 font-bold text-sm"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-sky-700 font-bold text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 font-bold mb-1 text-[10px]">TOTAL COST ($)</label>
+                  <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1 text-[10px]">TOTAL COST ($)</label>
                   <input
                     type="number"
                     step="0.01"
                     value={refuelCost}
                     onChange={(e) => setRefuelCost(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-bold text-xs"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-100 font-bold text-xs"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-600 font-bold mb-1 text-[10px]">3. CURRENT ODOMETER KM</label>
+                <label className="block text-slate-600 dark:text-slate-400 font-bold mb-1 text-[10px]">3. CURRENT ODOMETER KM</label>
                 <input
                   type="number"
                   required
                   value={refuelOdometer}
                   onChange={(e) => setRefuelOdometer(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 font-mono font-bold"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-100 font-mono font-bold"
                 />
               </div>
 
@@ -525,7 +525,7 @@ export default function DriverMobileApp() {
                   className={`py-2 rounded-lg text-[11px] font-bold border flex items-center justify-center space-x-1 ${
                     receiptPhotoTaken
                       ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                      : 'bg-slate-50 text-slate-700 border-slate-200'
+                      : 'bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800'
                   }`}
                 >
                   <Camera className="w-3.5 h-3.5 text-amber-600" />
@@ -535,18 +535,18 @@ export default function DriverMobileApp() {
                 <button
                   type="button"
                   onClick={() => alert('📸 Dashboard Odometer Photo captured!')}
-                  className="py-2 rounded-lg text-[11px] font-bold bg-slate-50 text-slate-700 border border-slate-200 flex items-center justify-center space-x-1"
+                  className="py-2 rounded-lg text-[11px] font-bold bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 flex items-center justify-center space-x-1"
                 >
                   <Gauge className="w-3.5 h-3.5 text-sky-600" />
                   <span>Odometer Photo</span>
                 </button>
               </div>
 
-              <div className="pt-2 border-t border-slate-200 flex space-x-2">
+              <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex space-x-2">
                 <button
                   type="button"
                   onClick={() => setShowRefuelModal(false)}
-                  className="flex-1 py-2 bg-slate-100 text-slate-700 rounded-lg font-bold"
+                  className="flex-1 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg font-bold"
                 >
                   Cancel
                 </button>
@@ -566,21 +566,21 @@ export default function DriverMobileApp() {
       {/* SOS Emergency Call Modal */}
       {showSOSModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-sm p-6 space-y-4 text-center shadow-xl">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-sm p-6 space-y-4 text-center shadow-xl">
             <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto text-xl border border-rose-200">
               <ShieldAlert className="w-6 h-6 text-rose-600" />
             </div>
-            <h3 className="font-extrabold text-slate-900 text-sm">EMERGENCY DISPATCHER HELP</h3>
+            <h3 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm">EMERGENCY DISPATCHER HELP</h3>
             <p className="text-xs text-slate-500">
               Need immediate assistance with breakdown, border delay, or accident?
             </p>
-            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs font-mono text-sky-700 font-bold">
+            <div className="p-3 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-mono text-sky-700 font-bold">
               Dispatch Hotline: +250 788 100 002
             </div>
             <div className="flex space-x-2 pt-2">
               <button
                 onClick={() => setShowSOSModal(false)}
-                className="flex-1 py-2 bg-slate-100 text-slate-700 rounded-lg font-bold text-xs"
+                className="flex-1 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-lg font-bold text-xs"
               >
                 Close
               </button>

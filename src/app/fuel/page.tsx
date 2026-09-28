@@ -193,7 +193,7 @@ export default function FuelPage() {
   return (
     <div className="space-y-6 pb-12 transition-colors">
       {/* Executive Control Tower Header (Supports both White & Dark theme seamlessly) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-6 rounded-2xl shadow-sm text-slate-900">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm text-slate-900 dark:text-slate-100">
         <div>
           <div className="flex items-center space-x-2">
             <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 uppercase tracking-wider">
@@ -201,11 +201,11 @@ export default function FuelPage() {
             </span>
             <span className="text-xs text-slate-500">• Step-by-Step Fuel Control</span>
           </div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center space-x-2 mt-2">
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 flex items-center space-x-2 mt-2">
             <Fuel className="w-6 h-6 text-amber-500 shrink-0" />
             <span>Fuel Control &amp; Reconciliation Engine</span>
           </h1>
-          <p className="text-xs text-slate-600 mt-1 max-w-3xl leading-relaxed">
+          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 max-w-3xl leading-relaxed">
             Software-only reconciliation pairing Driver Phone GPS location, Odometer photos, Fuel Receipt OCR, and ERP expected consumption math to detect theft, unauthorized refuels, and mileage loss.
           </p>
         </div>
@@ -213,7 +213,7 @@ export default function FuelPage() {
         <div className="flex items-center space-x-2 shrink-0">
           <button
             onClick={fetchFuel}
-            className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition border border-slate-200"
+            className="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-xl transition border border-slate-200 dark:border-slate-800"
             title="Refresh Fuel Telemetry"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -231,13 +231,13 @@ export default function FuelPage() {
       {/* KPI Metrics Dashboard Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Refuel Purchased */}
-        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-1">
           <div className="flex items-center justify-between text-xs text-slate-500">
-            <span className="font-semibold text-slate-600">Total Refueled Fuel</span>
+            <span className="font-semibold text-slate-600 dark:text-slate-400">Total Refueled Fuel</span>
             <Fuel className="w-4 h-4 text-sky-500" />
           </div>
           <div className="flex items-baseline space-x-2 pt-1">
-            <span className="text-2xl font-black text-slate-900">
+            <span className="text-2xl font-black text-slate-900 dark:text-slate-100">
               {totalLitresPurchased.toLocaleString()} L
             </span>
             <span className="text-xs font-bold text-slate-500">
@@ -246,14 +246,14 @@ export default function FuelPage() {
           </div>
           <div className="text-[11px] text-slate-500 flex items-center space-x-1 pt-1.5 border-t border-slate-100 mt-2">
             <span>Avg Price:</span>
-            <span className="font-semibold text-slate-800">$1.15 / Litre</span>
+            <span className="font-semibold text-slate-800 dark:text-slate-200">$1.15 / Litre</span>
           </div>
         </div>
 
         {/* Expected Fuel Consumed */}
-        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-1">
           <div className="flex items-center justify-between text-xs text-slate-500">
-            <span className="font-semibold text-slate-600">Expected Consumption</span>
+            <span className="font-semibold text-slate-600 dark:text-slate-400">Expected Consumption</span>
             <Gauge className="w-4 h-4 text-emerald-500" />
           </div>
           <div className="flex items-baseline space-x-2 pt-1">
@@ -263,14 +263,14 @@ export default function FuelPage() {
           </div>
           <div className="text-[11px] text-slate-500 flex items-center space-x-1 pt-1.5 border-t border-slate-100 mt-2">
             <span>Formula:</span>
-            <span className="font-semibold text-slate-800">GPS Dist / Benchmark Mileage</span>
+            <span className="font-semibold text-slate-800 dark:text-slate-200">GPS Dist / Benchmark Mileage</span>
           </div>
         </div>
 
         {/* Net Fuel Variance */}
-        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-1">
           <div className="flex items-center justify-between text-xs text-slate-500">
-            <span className="font-semibold text-slate-600">Net Fuel Variance</span>
+            <span className="font-semibold text-slate-600 dark:text-slate-400">Net Fuel Variance</span>
             <TrendingDown className="w-4 h-4 text-rose-500" />
           </div>
           <div className="flex items-baseline space-x-2 pt-1">
@@ -293,9 +293,9 @@ export default function FuelPage() {
         </div>
 
         {/* Verification Mismatches */}
-        <div className="bg-white border border-slate-200 p-5 rounded-2xl shadow-sm space-y-1">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-1">
           <div className="flex items-center justify-between text-xs text-slate-500">
-            <span className="font-semibold text-slate-600">Verification Mismatches</span>
+            <span className="font-semibold text-slate-600 dark:text-slate-400">Verification Mismatches</span>
             <ShieldAlert className="w-4 h-4 text-amber-500" />
           </div>
           <div className="flex items-baseline space-x-2 pt-1">
@@ -310,7 +310,7 @@ export default function FuelPage() {
       </div>
 
       {/* Filters & Search Toolbar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
@@ -318,7 +318,7 @@ export default function FuelPage() {
             placeholder="Search truck, driver, shipment, or station..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white"
+            className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:bg-white dark:bg-slate-900"
           />
         </div>
 
@@ -327,8 +327,8 @@ export default function FuelPage() {
             onClick={() => setStatusFilter('ALL')}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold shrink-0 transition ${
               statusFilter === 'ALL'
-                ? 'bg-white text-white shadow-sm'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200 '
+                ? 'bg-white dark:bg-slate-900 text-white shadow-sm'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 border border-slate-200 dark:border-slate-800 '
             }`}
           >
             All Logs ({records.length})
@@ -360,20 +360,20 @@ export default function FuelPage() {
 
       {/* Fuel Records Table (Supports Light & Dark Modes) */}
       {loading ? (
-        <div className="flex justify-center items-center py-16 bg-white border border-slate-200 rounded-2xl shadow-sm">
+        <div className="flex justify-center items-center py-16 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm">
           <RefreshCw className="w-8 h-8 animate-spin text-amber-500" />
         </div>
       ) : filteredRecords.length === 0 ? (
-        <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500 shadow-sm">
-          <Fuel className="w-12 h-12 text-slate-700 mx-auto mb-3" />
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 text-center text-slate-500 shadow-sm">
+          <Fuel className="w-12 h-12 text-slate-700 dark:text-slate-300 mx-auto mb-3" />
           <p className="font-semibold text-sm">No fuel records match your search or filter.</p>
         </div>
       ) : (
-        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto min-w-full">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase text-[10px] font-bold">
+                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 uppercase text-[10px] font-bold">
                   <th className="p-4">Record &amp; Shipment</th>
                   <th className="p-4">Truck / Driver</th>
                   <th className="p-4">Station &amp; Location</th>
@@ -385,20 +385,20 @@ export default function FuelPage() {
                   <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 text-slate-800 font-sans">
+              <tbody className="divide-y divide-slate-100 text-slate-800 dark:text-slate-200 font-sans">
                 {filteredRecords.map((r) => {
                   const isAnomaly = r.status !== 'OK';
                   return (
                     <tr
                       key={r.id}
-                      className={`hover:bg-slate-50 transition cursor-pointer ${
-                        isAnomaly ? 'bg-rose-50/40 ' : 'bg-white '
+                      className={`hover:bg-slate-50 dark:bg-slate-950 transition cursor-pointer ${
+                        isAnomaly ? 'bg-rose-50/40 ' : 'bg-white dark:bg-slate-900 '
                       }`}
                       onClick={() => setSelectedAuditRecord(r)}
                     >
                       {/* Record & Shipment */}
                       <td className="p-4">
-                        <div className="font-bold font-mono text-slate-900 flex items-center space-x-1.5">
+                        <div className="font-bold font-mono text-slate-900 dark:text-slate-100 flex items-center space-x-1.5">
                           <Fuel className="w-3.5 h-3.5 text-amber-500" />
                           <span>{r.id}</span>
                         </div>
@@ -411,13 +411,13 @@ export default function FuelPage() {
 
                       {/* Truck / Driver */}
                       <td className="p-4">
-                        <div className="font-bold text-slate-900">{r.truck}</div>
+                        <div className="font-bold text-slate-900 dark:text-slate-100">{r.truck}</div>
                         <div className="text-[11px] text-slate-500 font-medium">{r.driver}</div>
                       </td>
 
                       {/* Station & Location */}
                       <td className="p-4 max-w-[180px] truncate">
-                        <div className="font-medium text-slate-800 flex items-center space-x-1">
+                        <div className="font-medium text-slate-800 dark:text-slate-200 flex items-center space-x-1">
                           <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                           <span className="truncate">{r.station}</span>
                         </div>
@@ -432,7 +432,7 @@ export default function FuelPage() {
                       <td className="p-4 font-mono">
                         <div>
                           <span className="text-slate-500 text-[10px]">Open:</span>{' '}
-                          <span className="font-semibold text-slate-800">{r.openingFuelLitres || 300} L</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-200">{r.openingFuelLitres || 300} L</span>
                         </div>
                         <div>
                           <span className="text-slate-500 text-[10px]">Refuel:</span>{' '}
@@ -445,13 +445,13 @@ export default function FuelPage() {
                       <td className="p-4 font-mono">
                         <div>
                           <span className="text-slate-500 text-[10px]">GPS:</span>{' '}
-                          <span className="font-bold text-slate-900">
+                          <span className="font-bold text-slate-900 dark:text-slate-100">
                             {r.gpsDistanceKm || 750} km
                           </span>
                         </div>
                         <div>
                           <span className="text-slate-500 text-[10px]">Odo:</span>{' '}
-                          <span className="font-medium text-slate-600">
+                          <span className="font-medium text-slate-600 dark:text-slate-400">
                             {r.odometerDistanceKm || r.gpsDistanceKm || 750} km
                           </span>
                         </div>
@@ -467,7 +467,7 @@ export default function FuelPage() {
                         </div>
                         <div>
                           <span className="text-slate-500 text-[10px]">Bench:</span>{' '}
-                          <span className="text-slate-600">
+                          <span className="text-slate-600 dark:text-slate-400">
                             {r.expectedKmPerLitre || 3.1} km/L
                           </span>
                         </div>
@@ -521,21 +521,21 @@ export default function FuelPage() {
                         <div className="flex items-center justify-end space-x-1">
                           <button
                             onClick={() => setSelectedAuditRecord(r)}
-                            className="p-1.5 text-slate-500 hover:text-amber-500 rounded-lg hover:bg-slate-100 transition"
+                            className="p-1.5 text-slate-500 hover:text-amber-500 rounded-lg hover:bg-slate-100 dark:bg-slate-800 transition"
                             title="Open Detailed Audit View"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => openEditModal(r)}
-                            className="p-1.5 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                            className="p-1.5 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:bg-slate-800 transition"
                             title="Edit Record"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteFuelRecord(r.id)}
-                            className="p-1.5 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                            className="p-1.5 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:bg-slate-800 transition"
                             title="Delete Record"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -553,10 +553,10 @@ export default function FuelPage() {
 
       {/* Detailed Reconciliation Audit View Modal */}
       {selectedAuditRecord && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-3xl p-6 space-y-6 shadow-2xl my-8 text-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-3xl p-6 space-y-6 shadow-2xl my-8 text-slate-900 dark:text-slate-100">
             {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-slate-200 pb-4">
+            <div className="flex items-start justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200 font-mono">
@@ -566,7 +566,7 @@ export default function FuelPage() {
                     {selectedAuditRecord.shipmentNumber}
                   </span>
                 </div>
-                <h2 className="text-lg font-bold text-slate-900 mt-1">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mt-1">
                   Fuel Control Reconciliation &amp; Audit Trail
                 </h2>
                 <p className="text-xs text-slate-500">
@@ -576,7 +576,7 @@ export default function FuelPage() {
 
               <button
                 onClick={() => setSelectedAuditRecord(null)}
-                className="p-2 text-slate-500 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition"
+                className="p-2 text-slate-500 hover:text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:bg-slate-800 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -609,12 +609,12 @@ export default function FuelPage() {
             {/* Reconciliation Math Comparison Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
               {/* Box 1: Fuel Tank Math */}
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
-                <div className="font-sans font-bold text-slate-900 flex items-center space-x-1.5 text-xs">
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+                <div className="font-sans font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5 text-xs">
                   <Fuel className="w-4 h-4 text-amber-500" />
                   <span>1. Fuel Tank Balance</span>
                 </div>
-                <div className="space-y-1 pt-1 text-slate-700">
+                <div className="space-y-1 pt-1 text-slate-700 dark:text-slate-300">
                   <div className="flex justify-between">
                     <span>Opening Fuel:</span>
                     <span className="font-bold">{selectedAuditRecord.openingFuelLitres || 300} L</span>
@@ -623,7 +623,7 @@ export default function FuelPage() {
                     <span>Refuel Added:</span>
                     <span className="font-bold text-sky-600">+{selectedAuditRecord.litres} L</span>
                   </div>
-                  <div className="flex justify-between border-t border-slate-200 pt-1 font-bold text-slate-900">
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-800 pt-1 font-bold text-slate-900 dark:text-slate-100">
                     <span>Total Available:</span>
                     <span>{(selectedAuditRecord.openingFuelLitres || 300) + selectedAuditRecord.litres} L</span>
                   </div>
@@ -631,15 +631,15 @@ export default function FuelPage() {
               </div>
 
               {/* Box 2: GPS Telemetry vs Benchmark */}
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
-                <div className="font-sans font-bold text-slate-900 flex items-center space-x-1.5 text-xs">
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+                <div className="font-sans font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5 text-xs">
                   <Gauge className="w-4 h-4 text-emerald-500" />
                   <span>2. Satellite Telemetry</span>
                 </div>
-                <div className="space-y-1 pt-1 text-slate-700">
+                <div className="space-y-1 pt-1 text-slate-700 dark:text-slate-300">
                   <div className="flex justify-between">
                     <span>GPS Distance:</span>
-                    <span className="font-bold text-slate-900">
+                    <span className="font-bold text-slate-900 dark:text-slate-100">
                       {selectedAuditRecord.gpsDistanceKm || 750} km
                     </span>
                   </div>
@@ -647,7 +647,7 @@ export default function FuelPage() {
                     <span>Odometer Dist:</span>
                     <span>{selectedAuditRecord.odometerDistanceKm || selectedAuditRecord.gpsDistanceKm || 750} km</span>
                   </div>
-                  <div className="flex justify-between border-t border-slate-200 pt-1">
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-800 pt-1">
                     <span>Model Efficiency:</span>
                     <span className="font-bold text-emerald-600">
                       {selectedAuditRecord.expectedKmPerLitre || 3.1} km/L
@@ -657,12 +657,12 @@ export default function FuelPage() {
               </div>
 
               {/* Box 3: Expected vs Variance */}
-              <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
-                <div className="font-sans font-bold text-slate-900 flex items-center space-x-1.5 text-xs">
+              <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+                <div className="font-sans font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5 text-xs">
                   <TrendingDown className="w-4 h-4 text-rose-500" />
                   <span>3. Expected &amp; Variance</span>
                 </div>
-                <div className="space-y-1 pt-1 text-slate-700">
+                <div className="space-y-1 pt-1 text-slate-700 dark:text-slate-300">
                   <div className="flex justify-between">
                     <span>Exp. Consumed:</span>
                     <span className="font-bold text-emerald-600">
@@ -679,7 +679,7 @@ export default function FuelPage() {
                       {selectedAuditRecord.fuelVarianceLitres || 0} L
                     </span>
                   </div>
-                  <div className="flex justify-between border-t border-slate-200 pt-1 font-bold">
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-800 pt-1 font-bold">
                     <span>Financial Loss:</span>
                     <span className="text-rose-600">
                       ${selectedAuditRecord.fuelVarianceCost?.toFixed(2) || '0.00'}
@@ -691,13 +691,13 @@ export default function FuelPage() {
 
             {/* Image & Proof Verification Section */}
             <div className="space-y-3 pt-2">
-              <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+              <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
                 Photo &amp; OCR Evidence Verification
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {/* Fuel Receipt OCR Photo */}
-                <div className="border border-slate-200 rounded-2xl p-3 space-y-2 bg-slate-50">
-                  <div className="flex items-center justify-between text-xs font-semibold text-slate-800">
+                <div className="border border-slate-200 dark:border-slate-800 rounded-2xl p-3 space-y-2 bg-slate-50 dark:bg-slate-950">
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-800 dark:text-slate-200">
                     <span className="flex items-center space-x-1.5">
                       <Camera className="w-3.5 h-3.5 text-amber-500" />
                       <span>Fuel Station Receipt Photo &amp; OCR</span>
@@ -708,26 +708,26 @@ export default function FuelPage() {
                       <span className="text-[10px] text-emerald-500 font-bold">OCR MATCH</span>
                     )}
                   </div>
-                  <div className="aspect-video bg-slate-200 rounded-xl overflow-hidden relative group border border-slate-300">
+                  <div className="aspect-video bg-slate-200 rounded-xl overflow-hidden relative group border border-slate-300 dark:border-slate-700">
                     {/* eslint-disable-next-html-element-suppress */}
                     <img
                       src={selectedAuditRecord.receiptPhotoUrl || 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500'}
                       alt="Fuel Receipt"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-white/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-semibold">
+                    <div className="absolute inset-0 bg-white dark:bg-slate-900/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-semibold">
                       View Original Receipt Image
                     </div>
                   </div>
-                  <div className="text-[11px] text-slate-600 font-mono space-y-0.5">
-                    <div>Station: <span className="text-slate-900 font-sans">{selectedAuditRecord.station}</span></div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-400 font-mono space-y-0.5">
+                    <div>Station: <span className="text-slate-900 dark:text-slate-100 font-sans">{selectedAuditRecord.station}</span></div>
                     <div>Receipt OCR Litres: <span className="font-bold text-amber-600">{selectedAuditRecord.receiptOcrLitres || selectedAuditRecord.litres} L</span></div>
                   </div>
                 </div>
 
                 {/* Dashboard Odometer Photo */}
-                <div className="border border-slate-200 rounded-2xl p-3 space-y-2 bg-slate-50">
-                  <div className="flex items-center justify-between text-xs font-semibold text-slate-800">
+                <div className="border border-slate-200 dark:border-slate-800 rounded-2xl p-3 space-y-2 bg-slate-50 dark:bg-slate-950">
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-800 dark:text-slate-200">
                     <span className="flex items-center space-x-1.5">
                       <Gauge className="w-3.5 h-3.5 text-sky-500" />
                       <span>Truck Dashboard Odometer Photo</span>
@@ -738,19 +738,19 @@ export default function FuelPage() {
                       <span className="text-[10px] text-emerald-500 font-bold">ODO MATCH</span>
                     )}
                   </div>
-                  <div className="aspect-video bg-slate-200 rounded-xl overflow-hidden relative group border border-slate-300">
+                  <div className="aspect-video bg-slate-200 rounded-xl overflow-hidden relative group border border-slate-300 dark:border-slate-700">
                     {/* eslint-disable-next-html-element-suppress */}
                     <img
                       src={selectedAuditRecord.odometerPhotoUrl || 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=500'}
                       alt="Truck Odometer"
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-white/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-semibold">
+                    <div className="absolute inset-0 bg-white dark:bg-slate-900/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-semibold">
                       View Odometer Photo
                     </div>
                   </div>
-                  <div className="text-[11px] text-slate-600 font-mono space-y-0.5">
-                    <div>Opening Odometer: <span className="text-slate-900">{selectedAuditRecord.openingOdometerKm || 48200} km</span></div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-400 font-mono space-y-0.5">
+                    <div>Opening Odometer: <span className="text-slate-900 dark:text-slate-100">{selectedAuditRecord.openingOdometerKm || 48200} km</span></div>
                     <div>Trip Odometer Dist: <span className="font-bold text-sky-600">{selectedAuditRecord.odometerDistanceKm || selectedAuditRecord.gpsDistanceKm || 750} km</span></div>
                   </div>
                 </div>
@@ -758,14 +758,14 @@ export default function FuelPage() {
             </div>
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-200">
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
               <button
                 onClick={() => {
                   const recordToEdit = selectedAuditRecord;
                   setSelectedAuditRecord(null);
                   openEditModal(recordToEdit);
                 }}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5 border border-slate-200"
+                className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5 border border-slate-200 dark:border-slate-800"
               >
                 <Edit3 className="w-4 h-4" />
                 <span>Edit Audit Status / Root Cause</span>
@@ -773,7 +773,7 @@ export default function FuelPage() {
 
               <button
                 onClick={() => setSelectedAuditRecord(null)}
-                className="px-5 py-2 bg-white text-white rounded-xl text-xs font-bold transition shadow-sm"
+                className="px-5 py-2 bg-white dark:bg-slate-900 text-white rounded-xl text-xs font-bold transition shadow-sm"
               >
                 Close Audit View
               </button>
@@ -784,14 +784,14 @@ export default function FuelPage() {
 
       {/* Record Fuel Fill Modal */}
       {showFillModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-xl p-6 space-y-5 shadow-2xl my-8 text-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-xl p-6 space-y-5 shadow-2xl my-8 text-slate-900 dark:text-slate-100">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Fuel className="w-4 h-4 text-amber-500" />
                 <span>Log Refuel / Opening Fuel Balance</span>
               </h3>
-              <button onClick={() => setShowFillModal(false)} className="text-slate-500 hover:text-slate-700">
+              <button onClick={() => setShowFillModal(false)} className="text-slate-500 hover:text-slate-700 dark:text-slate-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -799,62 +799,62 @@ export default function FuelPage() {
             <form onSubmit={handleRecordFuel} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Shipment # *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Shipment # *</label>
                   <input
                     type="text"
                     required
                     value={shipmentNumber}
                     onChange={(e) => setShipmentNumber(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Truck Reg *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Truck Reg *</label>
                   <input
                     type="text"
                     required
                     value={truck}
                     onChange={(e) => setTruck(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Driver Name *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Driver Name *</label>
                   <input
                     type="text"
                     required
                     value={driver}
                     onChange={(e) => setDriver(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Fuel Station Location *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Fuel Station Location *</label>
                   <input
                     type="text"
                     required
                     value={station}
                     onChange={(e) => setStation(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Opening Fuel (L)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Opening Fuel (L)</label>
                   <input
                     type="number"
                     value={openingFuelLitres}
                     onChange={(e) => setOpeningFuelLitres(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Refueled (L) *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Refueled (L) *</label>
                   <input
                     type="number"
                     required
@@ -864,59 +864,59 @@ export default function FuelPage() {
                       setLitres(l);
                       setTotalCost((Number(l) * Number(pricePerLitre)).toFixed(2));
                     }}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono font-bold text-sky-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono font-bold text-sky-600 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Total Cost ($)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Total Cost ($)</label>
                   <input
                     type="number"
                     step="0.01"
                     value={totalCost}
                     onChange={(e) => setTotalCost(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Start Odometer (km)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Start Odometer (km)</label>
                   <input
                     type="number"
                     value={openingOdometerKm}
                     onChange={(e) => setOpeningOdometerKm(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Current Odometer (km)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Current Odometer (km)</label>
                   <input
                     type="number"
                     value={currentOdometerKm}
                     onChange={(e) => setCurrentOdometerKm(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">GPS Distance (km)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">GPS Distance (km)</label>
                   <input
                     type="number"
                     value={gpsDistanceKm}
                     onChange={(e) => setGpsDistanceKm(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
               </div>
 
-              <div className="p-3.5 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <div className="p-3.5 bg-slate-50 dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-slate-700">Software Reconciliation Preview:</span>
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">Software Reconciliation Preview:</span>
                   <span className="text-[11px] font-mono text-emerald-600 font-bold">
                     Expected: {+(Number(gpsDistanceKm) / Number(expectedKmPerLitre)).toFixed(1)} L
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-slate-600">
+                <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-400">
                   <span>Simulate GPS Station Mismatch</span>
                   <input
                     type="checkbox"
@@ -927,11 +927,11 @@ export default function FuelPage() {
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowFillModal(false)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium border border-slate-200"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium border border-slate-200 dark:border-slate-800"
                 >
                   Cancel
                 </button>
@@ -950,69 +950,69 @@ export default function FuelPage() {
 
       {/* Edit Fuel Modal */}
       {editingRecord && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
-          <div className="bg-white border border-slate-200 rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl text-slate-900">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl text-slate-900 dark:text-slate-100">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Edit3 className="w-4 h-4 text-amber-500" />
                 <span>Edit Audit Record ({editingRecord.id})</span>
               </h3>
-              <button onClick={() => setEditingRecord(null)} className="text-slate-500 hover:text-slate-700">
+              <button onClick={() => setEditingRecord(null)} className="text-slate-500 hover:text-slate-700 dark:text-slate-300">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleEditFuelSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Truck Registration</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Truck Registration</label>
                 <input
                   type="text"
                   required
                   value={editTruck}
                   onChange={(e) => setEditTruck(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Fuel Station</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Fuel Station</label>
                 <input
                   type="text"
                   required
                   value={editStation}
                   onChange={(e) => setEditStation(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Litres</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Litres</label>
                   <input
                     type="number"
                     value={editLitres}
                     onChange={(e) => setEditLitres(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-semibold mb-1">Total Cost ($)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Total Cost ($)</label>
                   <input
                     type="number"
                     step="0.01"
                     value={editCost}
                     onChange={(e) => setEditCost(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Audit Status</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Audit Status</label>
                 <select
                   value={editStatus}
                   onChange={(e) => setEditStatus(e.target.value as FuelRecord['status'])}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 >
                   <option value="OK">OK - Verified</option>
                   <option value="LOCATION_MISMATCH">LOCATION_MISMATCH</option>
@@ -1023,20 +1023,20 @@ export default function FuelPage() {
               </div>
 
               <div>
-                <label className="block text-slate-700 font-semibold mb-1">Root Cause Investigation</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Root Cause Investigation</label>
                 <textarea
                   rows={3}
                   value={editRootCause}
                   onChange={(e) => setEditRootCause(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setEditingRecord(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium border border-slate-200"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium border border-slate-200 dark:border-slate-800"
                 >
                   Cancel
                 </button>

@@ -114,9 +114,9 @@ export default function ExceptionsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2">
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
             <AlertTriangle className="w-5 h-5 text-rose-500 shrink-0" />
             <span>Operational Exception Workbench</span>
           </h1>
@@ -135,15 +135,15 @@ export default function ExceptionsPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center space-x-2 border-b border-slate-200 pb-2">
+      <div className="flex items-center space-x-2 border-b border-slate-200 dark:border-slate-800 pb-2">
         {(['ALL', 'OPEN', 'RESOLVED'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveFilter(tab)}
             className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition ${
               activeFilter === tab
-                ? 'bg-white text-white shadow-sm'
-                : 'text-slate-500 hover:bg-slate-100'
+                ? 'bg-white dark:bg-slate-900 text-white shadow-sm'
+                : 'text-slate-500 hover:bg-slate-100 dark:bg-slate-800'
             }`}
           >
             {tab}
@@ -161,7 +161,7 @@ export default function ExceptionsPage() {
           {filteredExceptions.map((exc) => (
             <div
               key={exc.id}
-              className="p-4 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
+              className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-xs font-bold text-rose-600">{exc.id}</span>
@@ -186,7 +186,7 @@ export default function ExceptionsPage() {
                   </span>
                   <button
                     onClick={() => handleDeleteException(exc.id)}
-                    className="p-1 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded transition"
+                    className="p-1 text-slate-500 hover:text-rose-600 hover:bg-slate-100 dark:bg-slate-800 rounded transition"
                     title="Delete Exception"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -194,13 +194,13 @@ export default function ExceptionsPage() {
                 </div>
               </div>
 
-              <h3 className="font-bold text-slate-900 text-sm">{exc.type.replace(/_/g, ' ')}</h3>
-              <div className="text-xs text-slate-500 space-y-1 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">{exc.type.replace(/_/g, ' ')}</h3>
+              <div className="text-xs text-slate-500 space-y-1 bg-slate-50 dark:bg-slate-950 p-2.5 rounded-xl border border-slate-100">
                 <div>
-                  Shipment: <strong className="text-slate-800 font-mono">{exc.shipmentNumber}</strong>
+                  Shipment: <strong className="text-slate-800 dark:text-slate-200 font-mono">{exc.shipmentNumber}</strong>
                 </div>
                 <div>
-                  Root Cause: <span className="text-slate-700">{exc.rootCause || 'Under investigation.'}</span>
+                  Root Cause: <span className="text-slate-700 dark:text-slate-300">{exc.rootCause || 'Under investigation.'}</span>
                 </div>
                 {exc.resolution && (
                   <div className="text-emerald-600">
@@ -229,38 +229,38 @@ export default function ExceptionsPage() {
 
       {/* Report Exception Modal */}
       {showReportModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <AlertTriangle className="w-4 h-4 text-rose-500" />
                 <span>Report Operational Exception</span>
               </h3>
-              <button onClick={() => setShowReportModal(false)} className="text-slate-500 hover:text-slate-600">
+              <button onClick={() => setShowReportModal(false)} className="text-slate-500 hover:text-slate-600 dark:text-slate-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleReportException} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Shipment Number *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Shipment Number *</label>
                 <input
                   type="text"
                   required
                   placeholder="SHP-2026-10012"
                   value={shipmentNumber}
                   onChange={(e) => setShipmentNumber(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Exception Type</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Exception Type</label>
                   <select
                     value={type}
                     onChange={(e: any) => setType(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500"
                   >
                     <option value="BORDER_DELAY">Border Delay</option>
                     <option value="STATIONARY_TOO_LONG">Stationary Too Long</option>
@@ -270,11 +270,11 @@ export default function ExceptionsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Severity Level</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Severity Level</label>
                   <select
                     value={severity}
                     onChange={(e: any) => setSeverity(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500"
                   >
                     <option value="CRITICAL">CRITICAL</option>
                     <option value="HIGH">HIGH</option>
@@ -285,20 +285,20 @@ export default function ExceptionsPage() {
               </div>
 
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Root Cause Description</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Root Cause Description</label>
                 <textarea
                   rows={3}
                   value={rootCause}
                   onChange={(e) => setRootCause(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
                 />
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowReportModal(false)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
@@ -317,36 +317,36 @@ export default function ExceptionsPage() {
 
       {/* Resolve Exception Modal */}
       {resolvingException && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 <span>Resolve Incident #{resolvingException.id}</span>
               </h3>
-              <button onClick={() => setResolvingException(null)} className="text-slate-500 hover:text-slate-600">
+              <button onClick={() => setResolvingException(null)} className="text-slate-500 hover:text-slate-600 dark:text-slate-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleResolveException} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Resolution Actions Taken *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Resolution Actions Taken *</label>
                 <textarea
                   rows={3}
                   required
                   placeholder="e.g. Contacted border customs agent to fast-track approval."
                   value={resolutionText}
                   onChange={(e) => setResolutionText(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
                 />
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setResolvingException(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
                 >
                   Cancel
                 </button>

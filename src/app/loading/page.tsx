@@ -142,9 +142,9 @@ export default function LoadingPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2">
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
             <Package className="w-5 h-5 text-sky-500 shrink-0" />
             <span>Cargo Loading &amp; Dock Operations</span>
           </h1>
@@ -172,7 +172,7 @@ export default function LoadingPage() {
           {docks.map((d) => (
             <div
               key={d.id}
-              className="bg-white border border-slate-200 p-4 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-xs font-bold text-sky-600">{d.id}</span>
@@ -190,14 +190,14 @@ export default function LoadingPage() {
                   </span>
                   <button
                     onClick={() => openEditModal(d)}
-                    className="p-1 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                    className="p-1 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:bg-slate-800 transition"
                     title="Edit Loading Dock"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDeleteDock(d.id)}
-                    className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                    className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:bg-slate-800 transition"
                     title="Release/Delete Dock"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -205,17 +205,17 @@ export default function LoadingPage() {
                 </div>
               </div>
 
-              <h3 className="text-sm font-bold text-slate-900">{d.name}</h3>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">{d.name}</h3>
 
               <div className="space-y-1 text-xs text-slate-500 border-t border-slate-100 pt-2">
                 <div>
-                  Shipment: <strong className="text-slate-800 font-mono">{d.shipment}</strong>
+                  Shipment: <strong className="text-slate-800 dark:text-slate-200 font-mono">{d.shipment}</strong>
                 </div>
                 <div>
-                  Truck: <strong className="text-slate-800 font-mono">{d.truck}</strong>
+                  Truck: <strong className="text-slate-800 dark:text-slate-200 font-mono">{d.truck}</strong>
                 </div>
                 <div>
-                  Dock Operator: <span className="text-slate-700 font-medium">{d.operator}</span>
+                  Dock Operator: <span className="text-slate-700 dark:text-slate-300 font-medium">{d.operator}</span>
                 </div>
               </div>
 
@@ -224,7 +224,7 @@ export default function LoadingPage() {
                   <span>Progress</span>
                   <span className="font-mono font-bold text-sky-600">{d.progress}%</span>
                 </div>
-                <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-sky-500 rounded-full transition-all duration-300"
                     style={{ width: `${d.progress}%` }}
@@ -235,7 +235,7 @@ export default function LoadingPage() {
               <div className="pt-2 flex justify-end">
                 <button
                   onClick={() => handleAdvanceProgress(d.id, d.progress)}
-                  className="w-full py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold border border-slate-200 transition"
+                  className="w-full py-1.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-800 dark:text-slate-200 rounded-xl text-xs font-semibold border border-slate-200 dark:border-slate-800 transition"
                 >
                   {d.progress >= 100 ? 'Mark Complete' : '+ 25% Loading Progress'}
                 </button>
@@ -247,71 +247,71 @@ export default function LoadingPage() {
 
       {/* Assign Dock Modal */}
       {showAssignModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Package className="w-4 h-4 text-sky-500" />
                 <span>Assign Loading Dock</span>
               </h3>
-              <button onClick={() => setShowAssignModal(false)} className="text-slate-500 hover:text-slate-600">
+              <button onClick={() => setShowAssignModal(false)} className="text-slate-500 hover:text-slate-600 dark:text-slate-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleAssignDock} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Dock Location Name *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dock Location Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="Kigali DC Dock 3"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Shipment ID *</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Shipment ID *</label>
                 <input
                   type="text"
                   required
                   placeholder="SHP-2026-10025"
                   value={shipment}
                   onChange={(e) => setShipment(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Truck Reg</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Truck Reg</label>
                   <input
                     type="text"
                     placeholder="RAB123A"
                     value={truck}
                     onChange={(e) => setTruck(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Dock Operator</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dock Operator</label>
                   <input
                     type="text"
                     placeholder="Jean K."
                     value={operator}
                     onChange={(e) => setOperator(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowAssignModal(false)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
@@ -330,69 +330,69 @@ export default function LoadingPage() {
 
       {/* Edit Dock Modal */}
       {editingDock && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Edit3 className="w-4 h-4 text-sky-500" />
                 <span>Edit Dock Assignment ({editingDock.id})</span>
               </h3>
-              <button onClick={() => setEditingDock(null)} className="text-slate-500 hover:text-slate-600">
+              <button onClick={() => setEditingDock(null)} className="text-slate-500 hover:text-slate-600 dark:text-slate-400">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleEditDockSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Dock Location Name</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dock Location Name</label>
                 <input
                   type="text"
                   required
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 font-medium mb-1">Shipment ID</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Shipment ID</label>
                 <input
                   type="text"
                   required
                   value={editShipment}
                   onChange={(e) => setEditShipment(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Truck Reg</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Truck Reg</label>
                   <input
                     type="text"
                     value={editTruck}
                     onChange={(e) => setEditTruck(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Dock Operator</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dock Operator</label>
                   <input
                     type="text"
                     value={editOperator}
                     onChange={(e) => setEditOperator(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Status</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Status</label>
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="LOADING">LOADING</option>
                     <option value="UNLOADING">UNLOADING</option>
@@ -401,23 +401,23 @@ export default function LoadingPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 font-medium mb-1">Progress (%)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Progress (%)</label>
                   <input
                     type="number"
                     min="0"
                     max="100"
                     value={editProgress}
                     onChange={(e) => setEditProgress(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setEditingDock(null)}
-                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
