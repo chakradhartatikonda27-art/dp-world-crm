@@ -66,11 +66,11 @@ export const AIAssistantModal: React.FC<AIAssistantModalProps> = ({ isOpen, onCl
               <Sparkles className="w-4 h-4 animate-pulse" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-100 text-sm">LogisticsOS AI Operations Control</h3>
+              <h3 className="font-bold text-slate-900 text-sm">LogisticsOS AI Operations Control</h3>
               <div className="text-[10px] text-sky-400 font-mono">Real-time Telemetry & Decision Engine</div>
             </div>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white">
+          <button onClick={onClose} className="text-slate-500 hover:text-white">
             <X className="w-4 h-4" />
           </button>
         </div>
@@ -78,25 +78,25 @@ export const AIAssistantModal: React.FC<AIAssistantModalProps> = ({ isOpen, onCl
         {/* Daily Operations Briefing Section */}
         {briefing && (
           <div className="p-4 bg-slate-850/90 border-b border-slate-200 space-y-2">
-            <div className="text-[11px] font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between">
+            <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider flex items-center justify-between">
               <span>Daily Operations Briefing ({briefing.date})</span>
               <span className="text-sky-400 text-[10px]">Auto-Generated</span>
             </div>
             <div className="grid grid-cols-4 gap-2 text-center text-xs">
               <div className="bg-white p-2 rounded-lg border border-slate-200">
-                <div className="text-slate-400 text-[10px]">Active</div>
+                <div className="text-slate-500 text-[10px]">Active</div>
                 <div className="font-bold text-sky-400 font-mono text-sm">{briefing.totalActiveShipments}</div>
               </div>
               <div className="bg-white p-2 rounded-lg border border-slate-200">
-                <div className="text-slate-400 text-[10px]">Delayed</div>
+                <div className="text-slate-500 text-[10px]">Delayed</div>
                 <div className="font-bold text-rose-400 font-mono text-sm">{briefing.delayedCount}</div>
               </div>
               <div className="bg-white p-2 rounded-lg border border-slate-200">
-                <div className="text-slate-400 text-[10px]">Exceptions</div>
+                <div className="text-slate-500 text-[10px]">Exceptions</div>
                 <div className="font-bold text-amber-400 font-mono text-sm">{briefing.unresolvedExceptionsCount}</div>
               </div>
               <div className="bg-white p-2 rounded-lg border border-slate-200">
-                <div className="text-slate-400 text-[10px]">Unpaid Rev</div>
+                <div className="text-slate-500 text-[10px]">Unpaid Rev</div>
                 <div className="font-bold text-emerald-400 font-mono text-xs">${(briefing.outstandingInvoicesAmount / 1000).toFixed(1)}k</div>
               </div>
             </div>
@@ -114,7 +114,7 @@ export const AIAssistantModal: React.FC<AIAssistantModalProps> = ({ isOpen, onCl
                 className={`max-w-[85%] p-3 rounded-2xl text-xs space-y-1 ${
                   msg.role === 'user'
                     ? 'bg-sky-600 text-white rounded-br-none'
-                    : 'bg-slate-850 border border-slate-200 text-slate-200 rounded-bl-none shadow-md'
+                    : 'bg-slate-850 border border-slate-200 text-slate-800 rounded-bl-none shadow-md'
                 }`}
               >
                 <div className="whitespace-pre-line leading-relaxed">{msg.text}</div>
@@ -134,19 +134,19 @@ export const AIAssistantModal: React.FC<AIAssistantModalProps> = ({ isOpen, onCl
         <div className="px-4 py-2 bg-white border-t border-slate-200 flex items-center space-x-2 overflow-x-auto text-[11px]">
           <button
             onClick={() => setInputPrompt('Show delayed shipments')}
-            className="px-2.5 py-1 rounded-full bg-slate-50 text-slate-300 hover:text-white border border-slate-200 whitespace-nowrap"
+            className="px-2.5 py-1 rounded-full bg-slate-50 text-slate-700 hover:text-white border border-slate-200 whitespace-nowrap"
           >
             🔍 Show delayed shipments
           </button>
           <button
             onClick={() => setInputPrompt('Which trucks are available?')}
-            className="px-2.5 py-1 rounded-full bg-slate-50 text-slate-300 hover:text-white border border-slate-200 whitespace-nowrap"
+            className="px-2.5 py-1 rounded-full bg-slate-50 text-slate-700 hover:text-white border border-slate-200 whitespace-nowrap"
           >
             🚛 Available trucks
           </button>
           <button
             onClick={() => setInputPrompt('Show unpaid invoices')}
-            className="px-2.5 py-1 rounded-full bg-slate-50 text-slate-300 hover:text-white border border-slate-200 whitespace-nowrap"
+            className="px-2.5 py-1 rounded-full bg-slate-50 text-slate-700 hover:text-white border border-slate-200 whitespace-nowrap"
           >
             💳 Outstanding revenue
           </button>
@@ -160,7 +160,7 @@ export const AIAssistantModal: React.FC<AIAssistantModalProps> = ({ isOpen, onCl
             onChange={(e) => setInputPrompt(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Ask AI Assistant about delayed trucks, revenue, SLA risks, or border bottlenecks..."
-            className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-sky-500"
+            className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-sky-500"
           />
           <button
             onClick={handleSend}

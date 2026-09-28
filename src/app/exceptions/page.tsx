@@ -169,8 +169,8 @@ export default function ExceptionsPage() {
                   <span
                     className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                       exc.severity === 'CRITICAL' || exc.severity === 'HIGH'
-                        ? 'bg-rose-500/10 text-rose-600 border-rose-500/30'
-                        : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                        ? 'bg-rose-50 text-rose-600 border-rose-500/30'
+                        : 'bg-amber-50 text-amber-600 border-amber-500/30'
                     }`}
                   >
                     {exc.severity}
@@ -178,15 +178,15 @@ export default function ExceptionsPage() {
                   <span
                     className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                       exc.status === 'OPEN'
-                        ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
-                        : 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                        ? 'bg-amber-50 text-amber-600 border-amber-500/30'
+                        : 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                     }`}
                   >
                     {exc.status}
                   </span>
                   <button
                     onClick={() => handleDeleteException(exc.id)}
-                    className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded transition"
+                    className="p-1 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded transition"
                     title="Delete Exception"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -236,7 +236,7 @@ export default function ExceptionsPage() {
                 <AlertTriangle className="w-4 h-4 text-rose-500" />
                 <span>Report Operational Exception</span>
               </h3>
-              <button onClick={() => setShowReportModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowReportModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -324,7 +324,7 @@ export default function ExceptionsPage() {
                 <CheckCircle2 className="w-4 h-4 text-emerald-500" />
                 <span>Resolve Incident #{resolvingException.id}</span>
               </h3>
-              <button onClick={() => setResolvingException(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setResolvingException(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

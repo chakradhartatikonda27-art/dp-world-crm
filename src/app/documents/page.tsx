@@ -167,7 +167,7 @@ export default function DocumentsPage() {
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] font-bold text-sky-600 px-2 py-0.5 rounded bg-sky-500/10">
+                  <span className="font-mono text-[10px] font-bold text-sky-600 px-2 py-0.5 rounded bg-sky-50">
                     {(doc.documentType || doc.docType || 'CUSTOMS').replace(/_/g, ' ')}
                   </span>
                   <div className="flex items-center space-x-1">
@@ -175,22 +175,22 @@ export default function DocumentsPage() {
                       onClick={() => handleToggleVerification(doc.id, doc.verificationStatus || 'VERIFIED')}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
                         (doc.verificationStatus || 'VERIFIED') === 'VERIFIED'
-                          ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
-                          : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                          ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
+                          : 'bg-amber-50 text-amber-600 border-amber-500/30'
                       }`}
                     >
                       {doc.verificationStatus || doc.clearanceStatus || 'VERIFIED'}
                     </button>
                     <button
                       onClick={() => openEditModal(doc)}
-                      className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                      className="p-1 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
                       title="Edit Document"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDeleteDocument(doc.id)}
-                      className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                      className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
                       title="Delete Document"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -235,7 +235,7 @@ export default function DocumentsPage() {
                 <FileText className="w-4 h-4 text-sky-500" />
                 <span>Upload Document to Vault</span>
               </h3>
-              <button onClick={() => setShowUploadModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowUploadModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -310,7 +310,7 @@ export default function DocumentsPage() {
                 <Edit3 className="w-4 h-4 text-sky-500" />
                 <span>Edit Document Metadata ({editingDoc.id})</span>
               </h3>
-              <button onClick={() => setEditingDoc(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingDoc(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -387,7 +387,7 @@ export default function DocumentsPage() {
                 <Eye className="w-4 h-4 text-sky-500" />
                 <span>Extracted OCR Field Data</span>
               </h3>
-              <button onClick={() => setViewingDoc(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setViewingDoc(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

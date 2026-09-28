@@ -13,18 +13,18 @@ export default function PodPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between bg-white border border-slate-200 p-4 rounded-xl">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
+          <h1 className="text-xl font-bold text-slate-900 flex items-center space-x-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-400" />
             <span>Proof of Delivery (POD) Verification</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">Digital Signatures • Photo Evidence • Geofence Audit • Automatic Invoice Release</p>
+          <p className="text-xs text-slate-500 mt-0.5">Digital Signatures • Photo Evidence • Geofence Audit • Automatic Invoice Release</p>
         </div>
       </div>
 
-      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="border-b border-slate-200 bg-white/60 text-slate-400 uppercase text-[10px] font-semibold">
+            <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 uppercase text-[10px] font-semibold">
               <th className="p-3">POD ID</th>
               <th className="p-3">Shipment</th>
               <th className="p-3">Recipient Signee</th>
@@ -34,17 +34,17 @@ export default function PodPage() {
               <th className="p-3">Invoice Trigger</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800 text-slate-300 font-mono">
+          <tbody className="divide-y divide-slate-200 text-slate-700 font-mono">
             {pods.map((p) => (
-              <tr key={p.id} className="hover:bg-slate-50/40">
-                <td className="p-3 font-bold text-sky-400">{p.id}</td>
-                <td className="p-3 font-mono text-slate-300">{p.shipment}</td>
-                <td className="p-3 font-sans font-medium text-slate-200">{p.recipient}</td>
-                <td className="p-3 text-slate-400">{p.timestamp}</td>
-                <td className="p-3 font-sans text-slate-300">{p.driver}</td>
-                <td className="p-3 text-emerald-400 font-bold">{p.gpsMatch}</td>
+              <tr key={p.id} className="hover:bg-slate-50 transition">
+                <td className="p-3 font-bold text-sky-600">{p.id}</td>
+                <td className="p-3 font-mono text-slate-600">{p.shipment}</td>
+                <td className="p-3 font-sans font-medium text-slate-900">{p.recipient}</td>
+                <td className="p-3 text-slate-500">{p.timestamp}</td>
+                <td className="p-3 font-sans text-slate-800">{p.driver}</td>
+                <td className="p-3 text-emerald-600 font-bold">{p.gpsMatch}</td>
                 <td className="p-3 font-sans">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
                     {p.invoiceTrigger}
                   </span>
                 </td>

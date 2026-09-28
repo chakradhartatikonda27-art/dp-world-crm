@@ -49,7 +49,7 @@ export default function ProductivityPage() {
       {/* KPI Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
-          <div className="text-[10px] text-slate-400 uppercase font-semibold">Gross Revenue</div>
+          <div className="text-[10px] text-slate-500 uppercase font-semibold">Gross Revenue</div>
           <div className="text-xl font-bold font-mono text-slate-900">
             ${stats.revenue.toLocaleString()}
           </div>
@@ -60,15 +60,15 @@ export default function ProductivityPage() {
         </div>
 
         <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
-          <div className="text-[10px] text-slate-400 uppercase font-semibold">Operating Costs</div>
+          <div className="text-[10px] text-slate-500 uppercase font-semibold">Operating Costs</div>
           <div className="text-xl font-bold font-mono text-amber-600">
             ${stats.cost.toLocaleString()}
           </div>
-          <div className="text-[10px] text-slate-400 font-medium">Fuel, Maintenance &amp; Subcontractors</div>
+          <div className="text-[10px] text-slate-500 font-medium">Fuel, Maintenance &amp; Subcontractors</div>
         </div>
 
         <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
-          <div className="text-[10px] text-slate-400 uppercase font-semibold">Net Profit Margin</div>
+          <div className="text-[10px] text-slate-500 uppercase font-semibold">Net Profit Margin</div>
           <div className="text-xl font-bold font-mono text-emerald-600">
             ${netProfit.toLocaleString()} ({stats.margin}%)
           </div>
@@ -76,11 +76,11 @@ export default function ProductivityPage() {
         </div>
 
         <div className="p-4 bg-white border border-slate-200 rounded-2xl shadow-sm space-y-1">
-          <div className="text-[10px] text-slate-400 uppercase font-semibold">On-Time SLA Rate</div>
+          <div className="text-[10px] text-slate-500 uppercase font-semibold">On-Time SLA Rate</div>
           <div className="text-xl font-bold font-mono text-sky-600">
             {stats.onTime}%
           </div>
-          <div className="text-[10px] text-slate-400 font-mono">{stats.completedTrips} trips completed</div>
+          <div className="text-[10px] text-slate-500 font-mono">{stats.completedTrips} trips completed</div>
         </div>
       </div>
 

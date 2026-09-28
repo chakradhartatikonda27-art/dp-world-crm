@@ -32,25 +32,25 @@ export default function LiveTrackingPage() {
       {/* Top Bar */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-slate-200 p-4 rounded-xl shadow-lg">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
+          <h1 className="text-xl font-bold text-slate-900 flex items-center space-x-2">
             <MapPin className="w-5 h-5 text-sky-400" />
             <span>Live GPS Tracking &amp; Geofence Automation</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-500 mt-0.5">
             Real-time IoT telemetry stream • Active moving fleet across East African Corridors (Mombasa $\rightarrow$ Dar $\rightarrow$ Kigali)
           </p>
         </div>
 
         <div className="flex items-center space-x-3">
-          <div className="text-xs font-mono text-slate-400">
-            Last update: <span className="text-slate-200 font-bold">{lastUpdate || '14:22'}</span>
+          <div className="text-xs font-mono text-slate-500">
+            Last update: <span className="text-slate-800 font-bold">{lastUpdate || '14:22'}</span>
           </div>
           <button
             onClick={() => setIsLive(!isLive)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 border transition-all ${
               isLive
-                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                : 'bg-amber-500/10 text-amber-400 border-amber-500/30'
+                ? 'bg-emerald-50 text-emerald-400 border-emerald-500/30'
+                : 'bg-amber-50 text-amber-400 border-amber-500/30'
             }`}
           >
             {isLive ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
@@ -58,7 +58,7 @@ export default function LiveTrackingPage() {
           </button>
           <button
             onClick={fetchTrackingData}
-            className="p-1.5 bg-slate-50 hover:bg-slate-200 text-slate-300 rounded-lg text-xs border border-slate-200 transition"
+            className="p-1.5 bg-slate-50 hover:bg-slate-200 text-slate-700 rounded-lg text-xs border border-slate-200 transition"
             title="Refresh Pings"
           >
             <RefreshCw className="w-4 h-4" />
@@ -76,11 +76,11 @@ export default function LiveTrackingPage() {
         {/* Live Active Telemetry & Geofence Panel */}
         <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-[400px] lg:h-full overflow-hidden shadow-xl">
           <div className="flex items-center justify-between pb-3 border-b border-slate-200 shrink-0">
-            <h2 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
+            <h2 className="text-sm font-bold text-slate-800 flex items-center space-x-2">
               <Truck className="w-4 h-4 text-sky-400" />
               <span>Live Vehicle Stream ({vehicles.length})</span>
             </h2>
-            <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded font-bold">
+            <span className="text-[10px] font-mono px-2 py-0.5 bg-emerald-50 text-emerald-400 border border-emerald-500/30 rounded font-bold">
               GPS Ping 5s
             </span>
           </div>
@@ -101,20 +101,20 @@ export default function LiveTrackingPage() {
                       Location: {v.locationName || 'Rusumo Border'}
                     </div>
                   </div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-50 text-emerald-400 border border-emerald-500/30">
                     {v.status}
                   </span>
                 </div>
 
                 {/* Core Shipment Metrics */}
-                <div className="text-slate-300 text-[11px] bg-white p-2 rounded-lg border border-slate-200/80 space-y-1">
+                <div className="text-slate-700 text-[11px] bg-white p-2 rounded-lg border border-slate-200/80 space-y-1">
                   <div className="flex justify-between">
                     <span>Shipment ID:</span>
                     <strong className="text-sky-400 font-mono">{v.shipmentNumber}</strong>
                   </div>
                   <div className="flex justify-between">
                     <span>Driver:</span>
-                    <strong className="text-slate-200">{v.driverName}</strong>
+                    <strong className="text-slate-800">{v.driverName}</strong>
                   </div>
                   <div className="flex justify-between">
                     <span>Target ETA:</span>
@@ -122,7 +122,7 @@ export default function LiveTrackingPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Last Update:</span>
-                    <strong className="text-slate-400 font-mono">{v.lastUpdateText || '14:22'}</strong>
+                    <strong className="text-slate-500 font-mono">{v.lastUpdateText || '14:22'}</strong>
                   </div>
                 </div>
 
@@ -130,11 +130,11 @@ export default function LiveTrackingPage() {
                 <div className="grid grid-cols-2 gap-2 text-[10px] bg-white/90 p-2 rounded-lg border border-slate-200 font-mono">
                   <div>
                     <span className="text-slate-500 block text-[9px]">LATITUDE</span>
-                    <span className="text-slate-200 font-bold">{v.latitude.toFixed(4)}</span>
+                    <span className="text-slate-800 font-bold">{v.latitude.toFixed(4)}</span>
                   </div>
                   <div>
                     <span className="text-slate-500 block text-[9px]">LONGITUDE</span>
-                    <span className="text-slate-200 font-bold">{v.longitude.toFixed(4)}</span>
+                    <span className="text-slate-800 font-bold">{v.longitude.toFixed(4)}</span>
                   </div>
                   <div>
                     <span className="text-slate-500 block text-[9px]">SPEED</span>
@@ -146,7 +146,7 @@ export default function LiveTrackingPage() {
                   </div>
                   <div>
                     <span className="text-slate-500 block text-[9px]">DIRECTION</span>
-                    <span className="text-slate-300">{v.directionText || '285° WNW'}</span>
+                    <span className="text-slate-700">{v.directionText || '285° WNW'}</span>
                   </div>
                   <div>
                     <span className="text-slate-500 block text-[9px]">BATTERY &amp; SIGNAL</span>
@@ -160,7 +160,7 @@ export default function LiveTrackingPage() {
                     <Zap className="w-3 h-3 text-amber-400" />
                     <span>System Geofencing Automation</span>
                   </div>
-                  <div className="text-[10px] text-slate-300 space-y-0.5">
+                  <div className="text-[10px] text-slate-700 space-y-0.5">
                     <div>• <strong>Port Entry:</strong> Auto status set to <span className="text-emerald-400 font-mono font-bold font-sans">"ARRIVED AT PORT"</span> $\rightarrow$ Client Notification sent.</div>
                     <div>• <strong>Destination Entry:</strong> Auto status set to <span className="text-emerald-400 font-mono font-bold font-sans">"ARRIVED"</span> $\rightarrow$ Warehouse notified $\rightarrow$ Unloading task created.</div>
                   </div>

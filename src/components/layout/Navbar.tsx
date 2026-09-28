@@ -95,12 +95,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Building2 className="w-3.5 h-3.5 text-sky-600 shrink-0" />
             <span className="truncate max-w-[85px] sm:max-w-[120px] md:max-w-[160px] font-semibold">{currentOrg.name}</span>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+            <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
           </button>
 
           {showOrgDropdown && (
             <div className="absolute left-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[100001] border border-slate-200 bg-white text-slate-800">
-              <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold border-b border-slate-100 text-slate-400">
+              <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold border-b border-slate-100 text-slate-500">
                 {t('switchTenant')}
               </div>
               {orgs.map((org) => (
@@ -126,7 +126,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Center: Search & Command Palette */}
       <div className="flex-1 max-w-xl mx-4 hidden lg:block">
         <div className="relative">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
@@ -159,12 +159,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Globe className="w-3.5 h-3.5 text-sky-500" />
             <span className="font-bold text-[11px] sm:text-xs">{language === 'rw' ? '🇷🇼' : '🇬🇧'}</span>
-            <ChevronDown className="w-3 h-3 text-slate-400 hidden sm:inline" />
+            <ChevronDown className="w-3 h-3 text-slate-500 hidden sm:inline" />
           </button>
 
           {showLangDropdown && (
             <div className="absolute right-0 mt-2 w-44 rounded-2xl shadow-2xl py-1 z-[100001] border border-slate-200 bg-white text-slate-800">
-              <div className="px-3 py-1.5 text-[10px] uppercase font-semibold text-slate-400 border-b border-slate-100">
+              <div className="px-3 py-1.5 text-[10px] uppercase font-semibold text-slate-500 border-b border-slate-100">
                 Select Language
               </div>
               <button
@@ -218,12 +218,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span className="truncate max-w-[70px] sm:max-w-[110px] font-bold text-[11px] sm:text-xs">
               {currentRole.replace(/_/g, ' ')}
             </span>
-            <ChevronDown className="w-3 h-3 text-slate-400" />
+            <ChevronDown className="w-3 h-3 text-slate-500" />
           </button>
 
           {showRoleDropdown && (
             <div className="absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[100001] border border-slate-200 bg-white text-slate-800">
-              <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold border-b border-slate-100 text-slate-400">
+              <div className="px-3 py-1.5 text-[10px] uppercase tracking-wider font-semibold border-b border-slate-100 text-slate-500">
                 {t('selectUserRole')}
               </div>
               {roles.map((r) => (

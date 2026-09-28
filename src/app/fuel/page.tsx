@@ -312,7 +312,7 @@ export default function FuelPage() {
       {/* Filters & Search Toolbar */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             placeholder="Search truck, driver, shipment, or station..."
@@ -365,7 +365,7 @@ export default function FuelPage() {
         </div>
       ) : filteredRecords.length === 0 ? (
         <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-slate-500 shadow-sm">
-          <Fuel className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+          <Fuel className="w-12 h-12 text-slate-700 mx-auto mb-3" />
           <p className="font-semibold text-sm">No fuel records match your search or filter.</p>
         </div>
       ) : (
@@ -418,7 +418,7 @@ export default function FuelPage() {
                       {/* Station & Location */}
                       <td className="p-4 max-w-[180px] truncate">
                         <div className="font-medium text-slate-800 flex items-center space-x-1">
-                          <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                          <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                           <span className="truncate">{r.station}</span>
                         </div>
                         {r.locationMismatch && (
@@ -437,7 +437,7 @@ export default function FuelPage() {
                         <div>
                           <span className="text-slate-500 text-[10px]">Refuel:</span>{' '}
                           <span className="font-bold text-sky-600">+{r.litres} L</span>{' '}
-                          <span className="text-slate-400 text-[10px]">(${r.totalCost.toFixed(2)})</span>
+                          <span className="text-slate-500 text-[10px]">(${r.totalCost.toFixed(2)})</span>
                         </div>
                       </td>
 
@@ -521,21 +521,21 @@ export default function FuelPage() {
                         <div className="flex items-center justify-end space-x-1">
                           <button
                             onClick={() => setSelectedAuditRecord(r)}
-                            className="p-1.5 text-slate-400 hover:text-amber-500 rounded-lg hover:bg-slate-100 transition"
+                            className="p-1.5 text-slate-500 hover:text-amber-500 rounded-lg hover:bg-slate-100 transition"
                             title="Open Detailed Audit View"
                           >
                             <Eye className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => openEditModal(r)}
-                            className="p-1.5 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                            className="p-1.5 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
                             title="Edit Record"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteFuelRecord(r.id)}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                            className="p-1.5 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
                             title="Delete Record"
                           >
                             <Trash2 className="w-4 h-4" />
@@ -576,7 +576,7 @@ export default function FuelPage() {
 
               <button
                 onClick={() => setSelectedAuditRecord(null)}
-                className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition"
+                className="p-2 text-slate-500 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -791,7 +791,7 @@ export default function FuelPage() {
                 <Fuel className="w-4 h-4 text-amber-500" />
                 <span>Log Refuel / Opening Fuel Balance</span>
               </h3>
-              <button onClick={() => setShowFillModal(false)} className="text-slate-400 hover:text-slate-700">
+              <button onClick={() => setShowFillModal(false)} className="text-slate-500 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -957,7 +957,7 @@ export default function FuelPage() {
                 <Edit3 className="w-4 h-4 text-amber-500" />
                 <span>Edit Audit Record ({editingRecord.id})</span>
               </h3>
-              <button onClick={() => setEditingRecord(null)} className="text-slate-400 hover:text-slate-700">
+              <button onClick={() => setEditingRecord(null)} className="text-slate-500 hover:text-slate-700">
                 <X className="w-5 h-5" />
               </button>
             </div>

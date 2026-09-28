@@ -199,13 +199,13 @@ export default function UsersPage() {
                   <div className="font-bold text-slate-900 text-sm">
                     {u.firstName} {u.lastName}
                   </div>
-                  <div className="text-[10px] text-slate-400 font-mono">{u.email}</div>
+                  <div className="text-[10px] text-slate-500 font-mono">{u.email}</div>
                 </div>
                 <div className="flex items-center space-x-1">
                   <span
                     className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
                       u.status === 'ACTIVE'
-                        ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                         : 'bg-slate-200 text-slate-500 border-slate-300 '
                     }`}
                   >
@@ -215,14 +215,14 @@ export default function UsersPage() {
                     <>
                       <button
                         onClick={() => openEditModal(u)}
-                        className="p-1 text-slate-400 hover:text-sky-600 hover:bg-slate-100 rounded transition"
+                        className="p-1 text-slate-500 hover:text-sky-600 hover:bg-slate-100 rounded transition"
                         title="Edit User"
                       >
                         <Edit className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteUser(u.id)}
-                        className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded transition"
+                        className="p-1 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded transition"
                         title="Delete User"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -234,11 +234,11 @@ export default function UsersPage() {
 
               <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100">
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Assigned Role</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Assigned Role</span>
                   <span className="text-sky-600 font-bold font-mono text-[11px]">{u.role}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Phone</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Phone</span>
                   <span className="text-slate-700 font-mono text-[10px] truncate block">{u.phone}</span>
                 </div>
               </div>
@@ -256,7 +256,7 @@ export default function UsersPage() {
                 <Shield className="w-4 h-4 text-sky-500" />
                 <span>Create New System User</span>
               </h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -354,7 +354,7 @@ export default function UsersPage() {
                 <Edit className="w-4 h-4 text-sky-500" />
                 <span>Edit User Account ({editingUser.id})</span>
               </h3>
-              <button onClick={() => setEditingUser(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingUser(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -465,7 +465,7 @@ export default function UsersPage() {
                 <Key className="w-4 h-4 text-sky-500" />
                 <span>RBAC Role Permission Matrix</span>
               </h3>
-              <button onClick={() => setShowMatrixModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowMatrixModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

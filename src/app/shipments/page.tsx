@@ -58,11 +58,11 @@ export default function ShipmentsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
+          <h1 className="text-xl font-bold text-slate-900 flex items-center space-x-2">
             <Boxes className="w-5 h-5 text-sky-400" />
             <span>Shipments Management Workspace</span>
           </h1>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Complete lifecycle registry for all active, in-transit, delivered, and delayed shipments.
           </p>
         </div>
@@ -81,24 +81,24 @@ export default function ShipmentsPage() {
       {/* Filter Bar */}
       <div className="p-4 bg-white border border-slate-200 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by shipment #, container, customer, truck..."
-            className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-200"
+            className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-800"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto text-xs">
-          <Filter className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <Filter className="w-3.5 h-3.5 text-slate-500 shrink-0" />
           {['ALL', 'BOOKED', 'IN_TRANSIT', 'CHECKPOINT', 'BORDER_PROCESSING', 'DELIVERED', 'DELAYED'].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
               className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
-                statusFilter === st ? 'bg-sky-600 text-white shadow-sm' : 'bg-white text-slate-400 hover:text-white'
+                statusFilter === st ? 'bg-sky-600 text-white shadow-sm' : 'bg-white text-slate-500 hover:text-white'
               }`}
             >
               {st.replace(/_/g, ' ')}

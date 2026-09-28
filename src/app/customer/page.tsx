@@ -57,12 +57,12 @@ export default function CustomerPortal() {
             <div>
               <div className="text-[10px] text-slate-500 uppercase font-semibold">Shipment Number</div>
               <div className="font-mono font-bold text-sky-400 text-base">{shipment.shipmentNumber}</div>
-              <div className="text-xs text-slate-300 font-medium mt-1">{shipment.customerName}</div>
+              <div className="text-xs text-slate-700 font-medium mt-1">{shipment.customerName}</div>
             </div>
 
             <div>
               <div className="text-[10px] text-slate-500 uppercase font-semibold">Current Status</div>
-              <div className="inline-block mt-1 px-2.5 py-1 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20 font-bold text-xs">
+              <div className="inline-block mt-1 px-2.5 py-1 rounded bg-sky-50 text-sky-400 border border-sky-200 font-bold text-xs">
                 {shipment.status.replace(/_/g, ' ')}
               </div>
             </div>
@@ -72,13 +72,13 @@ export default function CustomerPortal() {
               <div className="font-mono font-bold text-emerald-400 text-sm mt-1">
                 {new Date(shipment.estimatedDeliveryAt).toLocaleString()}
               </div>
-              <div className="text-[10px] text-slate-400 mt-0.5">Distance Remaining: {shipment.distanceRemainingKm || 140} km</div>
+              <div className="text-[10px] text-slate-500 mt-0.5">Distance Remaining: {shipment.distanceRemainingKm || 140} km</div>
             </div>
           </div>
 
           {/* Documents Workspace */}
           <div className="p-5 bg-white border border-slate-200 rounded-2xl space-y-3">
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center space-x-1.5">
+            <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center space-x-1.5">
               <FileText className="w-4 h-4 text-sky-400" />
               <span>Available Shipment Documents</span>
             </h3>
@@ -86,7 +86,7 @@ export default function CustomerPortal() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
               <div className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-200">Bill of Lading (BOL)</div>
+                  <div className="font-semibold text-slate-800">Bill of Lading (BOL)</div>
                   <div className="text-[10px] text-slate-500">BOL-700001.pdf</div>
                 </div>
                 <button className="p-1.5 bg-slate-50 hover:bg-slate-200 rounded text-sky-400">
@@ -96,7 +96,7 @@ export default function CustomerPortal() {
 
               <div className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-200">Commercial Invoice</div>
+                  <div className="font-semibold text-slate-800">Commercial Invoice</div>
                   <div className="text-[10px] text-slate-500">INV-2026-3001.pdf</div>
                 </div>
                 <button className="p-1.5 bg-slate-50 hover:bg-slate-200 rounded text-sky-400">
@@ -106,7 +106,7 @@ export default function CustomerPortal() {
 
               <div className="p-3 bg-white rounded-xl border border-slate-200 flex items-center justify-between">
                 <div>
-                  <div className="font-semibold text-slate-200">Proof of Delivery (POD)</div>
+                  <div className="font-semibold text-slate-800">Proof of Delivery (POD)</div>
                   <div className="text-[10px] text-emerald-400">Signed & Verified</div>
                 </div>
                 <button className="p-1.5 bg-slate-50 hover:bg-slate-200 rounded text-emerald-400">
@@ -118,7 +118,7 @@ export default function CustomerPortal() {
 
           {/* Delivery Feedback */}
           <div className="p-5 bg-white border border-slate-200 rounded-2xl space-y-3">
-            <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Submit Delivery Experience Feedback</h3>
+            <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">Submit Delivery Experience Feedback</h3>
 
             {!feedbackSubmitted ? (
               <div className="space-y-3 text-xs">
@@ -131,7 +131,7 @@ export default function CustomerPortal() {
                 </div>
                 <textarea
                   placeholder="Share details about communication, punctuality, and driver experience..."
-                  className="w-full p-3 bg-white border border-slate-200 rounded-xl text-slate-200 focus:outline-none focus:border-sky-500"
+                  className="w-full p-3 bg-white border border-slate-200 rounded-xl text-slate-800 focus:outline-none focus:border-sky-500"
                   rows={2}
                 />
                 <button
@@ -142,14 +142,14 @@ export default function CustomerPortal() {
                 </button>
               </div>
             ) : (
-              <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-semibold text-center">
+              <div className="p-3 bg-emerald-50 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-semibold text-center">
                 Thank you! Your delivery feedback has been logged into our operational quality audit.
               </div>
             )}
           </div>
         </div>
       ) : (
-        <div className="p-12 text-center text-slate-400 text-xs bg-white border border-slate-200 rounded-2xl">
+        <div className="p-12 text-center text-slate-500 text-xs bg-white border border-slate-200 rounded-2xl">
           Enter a shipment number above to track your freight live.
         </div>
       )}

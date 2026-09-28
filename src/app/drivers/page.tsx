@@ -194,11 +194,11 @@ export default function DriversPage() {
                     title="Click to toggle duty status"
                     className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
                       driver.status === 'AVAILABLE'
-                        ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                         : driver.status === 'ON_TRIP'
-                        ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/30'
+                        ? 'bg-indigo-50 text-indigo-600 border-indigo-500/30'
                         : driver.status === 'REST'
-                        ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                        ? 'bg-amber-50 text-amber-600 border-amber-500/30'
                         : 'bg-slate-500/10 text-slate-600 border-slate-500/30'
                     }`}
                   >
@@ -208,14 +208,14 @@ export default function DriversPage() {
                     <>
                       <button
                         onClick={() => openEditModal(driver)}
-                        className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                        className="p-1 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
                         title="Edit Driver"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteDriver(driver.id)}
-                        className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                        className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
                         title="Delete Driver"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -227,22 +227,22 @@ export default function DriversPage() {
 
               <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100">
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">On-Time Rate</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">On-Time Rate</span>
                   <span className="text-emerald-600 font-bold font-mono">{driver.onTimeRatePercent}%</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Rating</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Rating</span>
                   <span className="text-amber-500 font-bold font-mono flex items-center space-x-1">
                     <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                     <span>{driver.rating}</span>
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Total Trips</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Total Trips</span>
                   <span className="text-slate-800 font-mono">{driver.totalTripsCount}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Phone</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Phone</span>
                   <span className="text-slate-700 font-mono text-[10px] truncate block">{driver.phone}</span>
                 </div>
               </div>
@@ -260,7 +260,7 @@ export default function DriversPage() {
                 <UserSquare2 className="w-4 h-4 text-sky-500" />
                 <span>Register New Driver</span>
               </h3>
-              <button onClick={() => setShowRegisterModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowRegisterModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -343,7 +343,7 @@ export default function DriversPage() {
                 <Edit3 className="w-4 h-4 text-sky-500" />
                 <span>Edit Driver Details</span>
               </h3>
-              <button onClick={() => setEditingDriver(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingDriver(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

@@ -154,7 +154,7 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
                     <span className="text-[10px] text-slate-500 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
                   </div>
                   <div className="text-[11px] text-slate-600">{evt.remarks}</div>
-                  <div className="text-[10px] text-slate-400 font-mono">Source: {evt.source} • By: {evt.userName || 'System'}</div>
+                  <div className="text-[10px] text-slate-500 font-mono">Source: {evt.source} • By: {evt.userName || 'System'}</div>
                 </div>
               ))}
             </div>

@@ -186,7 +186,7 @@ export default function QuotesPage() {
                     <td className="p-3">${q.ratePerTon} / ton</td>
                     <td className="p-3 text-emerald-600 font-bold">${q.totalPrice.toLocaleString()}</td>
                     <td className="p-3 font-sans">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/30">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-500/30">
                         {q.status}
                       </span>
                     </td>
@@ -194,14 +194,14 @@ export default function QuotesPage() {
                       <div className="flex items-center justify-end space-x-1.5">
                         <button
                           onClick={() => openEditModal(q)}
-                          className="p-1.5 text-slate-400 hover:text-sky-600 hover:bg-slate-100 rounded-lg transition"
+                          className="p-1.5 text-slate-500 hover:text-sky-600 hover:bg-slate-100 rounded-lg transition"
                           title="Edit Quote"
                         >
                           <Edit className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDeleteQuote(q.id)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded-lg transition"
+                          className="p-1.5 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded-lg transition"
                           title="Delete Quote"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -225,7 +225,7 @@ export default function QuotesPage() {
                 <Calculator className="w-4 h-4 text-sky-500" />
                 <span>Calculate &amp; Create Rate Quote</span>
               </h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -331,7 +331,7 @@ export default function QuotesPage() {
                 <Edit className="w-4 h-4 text-sky-500" />
                 <span>Edit Rate Quote ({editingQuote.id})</span>
               </h3>
-              <button onClick={() => setEditingQuote(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingQuote(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

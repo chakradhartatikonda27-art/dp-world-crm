@@ -125,8 +125,8 @@ export default function RoutesPage() {
                 <span
                   className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
                     c.status === 'OPEN'
-                      ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
-                      : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                      ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
+                      : 'bg-amber-50 text-amber-600 border-amber-500/30'
                   }`}
                 >
                   {c.status}
@@ -139,15 +139,15 @@ export default function RoutesPage() {
 
               <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-xl text-xs font-mono border border-slate-100">
                 <div>
-                  <span className="text-slate-400 text-[10px] uppercase block font-sans">DISTANCE</span>
+                  <span className="text-slate-500 text-[10px] uppercase block font-sans">DISTANCE</span>
                   <span className="text-slate-900 font-bold">{c.dist}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 text-[10px] uppercase block font-sans">CHECKPOINTS</span>
+                  <span className="text-slate-500 text-[10px] uppercase block font-sans">CHECKPOINTS</span>
                   <span className="text-slate-900 font-bold">{c.checkpointsCount || c.checkpoints?.length || 0} Points</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 text-[10px] uppercase block font-sans">AVG TIME</span>
+                  <span className="text-slate-500 text-[10px] uppercase block font-sans">AVG TIME</span>
                   <span className="text-slate-900 font-bold">{c.avgHours} Hrs</span>
                 </div>
               </div>
@@ -178,7 +178,7 @@ export default function RoutesPage() {
                 <MapPin className="w-4 h-4 text-sky-500" />
                 <span>Add Route Checkpoint</span>
               </h3>
-              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowAddModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -266,7 +266,7 @@ export default function RoutesPage() {
                 </h3>
                 <p className="text-[11px] text-slate-500 mt-0.5">{viewingCorridor.dist} • {viewingCorridor.avgHours} hrs SLA target</p>
               </div>
-              <button onClick={() => setViewingCorridor(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setViewingCorridor(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -279,7 +279,7 @@ export default function RoutesPage() {
                     className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs"
                   >
                     <div className="flex items-center space-x-3">
-                      <div className="w-6 h-6 rounded-full bg-sky-500/10 text-sky-600 flex items-center justify-center font-mono font-bold text-[11px]">
+                      <div className="w-6 h-6 rounded-full bg-sky-50 text-sky-600 flex items-center justify-center font-mono font-bold text-[11px]">
                         {idx + 1}
                       </div>
                       <div>
@@ -293,17 +293,17 @@ export default function RoutesPage() {
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                           cp.status === 'NORMAL'
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                            ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                             : cp.status === 'QUEUE'
-                            ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
-                            : 'bg-rose-500/10 text-rose-600 border-rose-500/30'
+                            ? 'bg-amber-50 text-amber-600 border-amber-500/30'
+                            : 'bg-rose-50 text-rose-600 border-rose-500/30'
                         }`}
                       >
                         {cp.status}
                       </span>
                       <button
                         onClick={() => handleDeleteCheckpoint(viewingCorridor.id, cp.id)}
-                        className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-200 transition"
+                        className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-200 transition"
                         title="Remove Checkpoint"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -312,7 +312,7 @@ export default function RoutesPage() {
                   </div>
                 ))
               ) : (
-                <div className="text-center py-6 text-slate-400 text-xs">No check points configured for this corridor.</div>
+                <div className="text-center py-6 text-slate-500 text-xs">No check points configured for this corridor.</div>
               )}
             </div>
 

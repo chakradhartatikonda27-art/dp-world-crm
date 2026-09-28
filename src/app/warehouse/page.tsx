@@ -223,17 +223,17 @@ export default function WarehousePage() {
                     <td className="p-3 font-sans font-medium text-slate-900">{i.description}</td>
                     <td className="p-3 font-sans text-slate-500">{i.binLocation}</td>
                     <td className="p-3 font-bold">
-                      {i.quantity} <span className="text-[10px] text-slate-400 font-normal">{i.unitType}</span>
+                      {i.quantity} <span className="text-[10px] text-slate-500 font-normal">{i.unitType}</span>
                     </td>
                     <td className="p-3 text-slate-600">{i.weightKg.toLocaleString()} kg</td>
                     <td className="p-3 font-sans">
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                           i.status === 'READY_FOR_DISPATCH'
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                            ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                             : i.status === 'IN_STOCK'
-                            ? 'bg-sky-500/10 text-sky-600 border-sky-500/30'
-                            : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                            ? 'bg-sky-50 text-sky-600 border-sky-500/30'
+                            : 'bg-amber-50 text-amber-600 border-amber-500/30'
                         }`}
                       >
                         {i.status.replace(/_/g, ' ')}
@@ -243,14 +243,14 @@ export default function WarehousePage() {
                       <div className="flex items-center justify-end space-x-1">
                         <button
                           onClick={() => openEditModal(i)}
-                          className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                          className="p-1 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
                           title="Edit Inventory Item"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDeleteStock(i.id)}
-                          className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                          className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
                           title="Delete Stock Item"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -274,7 +274,7 @@ export default function WarehousePage() {
                 <ArrowDownRight className="w-4 h-4 text-emerald-500" />
                 <span>Inbound Stock Receipt</span>
               </h3>
-              <button onClick={() => setShowInboundModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowInboundModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -372,7 +372,7 @@ export default function WarehousePage() {
                 <ArrowUpRight className="w-4 h-4 text-sky-500" />
                 <span>Outbound Stock Dispatch</span>
               </h3>
-              <button onClick={() => setShowOutboundModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowOutboundModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -434,7 +434,7 @@ export default function WarehousePage() {
                 <Edit3 className="w-4 h-4 text-sky-500" />
                 <span>Edit Stock Item ({editingItem.skuCode})</span>
               </h3>
-              <button onClick={() => setEditingItem(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingItem(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

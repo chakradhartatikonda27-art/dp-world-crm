@@ -181,7 +181,7 @@ export default function AutomationPage() {
                     onClick={() => handleToggleRuleActive(rule.id, rule.active)}
                     className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition ${
                       rule.active
-                        ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                         : 'bg-slate-200 text-slate-500 border-slate-300 '
                     }`}
                   >
@@ -189,14 +189,14 @@ export default function AutomationPage() {
                   </button>
                   <button
                     onClick={() => openEditModal(rule)}
-                    className="p-1 text-slate-400 hover:text-sky-600 hover:bg-slate-100 rounded transition"
+                    className="p-1 text-slate-500 hover:text-sky-600 hover:bg-slate-100 rounded transition"
                     title="Edit Rule"
                   >
                     <Edit className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDeleteRule(rule.id)}
-                    className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded transition"
+                    className="p-1 text-slate-500 hover:text-rose-600 hover:bg-slate-100 rounded transition"
                     title="Delete Rule"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -211,15 +211,15 @@ export default function AutomationPage() {
 
               <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Event Trigger</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Event Trigger</span>
                   <span className="text-slate-800 font-mono font-medium">{rule.eventType}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Execution Count</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Execution Count</span>
                   <span className="text-emerald-600 font-mono font-bold">{rule.triggerCount || 0} Triggers</span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Condition</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Condition</span>
                   <span className="text-slate-700 font-mono text-[11px]">
                     IF {rule.conditionJson?.field} {rule.conditionJson?.operator} {String(rule.conditionJson?.value)}
                   </span>
@@ -239,7 +239,7 @@ export default function AutomationPage() {
                 <Cpu className="w-4 h-4 text-sky-500" />
                 <span>Create Workflow Automation Rule</span>
               </h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -347,7 +347,7 @@ export default function AutomationPage() {
                 <Edit className="w-4 h-4 text-sky-500" />
                 <span>Edit Automation Rule ({editingRule.id})</span>
               </h3>
-              <button onClick={() => setEditingRule(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingRule(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -421,7 +421,7 @@ export default function AutomationPage() {
                 <Zap className="w-5 h-5" />
                 <h3 className="font-bold text-sm text-slate-900">Live Client WhatsApp Automation</h3>
               </div>
-              <button onClick={() => setShowSimModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowSimModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -437,10 +437,10 @@ export default function AutomationPage() {
                     <div className="text-[10px] text-emerald-600 font-semibold">Verified Business Account</div>
                   </div>
                 </div>
-                <span className="text-[10px] font-mono text-slate-400">Just now</span>
+                <span className="text-[10px] font-mono text-slate-500">Just now</span>
               </div>
 
-              <div className="p-3 bg-emerald-100 text-slate-900 rounded-xl text-xs space-y-2 border border-emerald-500/20">
+              <div className="p-3 bg-emerald-100 text-slate-900 rounded-xl text-xs space-y-2 border border-emerald-200">
                 <div className="font-bold text-emerald-800">🚨 GEOFENCE ARRIVAL ALERT</div>
                 <p>
                   Truck <strong>RAB 123A (John)</strong> carrying Container <strong>MSCU1234567</strong> has entered the <strong>Rusumo Border OSBP Crossing</strong> geofence boundary.

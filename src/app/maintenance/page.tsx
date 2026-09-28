@@ -195,9 +195,9 @@ export default function MaintenancePage() {
                       <span
                         className={`px-2 py-0.5 rounded text-[10px] font-bold border ${
                           w.status === 'COMPLETED'
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                            ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                             : w.status === 'IN_SERVICE'
-                            ? 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                            ? 'bg-amber-50 text-amber-600 border-amber-500/30'
                             : 'bg-slate-500/10 text-slate-600 border-slate-500/30'
                         }`}
                       >
@@ -214,14 +214,14 @@ export default function MaintenancePage() {
                         </button>
                         <button
                           onClick={() => openEditModal(w)}
-                          className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                          className="p-1 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
                           title="Edit Work Order"
                         >
                           <Edit3 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDeleteOrder(w.id)}
-                          className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                          className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
                           title="Delete Work Order"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
@@ -245,7 +245,7 @@ export default function MaintenancePage() {
                 <Wrench className="w-4 h-4 text-sky-500" />
                 <span>Schedule Work Order</span>
               </h3>
-              <button onClick={() => setShowScheduleModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowScheduleModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -334,7 +334,7 @@ export default function MaintenancePage() {
                 <Edit3 className="w-4 h-4 text-sky-500" />
                 <span>Edit Work Order ({editingOrder.id})</span>
               </h3>
-              <button onClick={() => setEditingOrder(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingOrder(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

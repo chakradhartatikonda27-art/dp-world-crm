@@ -50,7 +50,7 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
             <Plus className="w-5 h-5 text-sky-600" />
             <h3 className="font-bold text-slate-900 text-sm">Create New Shipment Booking</h3>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-700">
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-700">
             <X className="w-4 h-4" />
           </button>
         </div>

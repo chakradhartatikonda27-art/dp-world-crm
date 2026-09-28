@@ -147,24 +147,24 @@ export default function InvoicesPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="p-4 bg-white border border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] text-slate-400 uppercase font-semibold">Total Invoice Revenue</div>
+            <div className="text-[10px] text-slate-500 uppercase font-semibold">Total Invoice Revenue</div>
             <div className="text-2xl font-bold font-mono text-emerald-600 mt-1">
               ${totalRevenue.toLocaleString()}
             </div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
             <DollarSign className="w-6 h-6" />
           </div>
         </div>
 
         <div className="p-4 bg-white border border-slate-200 rounded-2xl flex items-center justify-between shadow-sm">
           <div>
-            <div className="text-[10px] text-slate-400 uppercase font-semibold">Outstanding Unpaid Balance</div>
+            <div className="text-[10px] text-slate-500 uppercase font-semibold">Outstanding Unpaid Balance</div>
             <div className="text-2xl font-bold font-mono text-amber-600 mt-1">
               ${totalUnpaid.toLocaleString()}
             </div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center">
             <Clock className="w-6 h-6" />
           </div>
         </div>
@@ -203,8 +203,8 @@ export default function InvoicesPage() {
                         title="Click to toggle payment state"
                         className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
                           inv.status === 'PAID'
-                            ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
-                            : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                            ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
+                            : 'bg-amber-50 text-amber-600 border-amber-500/30'
                         }`}
                       >
                         {inv.status}
@@ -224,7 +224,7 @@ export default function InvoicesPage() {
                         target="_blank"
                         rel="noreferrer"
                         title="Send Invoice to WhatsApp"
-                        className="p-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 rounded-lg border border-emerald-500/30 flex items-center space-x-1 text-[10px] font-bold"
+                        className="p-1.5 bg-emerald-50 hover:bg-emerald-500/20 text-emerald-600 rounded-lg border border-emerald-500/30 flex items-center space-x-1 text-[10px] font-bold"
                       >
                         <Share2 className="w-3.5 h-3.5" />
                         <span className="hidden sm:inline">WhatsApp</span>
@@ -247,7 +247,7 @@ export default function InvoicesPage() {
                 <Receipt className="w-4 h-4 text-emerald-500" />
                 <span>Create Customer Freight Invoice</span>
               </h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -354,16 +354,16 @@ export default function InvoicesPage() {
 
             <div className="grid grid-cols-2 gap-4 text-xs">
               <div>
-                <span className="text-[10px] uppercase text-slate-400 font-semibold block">Billed To</span>
+                <span className="text-[10px] uppercase text-slate-500 font-semibold block">Billed To</span>
                 <div className="font-bold text-slate-900 mt-0.5">{viewingInvoice.customerName}</div>
                 <div className="text-slate-500">Shipment Ref: {viewingInvoice.shipmentNumber}</div>
               </div>
               <div className="text-right">
-                <span className="text-[10px] uppercase text-slate-400 font-semibold block">Payment Terms</span>
+                <span className="text-[10px] uppercase text-slate-500 font-semibold block">Payment Terms</span>
                 <div className="font-mono text-slate-700 mt-0.5">Due: {viewingInvoice.dueDate}</div>
                 <span
                   className={`inline-block mt-1 px-2 py-0.5 rounded text-[10px] font-bold ${
-                    viewingInvoice.status === 'PAID' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-amber-500/10 text-amber-600'
+                    viewingInvoice.status === 'PAID' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
                   }`}
                 >
                   STATUS: {viewingInvoice.status}

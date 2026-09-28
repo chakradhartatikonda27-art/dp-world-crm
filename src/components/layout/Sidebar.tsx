@@ -138,7 +138,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
 
         {sections.map((section) => (
           <div key={section.titleKey} className="space-y-1">
-            <div className="px-3 text-[10px] uppercase tracking-wider font-semibold text-slate-400">
+            <div className="px-3 text-[10px] uppercase tracking-wider font-semibold text-slate-500">
               {t(section.titleKey)}
             </div>
             {section.items.map((item) => {

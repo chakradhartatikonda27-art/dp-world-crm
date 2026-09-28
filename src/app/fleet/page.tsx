@@ -200,10 +200,10 @@ export default function FleetPage() {
                     title="Click to toggle status"
                     className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
                       truck.status === 'AVAILABLE'
-                        ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                        ? 'bg-emerald-50 text-emerald-600 border-emerald-500/30'
                         : truck.status === 'IN_TRANSIT'
-                        ? 'bg-sky-500/10 text-sky-600 border-sky-500/30'
-                        : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
+                        ? 'bg-sky-50 text-sky-600 border-sky-500/30'
+                        : 'bg-amber-50 text-amber-600 border-amber-500/30'
                     }`}
                   >
                     {truck.status}
@@ -212,19 +212,19 @@ export default function FleetPage() {
 
                 <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100">
                   <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Body Type</span>
+                    <span className="text-slate-500 block text-[10px] uppercase font-semibold">Body Type</span>
                     <span className="text-slate-800 font-medium">{truck.vehicleType.replace(/_/g, ' ')}</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Capacity</span>
+                    <span className="text-slate-500 block text-[10px] uppercase font-semibold">Capacity</span>
                     <span className="text-slate-800 font-mono font-medium">{truck.capacityTons} Tons</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Odometer</span>
+                    <span className="text-slate-500 block text-[10px] uppercase font-semibold">Odometer</span>
                     <span className="text-slate-800 font-mono">{truck.odometerKm.toLocaleString()} km</span>
                   </div>
                   <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Fuel Level</span>
+                    <span className="text-slate-500 block text-[10px] uppercase font-semibold">Fuel Level</span>
                     <span className="text-emerald-600 font-mono font-bold">{truck.fuelLevelPercent || 85}%</span>
                   </div>
                 </div>
@@ -242,7 +242,7 @@ export default function FleetPage() {
                   </button>
                   <button
                     onClick={() => handleDeleteTruck(truck.id)}
-                    className="px-2.5 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 rounded-lg text-xs font-semibold flex items-center space-x-1 border border-rose-500/20"
+                    className="px-2.5 py-1 bg-rose-50 hover:bg-rose-500/20 text-rose-600 rounded-lg text-xs font-semibold flex items-center space-x-1 border border-rose-500/20"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Delete</span>
@@ -263,7 +263,7 @@ export default function FleetPage() {
                 <TruckIcon className="w-4 h-4 text-sky-500" />
                 <span>{editingTruck ? 'Edit Vehicle Details' : 'Add New Fleet Vehicle'}</span>
               </h3>
-              <button onClick={() => { setShowAddModal(false); setEditingTruck(null); }} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => { setShowAddModal(false); setEditingTruck(null); }} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

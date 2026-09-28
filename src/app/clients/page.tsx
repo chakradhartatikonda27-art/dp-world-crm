@@ -161,7 +161,7 @@ export default function ClientsPage() {
 
       {/* Search Bar */}
       <div className="relative max-w-md">
-        <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+        <Search className="w-4 h-4 absolute left-3 top-3 text-slate-500" />
         <input
           type="text"
           placeholder="Search by company name or account code..."
@@ -186,22 +186,22 @@ export default function ClientsPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="font-bold text-slate-900 text-sm">{client.name}</div>
-                  <div className="text-[10px] text-slate-400 font-mono">Code: {client.code}</div>
+                  <div className="text-[10px] text-slate-500 font-mono">Code: {client.code}</div>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/30">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-500/30">
                     ACTIVE
                   </span>
                   <button
                     onClick={() => openEditModal(client)}
-                    className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
+                    className="p-1 text-slate-500 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
                     title="Edit Client"
                   >
                     <Edit3 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDeleteClient(client.id)}
-                    className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
+                    className="p-1 text-slate-500 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
                     title="Delete Client"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -211,19 +211,19 @@ export default function ClientsPage() {
 
               <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100">
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Credit Limit</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Credit Limit</span>
                   <span className="text-emerald-600 font-bold font-mono">
                     ${client.creditLimit.toLocaleString()}
                   </span>
                 </div>
                 <div>
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Active Orders</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Active Orders</span>
                   <span className="text-slate-800 font-mono font-bold">
                     {client.activeShipmentsCount || 2} Active
                   </span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Email Contact</span>
+                  <span className="text-slate-500 block text-[10px] uppercase font-semibold">Email Contact</span>
                   <span className="text-slate-700 font-mono text-[11px] truncate block">{client.email}</span>
                 </div>
               </div>
@@ -241,7 +241,7 @@ export default function ClientsPage() {
                 <Building2 className="w-4 h-4 text-sky-500" />
                 <span>Register New Client Account</span>
               </h3>
-              <button onClick={() => setShowRegisterModal(false)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setShowRegisterModal(false)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -334,7 +334,7 @@ export default function ClientsPage() {
                 <Edit3 className="w-4 h-4 text-sky-500" />
                 <span>Edit Client Details</span>
               </h3>
-              <button onClick={() => setEditingClient(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setEditingClient(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>

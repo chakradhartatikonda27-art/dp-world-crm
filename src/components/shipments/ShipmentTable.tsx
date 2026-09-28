@@ -68,7 +68,7 @@ export const ShipmentTable: React.FC<ShipmentTableProps> = ({ shipments, onSelec
                 <td className="py-3.5 px-4 text-slate-700">
                   <div className="flex items-center space-x-1.5 font-medium">
                     <span className="truncate max-w-[110px]">{s.origin.name}</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <ArrowUpRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                     <span className="truncate max-w-[110px]">{s.destination.name}</span>
                   </div>
                 </td>

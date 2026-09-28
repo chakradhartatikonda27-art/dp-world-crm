@@ -70,7 +70,7 @@ export default function AuditPage() {
 
       {/* Search Bar */}
       <div className="relative max-w-md">
-        <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
+        <Search className="w-4 h-4 absolute left-3 top-3 text-slate-500" />
         <input
           type="text"
           placeholder="Search by action, user name, or entity..."
@@ -134,7 +134,7 @@ export default function AuditPage() {
                 <History className="w-4 h-4 text-sky-500" />
                 <span>Audit Payload Details</span>
               </h3>
-              <button onClick={() => setViewingLog(null)} className="text-slate-400 hover:text-slate-600">
+              <button onClick={() => setViewingLog(null)} className="text-slate-500 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
