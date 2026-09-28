@@ -52,8 +52,12 @@ export const ControlTowerMap: React.FC<ControlTowerMapProps> = ({ vehicles, onSe
 
   const customIcon = L.divIcon({
     className: 'custom-truck-marker',
-    html: `<div style="background-color: #0284c7; width: 16px; height: 16px; border-radius: 50%; border: 2.5px solid white; box-shadow: 0 0 12px #0284c7; display: flex; items-center; justify-center; color: white; font-size: 8px;">🚛</div>`,
-    iconSize: [16, 16],
+    html: `<div style="position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
+      <div style="position: absolute; width: 24px; height: 24px; border-radius: 50%; background: rgba(14, 165, 233, 0.4); animation: radar-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+      <div style="position: relative; background-color: #0284c7; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 14px #0284c7; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; z-index: 2;">🚛</div>
+    </div>`,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
   });
 
   const centerLat = vehicles.length > 0 ? vehicles[0].latitude : -2.3845;
