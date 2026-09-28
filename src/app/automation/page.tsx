@@ -8,6 +8,7 @@ export default function AutomationPage() {
   const [rules, setRules] = useState<WorkflowRule[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showSimModal, setShowSimModal] = useState(false);
   const [editingRule, setEditingRule] = useState<WorkflowRule | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -143,13 +144,22 @@ export default function AutomationPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Create Automation Rule</span>
-        </button>
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setShowSimModal(true)}
+            className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
+          >
+            <Zap className="w-4 h-4" />
+            <span>Simulate Client WhatsApp Alert</span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Create Automation Rule</span>
+          </button>
+        </div>
       </div>
 
       {/* Grid */}
@@ -398,6 +408,62 @@ export default function AutomationPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* WhatsApp Geofence Alert Simulation Modal */}
+      {showSimModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+              <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
+                <Zap className="w-5 h-5" />
+                <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">Live Client WhatsApp Automation</h3>
+              </div>
+              <button onClick={() => setShowSimModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-4 bg-emerald-950/20 border border-emerald-500/30 rounded-2xl space-y-3 font-sans">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-xs">
+                    DP
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-900 dark:text-slate-100 text-xs">DP World Geofence Bot</div>
+                    <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Verified Business Account</div>
+                  </div>
+                </div>
+                <span className="text-[10px] font-mono text-slate-400">Just now</span>
+              </div>
+
+              <div className="p-3 bg-emerald-100 dark:bg-emerald-900/40 text-slate-900 dark:text-emerald-100 rounded-xl text-xs space-y-2 border border-emerald-500/20">
+                <div className="font-bold text-emerald-800 dark:text-emerald-300">🚨 GEOFENCE ARRIVAL ALERT</div>
+                <p>
+                  Truck <strong>RAB 123A (John)</strong> carrying Container <strong>MSCU1234567</strong> has entered the <strong>Rusumo Border OSBP Crossing</strong> geofence boundary.
+                </p>
+                <div className="pt-1 text-[11px] font-mono border-t border-emerald-500/30 space-y-0.5">
+                  <div>Status: <span className="font-bold text-emerald-600 dark:text-emerald-300">ARRIVED AT BORDER</span></div>
+                  <div>Remaining: 180 km • Target ETA: 14:30</div>
+                </div>
+              </div>
+
+              <div className="text-[10px] text-slate-500 text-center font-medium">
+                Automated SMS &amp; WhatsApp message sent via DP World Logistics Webhooks.
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-2">
+              <button
+                onClick={() => setShowSimModal(false)}
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold shadow-md"
+              >
+                Close Simulator
+              </button>
+            </div>
           </div>
         </div>
       )}
