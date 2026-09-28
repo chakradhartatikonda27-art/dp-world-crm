@@ -43,25 +43,25 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[60] bg-slate-900/50 dark:bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col text-slate-900 dark:text-slate-100">
-        <div className="p-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+    <div className="fixed inset-0 z-[60] bg-white/50 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col text-slate-900">
+        <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Plus className="w-5 h-5 text-sky-600 dark:text-sky-400" />
-            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm">Create New Shipment Booking</h3>
+            <Plus className="w-5 h-5 text-sky-600" />
+            <h3 className="font-bold text-slate-900 text-sm">Create New Shipment Booking</h3>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-700 dark:hover:text-white">
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-700">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-5 space-y-4 text-xs overflow-y-auto flex-1">
           <div>
-            <label className="block text-slate-700 dark:text-slate-400 mb-1 font-semibold">Select Customer</label>
+            <label className="block text-slate-700 mb-1 font-semibold">Select Customer</label>
             <select
               value={customerId}
               onChange={(e) => setCustomerId(e.target.value)}
-              className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-200 focus:outline-none focus:border-sky-500"
+              className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:border-sky-500"
             >
               {customers.map((c) => (
                 <option key={c.id} value={c.id}>
@@ -73,62 +73,62 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-slate-700 dark:text-slate-400 mb-1 font-semibold">Origin Hub</label>
+              <label className="block text-slate-700 mb-1 font-semibold">Origin Hub</label>
               <input
                 type="text"
                 value={originName}
                 onChange={(e) => setOriginName(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-200"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
               />
             </div>
             <div>
-              <label className="block text-slate-700 dark:text-slate-400 mb-1 font-semibold">Destination Hub</label>
+              <label className="block text-slate-700 mb-1 font-semibold">Destination Hub</label>
               <input
                 type="text"
                 value={destName}
                 onChange={(e) => setDestName(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-200"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-slate-700 dark:text-slate-400 mb-1 font-semibold">Cargo Description</label>
+              <label className="block text-slate-700 mb-1 font-semibold">Cargo Description</label>
               <input
                 type="text"
                 value={cargoType}
                 onChange={(e) => setCargoType(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-200"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
               />
             </div>
             <div>
-              <label className="block text-slate-700 dark:text-slate-400 mb-1 font-semibold">Container Number</label>
+              <label className="block text-slate-700 mb-1 font-semibold">Container Number</label>
               <input
                 type="text"
                 value={containerNumber}
                 onChange={(e) => setContainerNumber(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-200 font-mono"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-slate-700 dark:text-slate-400 mb-1 font-semibold">Weight (kg)</label>
+              <label className="block text-slate-700 mb-1 font-semibold">Weight (kg)</label>
               <input
                 type="number"
                 value={weightKg}
                 onChange={(e) => setWeightKg(Number(e.target.value))}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-200 font-mono"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900 font-mono"
               />
             </div>
             <div>
-              <label className="block text-slate-700 dark:text-slate-400 mb-1 font-semibold">Priority Level</label>
+              <label className="block text-slate-700 mb-1 font-semibold">Priority Level</label>
               <select
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-lg text-slate-900 dark:text-slate-200"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-slate-900"
               >
                 <option value="STANDARD">STANDARD</option>
                 <option value="HIGH">HIGH</option>
@@ -137,11 +137,11 @@ export const CreateShipmentModal: React.FC<CreateShipmentModalProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+          <div className="flex items-center justify-end space-x-2 pt-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+              className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
             >
               Cancel
             </button>

@@ -187,7 +187,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
         <div className="fixed inset-0 z-[9500] lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-white/40 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobile}
           />
           {/* Panel */}

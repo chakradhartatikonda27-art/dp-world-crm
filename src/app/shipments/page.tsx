@@ -79,7 +79,7 @@ export default function ShipmentsPage() {
       </div>
 
       {/* Filter Bar */}
-      <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="p-4 bg-white border border-slate-200 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="relative w-full md:w-80">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
@@ -87,7 +87,7 @@ export default function ShipmentsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by shipment #, container, customer, truck..."
-            className="w-full pl-9 pr-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-slate-200"
+            className="w-full pl-9 pr-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs text-slate-200"
           />
         </div>
 
@@ -98,7 +98,7 @@ export default function ShipmentsPage() {
               key={st}
               onClick={() => setStatusFilter(st)}
               className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition-all ${
-                statusFilter === st ? 'bg-sky-600 text-white shadow-sm' : 'bg-slate-950 dark:bg-slate-950 text-slate-400 hover:text-white'
+                statusFilter === st ? 'bg-sky-600 text-white shadow-sm' : 'bg-white text-slate-400 hover:text-white'
               }`}
             >
               {st.replace(/_/g, ' ')}

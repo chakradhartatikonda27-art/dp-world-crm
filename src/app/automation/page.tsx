@@ -133,13 +133,13 @@ export default function AutomationPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2">
             <Cpu className="w-5 h-5 text-sky-500 shrink-0" />
             <span>Workflow &amp; Event Automation Engine</span>
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Event triggers, automatic exception creation, status transition rules, and automated notifications.
           </p>
         </div>
@@ -172,31 +172,31 @@ export default function AutomationPage() {
           {rules.map((rule) => (
             <div
               key={rule.id}
-              className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
+              className="p-4 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition"
             >
               <div className="flex items-center justify-between">
-                <span className="font-mono text-xs font-bold text-sky-600 dark:text-sky-400">{rule.id}</span>
+                <span className="font-mono text-xs font-bold text-sky-600">{rule.id}</span>
                 <div className="flex items-center space-x-1.5">
                   <button
                     onClick={() => handleToggleRuleActive(rule.id, rule.active)}
                     className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold border transition ${
                       rule.active
-                        ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                        : 'bg-slate-200 dark:bg-slate-800 text-slate-500 border-slate-300 dark:border-slate-700'
+                        ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                        : 'bg-slate-200 text-slate-500 border-slate-300 '
                     }`}
                   >
                     {rule.active ? 'ACTIVE' : 'INACTIVE'}
                   </button>
                   <button
                     onClick={() => openEditModal(rule)}
-                    className="p-1 text-slate-400 hover:text-sky-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
+                    className="p-1 text-slate-400 hover:text-sky-600 hover:bg-slate-100 rounded transition"
                     title="Edit Rule"
                   >
                     <Edit className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => handleDeleteRule(rule.id)}
-                    className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
+                    className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 rounded transition"
                     title="Delete Rule"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
@@ -204,23 +204,23 @@ export default function AutomationPage() {
                 </div>
               </div>
 
-              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
                 <Zap className="w-4 h-4 text-amber-500 shrink-0" />
                 <span>{rule.name}</span>
               </h3>
 
-              <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 p-2.5 rounded-xl border border-slate-100 dark:border-slate-800/80">
+              <div className="grid grid-cols-2 gap-2 text-xs pt-2 border-t border-slate-100 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
                 <div>
-                  <span className="text-slate-400 dark:text-slate-500 block text-[10px] uppercase font-semibold">Event Trigger</span>
-                  <span className="text-slate-800 dark:text-slate-200 font-mono font-medium">{rule.eventType}</span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Event Trigger</span>
+                  <span className="text-slate-800 font-mono font-medium">{rule.eventType}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 dark:text-slate-500 block text-[10px] uppercase font-semibold">Execution Count</span>
-                  <span className="text-emerald-600 dark:text-emerald-400 font-mono font-bold">{rule.triggerCount || 0} Triggers</span>
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Execution Count</span>
+                  <span className="text-emerald-600 font-mono font-bold">{rule.triggerCount || 0} Triggers</span>
                 </div>
                 <div className="col-span-2">
-                  <span className="text-slate-400 dark:text-slate-500 block text-[10px] uppercase font-semibold">Condition</span>
-                  <span className="text-slate-700 dark:text-slate-300 font-mono text-[11px]">
+                  <span className="text-slate-400 block text-[10px] uppercase font-semibold">Condition</span>
+                  <span className="text-slate-700 font-mono text-[11px]">
                     IF {rule.conditionJson?.field} {rule.conditionJson?.operator} {String(rule.conditionJson?.value)}
                   </span>
                 </div>
@@ -232,37 +232,37 @@ export default function AutomationPage() {
 
       {/* Create Rule Modal */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
                 <Cpu className="w-4 h-4 text-sky-500" />
                 <span>Create Workflow Automation Rule</span>
               </h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleCreateRule} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Rule Name *</label>
+                <label className="block text-slate-700 font-medium mb-1">Rule Name *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Stationary Delay Alert (>90m)"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Trigger Event</label>
+                <label className="block text-slate-700 font-medium mb-1">Trigger Event</label>
                 <select
                   value={eventType}
                   onChange={(e) => setEventType(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <option value="GPS_PING">GPS Ping Event</option>
                   <option value="POD_COMPLETED">POD Uploaded</option>
@@ -273,20 +273,20 @@ export default function AutomationPage() {
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Field</label>
+                  <label className="block text-slate-700 font-medium mb-1">Field</label>
                   <input
                     type="text"
                     value={field}
                     onChange={(e) => setField(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Operator</label>
+                  <label className="block text-slate-700 font-medium mb-1">Operator</label>
                   <select
                     value={operator}
                     onChange={(e: any) => setOperator(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
                   >
                     <option value="GREATER_THAN">GREATER_THAN</option>
                     <option value="LESS_THAN">LESS_THAN</option>
@@ -294,22 +294,22 @@ export default function AutomationPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Value</label>
+                  <label className="block text-slate-700 font-medium mb-1">Value</label>
                   <input
                     type="text"
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Action Type</label>
+                <label className="block text-slate-700 font-medium mb-1">Action Type</label>
                 <select
                   value={actionType}
                   onChange={(e: any) => setActionType(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <option value="CREATE_EXCEPTION">Create Operational Exception</option>
                   <option value="UPDATE_STATUS">Update Shipment Status</option>
@@ -317,11 +317,11 @@ export default function AutomationPage() {
                 </select>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
@@ -340,36 +340,36 @@ export default function AutomationPage() {
 
       {/* Edit Rule Modal */}
       {editingRule && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
                 <Edit className="w-4 h-4 text-sky-500" />
                 <span>Edit Automation Rule ({editingRule.id})</span>
               </h3>
-              <button onClick={() => setEditingRule(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setEditingRule(null)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleUpdateRule} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Rule Name *</label>
+                <label className="block text-slate-700 font-medium mb-1">Rule Name *</label>
                 <input
                   type="text"
                   required
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Trigger Event</label>
+                <label className="block text-slate-700 font-medium mb-1">Trigger Event</label>
                 <select
                   value={editEventType}
                   onChange={(e) => setEditEventType(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <option value="GPS_PING">GPS Ping Event</option>
                   <option value="POD_COMPLETED">POD Uploaded</option>
@@ -379,11 +379,11 @@ export default function AutomationPage() {
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Action Type</label>
+                <label className="block text-slate-700 font-medium mb-1">Action Type</label>
                 <select
                   value={editActionType}
                   onChange={(e: any) => setEditActionType(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 >
                   <option value="CREATE_EXCEPTION">Create Operational Exception</option>
                   <option value="UPDATE_STATUS">Update Shipment Status</option>
@@ -391,11 +391,11 @@ export default function AutomationPage() {
                 </select>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setEditingRule(null)}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
@@ -414,14 +414,14 @@ export default function AutomationPage() {
 
       {/* WhatsApp Geofence Alert Simulation Modal */}
       {showSimModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <div className="flex items-center space-x-2 text-emerald-600 dark:text-emerald-400">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <div className="flex items-center space-x-2 text-emerald-600">
                 <Zap className="w-5 h-5" />
-                <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">Live Client WhatsApp Automation</h3>
+                <h3 className="font-bold text-sm text-slate-900">Live Client WhatsApp Automation</h3>
               </div>
-              <button onClick={() => setShowSimModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setShowSimModal(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -433,20 +433,20 @@ export default function AutomationPage() {
                     DP
                   </div>
                   <div>
-                    <div className="font-bold text-slate-900 dark:text-slate-100 text-xs">DP World Geofence Bot</div>
-                    <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold">Verified Business Account</div>
+                    <div className="font-bold text-slate-900 text-xs">DP World Geofence Bot</div>
+                    <div className="text-[10px] text-emerald-600 font-semibold">Verified Business Account</div>
                   </div>
                 </div>
                 <span className="text-[10px] font-mono text-slate-400">Just now</span>
               </div>
 
-              <div className="p-3 bg-emerald-100 dark:bg-emerald-900/40 text-slate-900 dark:text-emerald-100 rounded-xl text-xs space-y-2 border border-emerald-500/20">
-                <div className="font-bold text-emerald-800 dark:text-emerald-300">🚨 GEOFENCE ARRIVAL ALERT</div>
+              <div className="p-3 bg-emerald-100 text-slate-900 rounded-xl text-xs space-y-2 border border-emerald-500/20">
+                <div className="font-bold text-emerald-800">🚨 GEOFENCE ARRIVAL ALERT</div>
                 <p>
                   Truck <strong>RAB 123A (John)</strong> carrying Container <strong>MSCU1234567</strong> has entered the <strong>Rusumo Border OSBP Crossing</strong> geofence boundary.
                 </p>
                 <div className="pt-1 text-[11px] font-mono border-t border-emerald-500/30 space-y-0.5">
-                  <div>Status: <span className="font-bold text-emerald-600 dark:text-emerald-300">ARRIVED AT BORDER</span></div>
+                  <div>Status: <span className="font-bold text-emerald-600">ARRIVED AT BORDER</span></div>
                   <div>Remaining: 180 km • Target ETA: 14:30</div>
                 </div>
               </div>

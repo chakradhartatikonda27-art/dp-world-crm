@@ -30,7 +30,7 @@ export default function LiveTrackingPage() {
   return (
     <div className="space-y-6">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-4 rounded-xl shadow-lg">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-slate-200 p-4 rounded-xl shadow-lg">
         <div>
           <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
             <MapPin className="w-5 h-5 text-sky-400" />
@@ -58,7 +58,7 @@ export default function LiveTrackingPage() {
           </button>
           <button
             onClick={fetchTrackingData}
-            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs border border-slate-700 transition"
+            className="p-1.5 bg-slate-50 hover:bg-slate-200 text-slate-300 rounded-lg text-xs border border-slate-200 transition"
             title="Refresh Pings"
           >
             <RefreshCw className="w-4 h-4" />
@@ -74,8 +74,8 @@ export default function LiveTrackingPage() {
         </div>
 
         {/* Live Active Telemetry & Geofence Panel */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col h-[400px] lg:h-full overflow-hidden shadow-xl">
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800 shrink-0">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col h-[400px] lg:h-full overflow-hidden shadow-xl">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-200 shrink-0">
             <h2 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
               <Truck className="w-4 h-4 text-sky-400" />
               <span>Live Vehicle Stream ({vehicles.length})</span>
@@ -89,7 +89,7 @@ export default function LiveTrackingPage() {
             {vehicles.map((v) => (
               <div
                 key={v.shipmentId}
-                className="bg-slate-950/80 border border-slate-800 hover:border-sky-500/50 p-3.5 rounded-xl text-xs space-y-2.5 transition-all shadow-sm"
+                className="bg-white/80 border border-slate-200 hover:border-sky-500/50 p-3.5 rounded-xl text-xs space-y-2.5 transition-all shadow-sm"
               >
                 {/* Header info */}
                 <div className="flex items-center justify-between">
@@ -107,7 +107,7 @@ export default function LiveTrackingPage() {
                 </div>
 
                 {/* Core Shipment Metrics */}
-                <div className="text-slate-300 text-[11px] bg-slate-900 p-2 rounded-lg border border-slate-800/80 space-y-1">
+                <div className="text-slate-300 text-[11px] bg-white p-2 rounded-lg border border-slate-200/80 space-y-1">
                   <div className="flex justify-between">
                     <span>Shipment ID:</span>
                     <strong className="text-sky-400 font-mono">{v.shipmentNumber}</strong>
@@ -127,7 +127,7 @@ export default function LiveTrackingPage() {
                 </div>
 
                 {/* Live Telemetry Grid */}
-                <div className="grid grid-cols-2 gap-2 text-[10px] bg-slate-900/90 p-2 rounded-lg border border-slate-800 font-mono">
+                <div className="grid grid-cols-2 gap-2 text-[10px] bg-white/90 p-2 rounded-lg border border-slate-200 font-mono">
                   <div>
                     <span className="text-slate-500 block text-[9px]">LATITUDE</span>
                     <span className="text-slate-200 font-bold">{v.latitude.toFixed(4)}</span>

@@ -26,7 +26,7 @@ export default function AiPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      <div className="flex items-center justify-between bg-white border border-slate-200 p-4 rounded-xl">
         <div>
           <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
             <Bot className="w-5 h-5 text-indigo-400" />
@@ -38,7 +38,7 @@ export default function AiPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[560px]">
         {/* Chat Interface */}
-        <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-xl p-4 flex flex-col justify-between">
+        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-xl p-4 flex flex-col justify-between">
           <div className="space-y-3 overflow-y-auto pr-2 flex-1">
             {chat.map((msg, idx) => (
               <div
@@ -58,14 +58,14 @@ export default function AiPage() {
             ))}
           </div>
 
-          <div className="pt-3 border-t border-slate-800 flex items-center space-x-2">
+          <div className="pt-3 border-t border-slate-200 flex items-center space-x-2">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder="Ask AI about shipments, delays, cost leakage, or OCR documents..."
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
+              className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-sky-500"
             />
             <button
               onClick={handleSend}
@@ -78,18 +78,18 @@ export default function AiPage() {
         </div>
 
         {/* OCR Tool Side Panel */}
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-4">
+        <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-4">
           <h2 className="text-sm font-bold text-slate-200 flex items-center space-x-2">
             <FileSearch className="w-4 h-4 text-sky-400" />
             <span>Document Vision OCR Scanner</span>
           </h2>
-          <div className="bg-slate-950 p-4 border border-dashed border-slate-800 rounded-lg text-center space-y-2">
+          <div className="bg-white p-4 border border-dashed border-slate-200 rounded-lg text-center space-y-2">
             <div className="text-xs text-slate-400">Drag & drop Bill of Lading, Invoice, or Customs Declaration</div>
-            <button className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-sky-400 border border-sky-500/30 rounded text-xs font-semibold">
+            <button className="px-3 py-1.5 bg-slate-50 hover:bg-slate-200 text-sky-400 border border-sky-500/30 rounded text-xs font-semibold">
               Select Sample Document
             </button>
           </div>
-          <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs space-y-1.5 font-mono">
+          <div className="bg-white p-3 rounded-lg border border-slate-200 text-xs space-y-1.5 font-mono">
             <div className="text-[10px] text-slate-500 font-bold uppercase">OCR Extraction Output (97% Conf.)</div>
             <div>Shipper: <strong className="text-slate-200">MSC Shipping Line</strong></div>
             <div>Consignee: <strong className="text-slate-200">DP World Rwanda</strong></div>

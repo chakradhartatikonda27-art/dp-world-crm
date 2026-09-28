@@ -133,13 +133,13 @@ export default function DocumentsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-slate-200 p-4 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
+          <h1 className="text-lg sm:text-xl font-bold text-slate-900 flex items-center space-x-2">
             <FileText className="w-5 h-5 text-sky-500 shrink-0" />
             <span>Documents &amp; Customs Vault</span>
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Bill of Lading, Customs Declarations, Automated OCR verification, and POD digital vault.
           </p>
         </div>
@@ -163,11 +163,11 @@ export default function DocumentsPage() {
           {documents.map((doc) => (
             <div
               key={doc.id}
-              className="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition flex flex-col justify-between"
+              className="p-4 bg-white border border-slate-200 rounded-2xl space-y-3 shadow-sm hover:shadow-md transition flex flex-col justify-between"
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] font-bold text-sky-600 dark:text-sky-400 px-2 py-0.5 rounded bg-sky-500/10">
+                  <span className="font-mono text-[10px] font-bold text-sky-600 px-2 py-0.5 rounded bg-sky-500/10">
                     {(doc.documentType || doc.docType || 'CUSTOMS').replace(/_/g, ' ')}
                   </span>
                   <div className="flex items-center space-x-1">
@@ -175,22 +175,22 @@ export default function DocumentsPage() {
                       onClick={() => handleToggleVerification(doc.id, doc.verificationStatus || 'VERIFIED')}
                       className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
                         (doc.verificationStatus || 'VERIFIED') === 'VERIFIED'
-                          ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
-                          : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30'
+                          ? 'bg-emerald-500/10 text-emerald-600 border-emerald-500/30'
+                          : 'bg-amber-500/10 text-amber-600 border-amber-500/30'
                       }`}
                     >
                       {doc.verificationStatus || doc.clearanceStatus || 'VERIFIED'}
                     </button>
                     <button
                       onClick={() => openEditModal(doc)}
-                      className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                      className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 transition"
                       title="Edit Document"
                     >
                       <Edit3 className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleDeleteDocument(doc.id)}
-                      className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                      className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 transition"
                       title="Delete Document"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -198,17 +198,17 @@ export default function DocumentsPage() {
                   </div>
                 </div>
 
-                <h3 className="font-bold text-slate-900 dark:text-slate-100 text-xs line-clamp-2">{doc.title || doc.fileName || doc.docType}</h3>
-                <div className="text-[11px] text-slate-500 dark:text-slate-400 space-y-0.5">
-                  <div>Uploaded by: <span className="text-slate-700 dark:text-slate-300 font-medium">{doc.uploadedBy}</span></div>
+                <h3 className="font-bold text-slate-900 text-xs line-clamp-2">{doc.title || doc.fileName || doc.docType}</h3>
+                <div className="text-[11px] text-slate-500 space-y-0.5">
+                  <div>Uploaded by: <span className="text-slate-700 font-medium">{doc.uploadedBy}</span></div>
                   <div>Date: <span className="font-mono">{(doc.uploadedAt || doc.createdAt || new Date().toISOString()).split('T')[0]}</span></div>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <button
                   onClick={() => setViewingDoc(doc)}
-                  className="text-sky-600 dark:text-sky-400 font-semibold hover:underline flex items-center space-x-1"
+                  className="text-sky-600 font-semibold hover:underline flex items-center space-x-1"
                 >
                   <Eye className="w-3.5 h-3.5" />
                   <span>Inspect OCR Data</span>
@@ -216,7 +216,7 @@ export default function DocumentsPage() {
                 <a
                   href="#"
                   onClick={(e) => { e.preventDefault(); alert(`Downloading document: ${doc.title}`); }}
-                  className="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200"
+                  className="text-slate-500 hover:text-slate-800"
                 >
                   <Download className="w-4 h-4" />
                 </a>
@@ -228,38 +228,38 @@ export default function DocumentsPage() {
 
       {/* Upload Document Modal */}
       {showUploadModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
                 <FileText className="w-4 h-4 text-sky-500" />
                 <span>Upload Document to Vault</span>
               </h3>
-              <button onClick={() => setShowUploadModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setShowUploadModal(false)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleUploadDocument} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Document Title *</label>
+                <label className="block text-slate-700 font-medium mb-1">Document Title *</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Master Bill of Lading #BOL-9904"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Document Category</label>
+                  <label className="block text-slate-700 font-medium mb-1">Document Category</label>
                   <select
                     value={documentType}
                     onChange={(e) => setDocumentType(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="BILL_OF_LADING">BILL OF LADING</option>
                     <option value="CUSTOMS">CUSTOMS DECLARATION</option>
@@ -270,21 +270,21 @@ export default function DocumentsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Shipment ID</label>
+                  <label className="block text-slate-700 font-medium mb-1">Shipment ID</label>
                   <input
                     type="text"
                     value={shipmentId}
                     onChange={(e) => setShipmentId(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowUploadModal(false)}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
@@ -303,37 +303,37 @@ export default function DocumentsPage() {
 
       {/* Edit Document Modal */}
       {editingDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
                 <Edit3 className="w-4 h-4 text-sky-500" />
                 <span>Edit Document Metadata ({editingDoc.id})</span>
               </h3>
-              <button onClick={() => setEditingDoc(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setEditingDoc(null)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleEditDocSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Document Title</label>
+                <label className="block text-slate-700 font-medium mb-1">Document Title</label>
                 <input
                   type="text"
                   required
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Category</label>
+                  <label className="block text-slate-700 font-medium mb-1">Category</label>
                   <select
                     value={editType}
                     onChange={(e) => setEditType(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="BILL_OF_LADING">BILL OF LADING</option>
                     <option value="CUSTOMS">CUSTOMS DECLARATION</option>
@@ -344,11 +344,11 @@ export default function DocumentsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Verification Status</label>
+                  <label className="block text-slate-700 font-medium mb-1">Verification Status</label>
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value as any)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500"
                   >
                     <option value="VERIFIED">VERIFIED</option>
                     <option value="PENDING">PENDING</option>
@@ -357,11 +357,11 @@ export default function DocumentsPage() {
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setEditingDoc(null)}
-                  className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl font-medium"
+                  className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl font-medium"
                 >
                   Cancel
                 </button>
@@ -380,21 +380,21 @@ export default function DocumentsPage() {
 
       {/* Inspect OCR Modal */}
       {viewingDoc && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
-              <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm p-4">
+          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2">
                 <Eye className="w-4 h-4 text-sky-500" />
                 <span>Extracted OCR Field Data</span>
               </h3>
-              <button onClick={() => setViewingDoc(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+              <button onClick={() => setViewingDoc(null)} className="text-slate-400 hover:text-slate-600">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 font-mono text-xs space-y-2">
-              <div className="text-sky-600 dark:text-sky-400 font-bold">{viewingDoc.title}</div>
-              <pre className="text-[11px] text-slate-700 dark:text-slate-300 whitespace-pre-wrap">
+            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 font-mono text-xs space-y-2">
+              <div className="text-sky-600 font-bold">{viewingDoc.title}</div>
+              <pre className="text-[11px] text-slate-700 whitespace-pre-wrap">
                 {JSON.stringify(viewingDoc.ocrData || { status: 'PARSED_SUCCESS' }, null, 2)}
               </pre>
             </div>
@@ -402,7 +402,7 @@ export default function DocumentsPage() {
             <div className="flex justify-end pt-2">
               <button
                 onClick={() => setViewingDoc(null)}
-                className="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold"
+                className="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl text-xs font-semibold"
               >
                 Close
               </button>

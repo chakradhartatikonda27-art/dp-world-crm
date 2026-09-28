@@ -226,9 +226,9 @@ export default function DriverMobileApp() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-slate-900 border-2 border-sky-500/40 rounded-3xl overflow-hidden shadow-2xl space-y-0 my-3">
+    <div className="max-w-md mx-auto bg-white border-2 border-sky-500/40 rounded-3xl overflow-hidden shadow-2xl space-y-0 my-3">
       {/* Driver Language & Easy Mode Header */}
-      <div className="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+      <div className="bg-white px-4 py-3 border-b border-slate-200 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="w-9 h-9 rounded-2xl bg-sky-500 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-sky-500/30">
             🚛
@@ -240,7 +240,7 @@ export default function DriverMobileApp() {
         </div>
 
         {/* Easy Language Switcher */}
-        <div className="flex items-center space-x-1 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        <div className="flex items-center space-x-1 bg-white p-1 rounded-xl border border-slate-200">
           {(['EN', 'SW', 'RW', 'FR'] as DriverLang[]).map((lang) => (
             <button
               key={lang}
@@ -274,13 +274,13 @@ export default function DriverMobileApp() {
       {activeShipment ? (
         <div className="p-4 space-y-4 text-xs">
           {/* Visual Step Tracker */}
-          <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
+          <div className="p-3 bg-white rounded-2xl border border-slate-200 space-y-2">
             <div className="flex items-center justify-between text-[11px] font-bold text-slate-300">
               <span className="text-emerald-400">1. Dar Port ✓</span>
               <span className="text-amber-400 animate-pulse">2. Border 📍</span>
               <span className="text-slate-500">3. Kigali 🏁</span>
             </div>
-            <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden flex">
+            <div className="w-full h-2 bg-slate-50 rounded-full overflow-hidden flex">
               <div className="w-1/3 bg-emerald-500" />
               <div className="w-1/3 bg-amber-500 animate-pulse" />
               <div className="w-1/3 bg-slate-700" />
@@ -288,7 +288,7 @@ export default function DriverMobileApp() {
           </div>
 
           {/* Active Cargo Card */}
-          <div className="p-3.5 bg-slate-950 rounded-2xl border border-sky-500/30 space-y-2">
+          <div className="p-3.5 bg-white rounded-2xl border border-sky-500/30 space-y-2">
             <div className="flex items-center justify-between">
               <span className="font-mono font-extrabold text-sky-400 text-base">{activeShipment.shipmentNumber}</span>
               <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold text-[10px] border border-emerald-500/30">
@@ -346,7 +346,7 @@ export default function DriverMobileApp() {
 
             <button
               onClick={() => handleDriverStatusUpdate('CHECKPOINT', 'Driver passed border checkpoint inspection.')}
-              className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl text-center border border-slate-700 flex items-center justify-center space-x-1.5"
+              className="w-full py-2.5 bg-slate-50 hover:bg-slate-200 text-slate-200 font-bold text-xs rounded-xl text-center border border-slate-200 flex items-center justify-center space-x-1.5"
             >
               <span>🚩</span>
               <span>{text.checkpointBtn}</span>
@@ -354,7 +354,7 @@ export default function DriverMobileApp() {
           </div>
 
           {/* Proof of Delivery (POD) */}
-          <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+          <div className="p-4 bg-white rounded-2xl border border-slate-200 space-y-3">
             <div className="font-extrabold text-slate-200 text-xs flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
               <span>DELIVERY PROOF &amp; SIGNATURE</span>
@@ -369,7 +369,7 @@ export default function DriverMobileApp() {
                     value={recipientName}
                     onChange={(e) => setRecipientName(e.target.value)}
                     placeholder="e.g. Claire Mutoni"
-                    className="w-full px-3.5 py-3 bg-slate-900 border-2 border-slate-700 focus:border-sky-500 rounded-xl text-xs text-slate-100 font-bold"
+                    className="w-full px-3.5 py-3 bg-white border-2 border-slate-200 focus:border-sky-500 rounded-xl text-xs text-slate-100 font-bold"
                   />
                 </div>
 
@@ -383,7 +383,7 @@ export default function DriverMobileApp() {
                     className={`py-3 rounded-xl font-extrabold text-xs flex items-center justify-center space-x-1.5 border-2 transition ${
                       photoUploaded
                         ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                        : 'bg-slate-900 text-slate-200 border-slate-700 hover:border-sky-500'
+                        : 'bg-white text-slate-200 border-slate-200 hover:border-sky-500'
                     }`}
                   >
                     <Camera className="w-4 h-4 text-sky-400" />
@@ -393,7 +393,7 @@ export default function DriverMobileApp() {
                   <button
                     type="button"
                     onClick={() => alert('✍️ Screen Signature Saved!')}
-                    className="py-3 bg-slate-900 text-slate-200 border-2 border-slate-700 hover:border-emerald-500 rounded-xl font-extrabold text-xs flex items-center justify-center space-x-1.5"
+                    className="py-3 bg-white text-slate-200 border-2 border-slate-200 hover:border-emerald-500 rounded-xl font-extrabold text-xs flex items-center justify-center space-x-1.5"
                   >
                     <Edit3 className="w-4 h-4 text-emerald-400" />
                     <span>{text.signBtn}</span>
@@ -417,7 +417,7 @@ export default function DriverMobileApp() {
           </div>
 
           {/* SOS Emergency Button */}
-          <div className="pt-2 border-t border-slate-800">
+          <div className="pt-2 border-t border-slate-200">
             <button
               onClick={() => setShowSOSModal(true)}
               className="w-full py-3 bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border-2 border-rose-500/40 rounded-2xl font-black text-xs flex items-center justify-center space-x-2 shadow-lg"
@@ -433,9 +433,9 @@ export default function DriverMobileApp() {
 
       {/* Refuel & Receipt Photo Modal */}
       {showRefuelModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
-          <div className="bg-slate-900 border-2 border-sky-500 rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm p-4">
+          <div className="bg-white border-2 border-sky-500 rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-2">
               <div className="flex items-center space-x-2 text-sky-400 font-bold text-xs">
                 <Fuel className="w-4 h-4" />
                 <span>LOG REFUEL &amp; RECEIPT PHOTO</span>
@@ -453,7 +453,7 @@ export default function DriverMobileApp() {
                   required
                   value={refuelStation}
                   onChange={(e) => setRefuelStation(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 font-semibold"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-100 font-semibold"
                 />
               </div>
 
@@ -468,7 +468,7 @@ export default function DriverMobileApp() {
                       setRefuelLitres(e.target.value);
                       setRefuelCost((Number(e.target.value) * 1.15).toFixed(2));
                     }}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sky-400 font-black text-sm"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-sky-400 font-black text-sm"
                   />
                 </div>
                 <div>
@@ -478,7 +478,7 @@ export default function DriverMobileApp() {
                     step="0.01"
                     value={refuelCost}
                     onChange={(e) => setRefuelCost(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 font-bold text-xs"
+                    className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-100 font-bold text-xs"
                   />
                 </div>
               </div>
@@ -490,7 +490,7 @@ export default function DriverMobileApp() {
                   required
                   value={refuelOdometer}
                   onChange={(e) => setRefuelOdometer(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 font-mono font-bold"
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-slate-100 font-mono font-bold"
                 />
               </div>
 
@@ -505,7 +505,7 @@ export default function DriverMobileApp() {
                   className={`py-2.5 rounded-xl text-[11px] font-bold border flex items-center justify-center space-x-1 ${
                     receiptPhotoTaken
                       ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
-                      : 'bg-slate-800 text-slate-200 border-slate-700'
+                      : 'bg-slate-50 text-slate-200 border-slate-200'
                   }`}
                 >
                   <Camera className="w-3.5 h-3.5 text-amber-400" />
@@ -515,18 +515,18 @@ export default function DriverMobileApp() {
                 <button
                   type="button"
                   onClick={() => alert('📸 Dashboard Odometer Photo captured!')}
-                  className="py-2.5 rounded-xl text-[11px] font-bold bg-slate-800 text-slate-200 border border-slate-700 flex items-center justify-center space-x-1"
+                  className="py-2.5 rounded-xl text-[11px] font-bold bg-slate-50 text-slate-200 border border-slate-200 flex items-center justify-center space-x-1"
                 >
                   <Gauge className="w-3.5 h-3.5 text-sky-400" />
                   <span>📷 Odometer Photo</span>
                 </button>
               </div>
 
-              <div className="pt-2 border-t border-slate-800 flex space-x-2">
+              <div className="pt-2 border-t border-slate-200 flex space-x-2">
                 <button
                   type="button"
                   onClick={() => setShowRefuelModal(false)}
-                  className="flex-1 py-2.5 bg-slate-800 text-slate-300 rounded-xl font-bold"
+                  className="flex-1 py-2.5 bg-slate-50 text-slate-300 rounded-xl font-bold"
                 >
                   Cancel
                 </button>
@@ -545,8 +545,8 @@ export default function DriverMobileApp() {
 
       {/* SOS Emergency Call Modal */}
       {showSOSModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
-          <div className="bg-slate-900 border-2 border-rose-500 rounded-3xl w-full max-w-sm p-6 space-y-4 text-center shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm p-4">
+          <div className="bg-white border-2 border-rose-500 rounded-3xl w-full max-w-sm p-6 space-y-4 text-center shadow-2xl">
             <div className="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center mx-auto text-xl">
               🆘
             </div>
@@ -554,13 +554,13 @@ export default function DriverMobileApp() {
             <p className="text-xs text-slate-400">
               Need immediate assistance with breakdown, border delay, or accident?
             </p>
-            <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 text-xs font-mono text-sky-400 font-bold">
+            <div className="p-3 bg-white rounded-2xl border border-slate-200 text-xs font-mono text-sky-400 font-bold">
               Dispatch Hotline: +250 788 100 002
             </div>
             <div className="flex space-x-2 pt-2">
               <button
                 onClick={() => setShowSOSModal(false)}
-                className="flex-1 py-2.5 bg-slate-800 text-slate-300 rounded-xl font-bold text-xs"
+                className="flex-1 py-2.5 bg-slate-50 text-slate-300 rounded-xl font-bold text-xs"
               >
                 Close
               </button>

@@ -11,7 +11,7 @@ export default function PodPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-xl">
+      <div className="flex items-center justify-between bg-white border border-slate-200 p-4 rounded-xl">
         <div>
           <h1 className="text-xl font-bold text-slate-100 flex items-center space-x-2">
             <CheckCircle2 className="w-5 h-5 text-emerald-400" />
@@ -21,10 +21,10 @@ export default function PodPage() {
         </div>
       </div>
 
-      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="border-b border-slate-800 bg-slate-950/60 text-slate-400 uppercase text-[10px] font-semibold">
+            <tr className="border-b border-slate-200 bg-white/60 text-slate-400 uppercase text-[10px] font-semibold">
               <th className="p-3">POD ID</th>
               <th className="p-3">Shipment</th>
               <th className="p-3">Recipient Signee</th>
@@ -36,7 +36,7 @@ export default function PodPage() {
           </thead>
           <tbody className="divide-y divide-slate-800 text-slate-300 font-mono">
             {pods.map((p) => (
-              <tr key={p.id} className="hover:bg-slate-800/40">
+              <tr key={p.id} className="hover:bg-slate-50/40">
                 <td className="p-3 font-bold text-sky-400">{p.id}</td>
                 <td className="p-3 font-mono text-slate-300">{p.shipment}</td>
                 <td className="p-3 font-sans font-medium text-slate-200">{p.recipient}</td>

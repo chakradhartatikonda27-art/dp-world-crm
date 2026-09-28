@@ -35,24 +35,24 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
   return (
     <>
       {/* Backdrop (Starts below Navbar top-16) */}
-      <div className="fixed top-16 inset-x-0 bottom-0 z-[8999] bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-xs" onClick={onClose} />
+      <div className="fixed top-16 inset-x-0 bottom-0 z-[8999] bg-white/40 backdrop-blur-xs" onClick={onClose} />
 
       {/* Drawer Panel (Starts below Navbar top-16) */}
-      <div className="fixed top-16 bottom-0 right-0 w-full max-w-2xl bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl z-[9000] flex flex-col h-[calc(100vh-4rem)] text-slate-900 dark:text-slate-100">
+      <div className="fixed top-16 bottom-0 right-0 w-full max-w-2xl bg-white border-l border-slate-200 shadow-2xl z-[9000] flex flex-col h-[calc(100vh-4rem)] text-slate-900">
         {/* Header */}
-        <div className="p-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+        <div className="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-lg font-mono font-bold text-sky-600 dark:text-sky-400">{shipment.shipmentNumber}</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-sky-50 dark:bg-sky-500/10 text-sky-700 dark:text-sky-400 font-semibold border border-sky-200 dark:border-sky-500/20">
+              <span className="text-lg font-mono font-bold text-sky-600">{shipment.shipmentNumber}</span>
+              <span className="text-xs px-2 py-0.5 rounded bg-sky-50 text-sky-700 font-semibold border border-sky-200">
                 {shipment.status.replace(/_/g, ' ')}
               </span>
             </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">{shipment.customerName}</div>
+            <div className="text-xs text-slate-500 font-medium">{shipment.customerName}</div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
+            className="p-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 transition-colors"
           >
             <X className="w-4 h-4" />
           </button>
@@ -62,8 +62,8 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
         <div className="flex-1 overflow-y-auto p-5 space-y-6">
           {/* State Machine Transition Controls */}
           {allowedTransitions.length > 0 && (
-            <div className="p-4 bg-slate-50 dark:bg-slate-850 rounded-xl border border-sky-200 dark:border-sky-500/30 space-y-3">
-              <div className="text-xs font-bold text-sky-700 dark:text-sky-400 flex items-center space-x-1.5">
+            <div className="p-4 bg-slate-50 rounded-xl border border-sky-200 space-y-3">
+              <div className="text-xs font-bold text-sky-700 flex items-center space-x-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 <span>Execute Validated State Transition</span>
               </div>
@@ -75,7 +75,7 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                       selectedNextStatus === nextSt
                         ? 'bg-sky-600 text-white border-sky-400 shadow-md'
-                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-sky-500'
+                        : 'bg-white text-slate-700 border-slate-200 hover:border-sky-500'
                     }`}
                   >
                     → {nextSt.replace(/_/g, ' ')}
@@ -83,13 +83,13 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
                 ))}
               </div>
               {selectedNextStatus && (
-                <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-800">
+                <div className="space-y-2 pt-2 border-t border-slate-200">
                   <input
                     type="text"
                     value={remarks}
                     onChange={(e) => setRemarks(e.target.value)}
                     placeholder="Mandatory transition audit notes / driver remarks..."
-                    className="w-full px-3 py-1.5 bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-slate-200"
+                    className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900"
                   />
                   <button
                     onClick={handleApplyTransition}
@@ -105,16 +105,16 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
 
           {/* Key Overview Cards */}
           <div className="grid grid-cols-2 gap-3 text-xs">
-            <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-1">
-              <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Origin</span>
-              <div className="font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1">
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Origin</span>
+              <div className="font-bold text-slate-900 flex items-center space-x-1">
                 <MapPin className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                 <span className="truncate">{shipment.origin.name}</span>
               </div>
             </div>
-            <div className="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-1">
-              <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-semibold">Destination</span>
-              <div className="font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1">
+            <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-1">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Destination</span>
+              <div className="font-bold text-slate-900 flex items-center space-x-1">
                 <MapPin className="w-3.5 h-3.5 text-sky-500 shrink-0" />
                 <span className="truncate">{shipment.destination.name}</span>
               </div>
@@ -122,39 +122,39 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
           </div>
 
           {/* Assigned Fleet & Driver */}
-          <div className="p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2 text-xs">
-            <div className="font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5">
+          <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-2 text-xs">
+            <div className="font-bold text-slate-900 flex items-center space-x-1.5">
               <Truck className="w-4 h-4 text-sky-500" />
               <span>Assigned Vehicle &amp; Driver</span>
             </div>
             <div className="grid grid-cols-2 gap-2 pt-1 font-mono">
               <div>
-                <span className="text-slate-500 dark:text-slate-400 block text-[10px]">Truck Reg:</span>
-                <span className="font-bold text-slate-900 dark:text-slate-100">{shipment.truckRegistration || 'Unassigned'}</span>
+                <span className="text-slate-500 block text-[10px]">Truck Reg:</span>
+                <span className="font-bold text-slate-900">{shipment.truckRegistration || 'Unassigned'}</span>
               </div>
               <div>
-                <span className="text-slate-500 dark:text-slate-400 block text-[10px]">Driver:</span>
-                <span className="font-bold text-slate-900 dark:text-slate-100">{shipment.driverName || 'Unassigned'}</span>
+                <span className="text-slate-500 block text-[10px]">Driver:</span>
+                <span className="font-bold text-slate-900">{shipment.driverName || 'Unassigned'}</span>
               </div>
             </div>
           </div>
 
           {/* Timeline History */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center space-x-1.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
               <FileText className="w-3.5 h-3.5 text-sky-500" />
               <span>Audit Timeline Trail</span>
             </h4>
-            <div className="space-y-2 border-l-2 border-slate-200 dark:border-slate-800 pl-4 ml-1">
+            <div className="space-y-2 border-l-2 border-slate-200 pl-4 ml-1">
               {timeline.map((evt) => (
                 <div key={evt.id} className="relative space-y-0.5 text-xs">
-                  <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-white dark:ring-slate-900" />
+                  <span className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-white" />
                   <div className="flex items-center justify-between font-semibold">
-                    <span className="text-slate-900 dark:text-slate-100">{evt.eventType.replace(/_/g, ' ')}</span>
-                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
+                    <span className="text-slate-900">{evt.eventType.replace(/_/g, ' ')}</span>
+                    <span className="text-[10px] text-slate-500 font-mono">{new Date(evt.timestamp).toLocaleTimeString()}</span>
                   </div>
-                  <div className="text-[11px] text-slate-600 dark:text-slate-400">{evt.remarks}</div>
-                  <div className="text-[10px] text-slate-400 dark:text-slate-500 font-mono">Source: {evt.source} • By: {evt.userName || 'System'}</div>
+                  <div className="text-[11px] text-slate-600">{evt.remarks}</div>
+                  <div className="text-[10px] text-slate-400 font-mono">Source: {evt.source} • By: {evt.userName || 'System'}</div>
                 </div>
               ))}
             </div>
