@@ -191,17 +191,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
         {sidebarContent}
       </aside>
 
-      {/* Mobile / Tablet Overlay Drawer (z-[9999] so it sits ABOVE map layers) */}
+      {/* Mobile / Tablet Overlay Drawer */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-[9999] flex lg:hidden">
+        <div className="fixed inset-0 top-16 z-[9500] flex lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-[9999]"
+            className="fixed inset-0 top-16 bg-slate-950/80 backdrop-blur-sm z-[9500]"
             onClick={onCloseMobile}
           />
 
           {/* Sliding Drawer Container */}
-          <div className={`relative w-72 max-w-[85vw] h-full shadow-2xl transition-all z-[10000] ${
+          <div className={`relative w-72 max-w-[85vw] h-[calc(100vh-4rem)] shadow-2xl transition-all z-[9501] ${
             isLight ? 'bg-white text-slate-800' : 'bg-slate-900 text-slate-200'
           }`}>
             {sidebarContent}

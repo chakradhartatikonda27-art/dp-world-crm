@@ -34,11 +34,11 @@ export const ShipmentDetailDrawer: React.FC<ShipmentDetailDrawerProps> = ({
 
   return (
     <>
-      {/* Backdrop */}
-      <div className="fixed inset-0 z-[55] bg-slate-950/60 backdrop-blur-xs" onClick={onClose} />
+      {/* Backdrop (Starts below Navbar top-16) */}
+      <div className="fixed top-16 inset-x-0 bottom-0 z-[8999] bg-slate-950/60 backdrop-blur-xs" onClick={onClose} />
 
-      {/* Drawer */}
-      <div className="fixed inset-y-0 right-0 w-full max-w-2xl bg-slate-900 border-l border-slate-800 shadow-2xl z-[60] flex flex-col">
+      {/* Drawer Panel (Starts below Navbar top-16) */}
+      <div className="fixed top-16 bottom-0 right-0 w-full max-w-2xl bg-slate-900 border-l border-slate-800 shadow-2xl z-[9000] flex flex-col h-[calc(100vh-4rem)]">
         {/* Header */}
         <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
           <div>

@@ -77,7 +77,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header
-      className={`h-16 px-2.5 sm:px-4 flex items-center justify-between sticky top-0 z-[70] border-b transition-colors w-full max-w-full ${
+      className={`h-16 px-2.5 sm:px-4 flex items-center justify-between sticky top-0 z-[100000] border-b transition-colors w-full max-w-full ${
         isLight ? 'bg-white border-slate-200 text-slate-900 shadow-sm' : 'bg-slate-900 border-slate-800 text-white'
       }`}
     >
@@ -99,8 +99,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         <div className={`h-5 w-px hidden sm:block ${isLight ? 'bg-slate-200' : 'bg-slate-800'}`} />
 
-        {/* Tenant Switcher */}
-        <div className="relative hidden sm:block">
+        {/* Tenant Switcher (Available on both mobile and desktop) */}
+        <div className="relative">
           <button
             onClick={() => {
               setShowOrgDropdown(!showOrgDropdown);
@@ -114,13 +114,13 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <Building2 className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
-            <span className="truncate max-w-[100px] md:max-w-[160px] font-semibold">{currentOrg.name}</span>
+            <span className="truncate max-w-[85px] sm:max-w-[120px] md:max-w-[160px] font-semibold">{currentOrg.name}</span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
           </button>
 
           {showOrgDropdown && (
             <div
-              className={`absolute left-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[80] border ${
+              className={`absolute left-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[100001] border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
@@ -208,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {showLangDropdown && (
             <div
-              className={`absolute right-0 mt-2 w-44 rounded-2xl shadow-2xl py-1 z-[80] border ${
+              className={`absolute right-0 mt-2 w-44 rounded-2xl shadow-2xl py-1 z-[100001] border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
@@ -275,7 +275,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <span className="hidden sm:inline">{t('aiOps')}</span>
         </button>
 
-        {/* Role Selector Button & Dropdown */}
+        {/* Role Selector Button & Dropdown (Org Admin Block) */}
         <div className="relative">
           <button
             onClick={() => {
@@ -290,7 +290,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <UserCheck className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
-            <span className="font-bold text-[11px] sm:text-xs tracking-tight truncate max-w-[90px] sm:max-w-none">
+            <span className="font-bold text-[11px] sm:text-xs tracking-tight truncate max-w-[80px] sm:max-w-none">
               {currentRole.replace(/_/g, ' ')}
             </span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -298,7 +298,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {showRoleDropdown && (
             <div
-              className={`absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[80] border ${
+              className={`absolute right-0 mt-2 w-56 rounded-2xl shadow-2xl py-1 z-[100001] border ${
                 isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-700 text-white'
               }`}
             >
