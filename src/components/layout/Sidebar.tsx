@@ -33,6 +33,7 @@ import {
 } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { useAuth } from '@/context/AuthContext';
 
 interface SidebarProps {
   isMobileOpen?: boolean;
@@ -43,9 +44,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
   const pathname = usePathname();
   const { theme } = useTheme();
   const { t } = useLanguage();
+  const { canAccessRoute, currentRole } = useAuth();
   const isLight = theme === 'light';
 
-  const sections = [
+  const allSections = [
     {
       titleKey: 'operationsCore',
       items: [
@@ -104,6 +106,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
     },
   ];
 
+  // Filter items in each section based on role permissions
+  const sections = allSections
+    .map((section) => ({
+      ...section,
+      items: section.items.filter((item) => canAccessRoute(item.href)),
+    }))
+    .filter((section) => section.items.length > 0);
+
   const sidebarContent = (
     <div className="flex flex-col h-full justify-between py-4 px-3">
       {/* Mobile Drawer Header */}
@@ -123,6 +133,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
       </div>
 
       <div className="space-y-4 overflow-y-auto flex-1 pr-1">
+        {/* Active Role Indicator Badge in Sidebar */}
+        <div className="px-3 py-2 rounded-xl bg-sky-50 dark:bg-slate-800/80 border border-sky-200 dark:border-slate-700/80 flex items-center justify-between">
+          <span className="text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400">Role View</span>
+          <span className="text-[10px] font-extrabold font-mono text-sky-600 dark:text-sky-400">{currentRole.replace(/_/g, ' ')}</span>
+        </div>
+
         {sections.map((section) => (
           <div key={section.titleKey} className="space-y-1">
             <div className={`px-3 text-[10px] uppercase tracking-wider font-semibold ${
@@ -148,16 +164,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
                         ? 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200'
                         : 'bg-indigo-500/10 text-indigo-300 hover:bg-indigo-500/20 border border-indigo-500/20'
                       : isLight
-                      ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                      ? 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                      : 'text-slate-400 hover:bg-slate-800 hover:text-slate-100'
                   }`}
                 >
                   <div className="flex items-center space-x-2.5">
-                    <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-sky-500' : (item as any).color || (isLight ? 'text-slate-500' : 'text-slate-400')}`} />
+                    <Icon className={`w-4 h-4 ${(item as any).color || ''}`} />
                     <span>{t(item.labelKey)}</span>
                   </div>
                   {(item as any).badge && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-rose-500/20 text-rose-500 border border-rose-500/30 animate-pulse">
+                    <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                       {(item as any).badge}
                     </span>
                   )}
@@ -167,43 +183,34 @@ export const Sidebar: React.FC<SidebarProps> = ({ isMobileOpen = false, onCloseM
           </div>
         ))}
       </div>
-
-      <div className={`mt-4 p-3 border-t ${isLight ? 'border-slate-200 bg-slate-50' : 'border-slate-800 bg-slate-950/40'}`}>
-        <div className={`p-2.5 rounded-xl border text-xs ${isLight ? 'bg-white border-slate-200' : 'bg-slate-850 border-slate-800'}`}>
-          <div className={`font-semibold flex items-center justify-between ${isLight ? 'text-slate-800' : 'text-slate-200'}`}>
-            <span>System Telemetry</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-500" />
-          </div>
-          <div className={`mt-1 text-[10px] ${isLight ? 'text-slate-500' : 'text-slate-400'}`}>
-            GPS Ingestion: <span className="text-emerald-600 font-mono font-semibold">1,420 pings/m</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 
   return (
     <>
-      {/* Desktop Permanent Sidebar */}
-      <aside className={`w-60 border-r hidden lg:flex shrink-0 h-screen overflow-y-auto transition-colors ${
-        isLight ? 'bg-white border-slate-200 text-slate-800' : 'bg-slate-900 border-slate-800 text-slate-200'
-      }`}>
+      {/* Desktop Persistent Sidebar */}
+      <aside
+        className={`w-60 flex-shrink-0 hidden lg:block border-r transition-colors h-[calc(100vh-4rem)] sticky top-16 ${
+          isLight ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'
+        }`}
+      >
         {sidebarContent}
       </aside>
 
-      {/* Mobile / Tablet Overlay Drawer */}
+      {/* Mobile Slide-Over Drawer */}
       {isMobileOpen && (
-        <div className="fixed inset-0 top-16 z-[9500] flex lg:hidden">
+        <div className="fixed inset-0 z-[9500] lg:hidden">
           {/* Backdrop */}
           <div
-            className="fixed inset-0 top-16 bg-slate-950/80 backdrop-blur-sm z-[9500]"
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
             onClick={onCloseMobile}
           />
-
-          {/* Sliding Drawer Container */}
-          <div className={`relative w-72 max-w-[85vw] h-[calc(100vh-4rem)] shadow-2xl transition-all z-[9501] ${
-            isLight ? 'bg-white text-slate-800' : 'bg-slate-900 text-slate-200'
-          }`}>
+          {/* Panel */}
+          <div
+            className={`fixed inset-y-0 left-0 w-72 max-w-[85vw] shadow-2xl transition-transform ${
+              isLight ? 'bg-white text-slate-900' : 'bg-slate-900 text-white'
+            }`}
+          >
             {sidebarContent}
           </div>
         </div>

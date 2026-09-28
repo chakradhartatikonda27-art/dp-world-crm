@@ -3,8 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { Truck as TruckIcon, Wrench, ShieldCheck, Fuel, Plus, X, RefreshCw, Edit2, Trash2 } from 'lucide-react';
 import { Truck } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export default function FleetPage() {
+  const { currentRole } = useAuth();
+  const canEditFleet = currentRole === 'FLEET_MANAGER' || currentRole === 'ORG_ADMIN' || currentRole === 'SUPER_ADMIN';
+
   const [trucks, setTrucks] = useState<Truck[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -155,16 +159,18 @@ export default function FleetPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => {
-            setRegNum('');
-            setShowAddModal(true);
-          }}
-          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Add New Vehicle</span>
-        </button>
+        {canEditFleet && (
+          <button
+            onClick={() => {
+              setRegNum('');
+              setShowAddModal(true);
+            }}
+            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add New Vehicle</span>
+          </button>
+        )}
       </div>
 
       {/* Grid */}
@@ -225,22 +231,24 @@ export default function FleetPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end space-x-2">
-                <button
-                  onClick={() => handleOpenEdit(truck)}
-                  className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold flex items-center space-x-1"
-                >
-                  <Edit2 className="w-3.5 h-3.5" />
-                  <span>Edit</span>
-                </button>
-                <button
-                  onClick={() => handleDeleteTruck(truck.id)}
-                  className="px-2.5 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-lg text-xs font-semibold flex items-center space-x-1 border border-rose-500/20"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>Delete</span>
-                </button>
-              </div>
+              {canEditFleet && (
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-end space-x-2">
+                  <button
+                    onClick={() => handleOpenEdit(truck)}
+                    className="px-2.5 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg text-xs font-semibold flex items-center space-x-1"
+                  >
+                    <Edit2 className="w-3.5 h-3.5" />
+                    <span>Edit</span>
+                  </button>
+                  <button
+                    onClick={() => handleDeleteTruck(truck.id)}
+                    className="px-2.5 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 rounded-lg text-xs font-semibold flex items-center space-x-1 border border-rose-500/20"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Delete</span>
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

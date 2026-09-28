@@ -3,8 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { Shield, Plus, X, RefreshCw, UserCheck, Key, Lock, Eye, Edit, Trash2 } from 'lucide-react';
 import { User, UserRole } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export default function UsersPage() {
+  const { currentRole, currentOrgId } = useAuth();
+  const isAdmin = currentRole === 'ORG_ADMIN' || currentRole === 'SUPER_ADMIN';
+
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -166,13 +170,15 @@ export default function UsersPage() {
             <Key className="w-4 h-4 text-sky-500" />
             <span>RBAC Matrix</span>
           </button>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Create System User</span>
-          </button>
+          {isAdmin && (
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Create System User</span>
+            </button>
+          )}
         </div>
       </div>
 
@@ -196,8 +202,7 @@ export default function UsersPage() {
                   <div className="text-[10px] text-slate-400 font-mono">{u.email}</div>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <button
-                    onClick={() => handleToggleUserStatus(u.id, u.status)}
+                  <span
                     className={`px-2 py-0.5 rounded text-[10px] font-bold border transition ${
                       u.status === 'ACTIVE'
                         ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
@@ -205,21 +210,25 @@ export default function UsersPage() {
                     }`}
                   >
                     {u.status}
-                  </button>
-                  <button
-                    onClick={() => openEditModal(u)}
-                    className="p-1 text-slate-400 hover:text-sky-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
-                    title="Edit User"
-                  >
-                    <Edit className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteUser(u.id)}
-                    className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
-                    title="Delete User"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+                  </span>
+                  {isAdmin && (
+                    <>
+                      <button
+                        onClick={() => openEditModal(u)}
+                        className="p-1 text-slate-400 hover:text-sky-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
+                        title="Edit User"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteUser(u.id)}
+                        className="p-1 text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded transition"
+                        title="Delete User"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
 
