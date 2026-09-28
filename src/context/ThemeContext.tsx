@@ -24,6 +24,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       const saved = localStorage.getItem('logios_theme') as Theme;
       if (saved === 'dark' || saved === 'light') {
         setThemeState(saved);
+        if (saved === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
       }
     } catch (e) {}
   }, []);
@@ -33,6 +38,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       localStorage.setItem('logios_theme', t);
     } catch (e) {}
+    if (t === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   const toggleTheme = () => {
@@ -41,7 +51,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      <div className={theme === 'light' ? 'theme-light bg-slate-100 text-slate-900 min-h-screen' : 'theme-dark bg-slate-950 text-slate-100 min-h-screen'}>
+      <div
+        className={
+          theme === 'dark'
+            ? 'dark theme-dark bg-slate-950 text-slate-100 min-h-screen'
+            : 'theme-light bg-slate-100 text-slate-900 min-h-screen'
+        }
+      >
         {children}
       </div>
     </ThemeContext.Provider>
