@@ -1,8 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 
-export type Theme = 'light' | 'dark';
+export type Theme = 'light';
 
 interface ThemeContextType {
   theme: Theme;
@@ -17,47 +17,27 @@ const ThemeContext = createContext<ThemeContextType>({
 });
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>('light');
-
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('logios_theme') as Theme;
-      if (saved === 'dark' || saved === 'light') {
-        setThemeState(saved);
-        if (saved === 'dark') {
-          document.documentElement.classList.add('dark');
-        } else {
-          document.documentElement.classList.remove('dark');
-        }
-      }
+      localStorage.setItem('logios_theme', 'light');
+      document.documentElement.classList.remove('dark');
     } catch (e) {}
   }, []);
 
-  const setTheme = (t: Theme) => {
-    setThemeState(t);
+  const setTheme = () => {
     try {
-      localStorage.setItem('logios_theme', t);
+      localStorage.setItem('logios_theme', 'light');
     } catch (e) {}
-    if (t === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    document.documentElement.classList.remove('dark');
   };
 
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    setTheme();
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
-      <div
-        className={
-          theme === 'dark'
-            ? 'dark theme-dark bg-slate-950 text-slate-100 min-h-screen w-full transition-colors'
-            : 'theme-light bg-slate-50 text-slate-900 min-h-screen w-full transition-colors'
-        }
-      >
+    <ThemeContext.Provider value={{ theme: 'light', toggleTheme, setTheme }}>
+      <div className="theme-light bg-white text-slate-900 min-h-screen w-full">
         {children}
       </div>
     </ThemeContext.Provider>
