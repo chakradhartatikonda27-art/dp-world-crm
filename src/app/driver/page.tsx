@@ -17,6 +17,9 @@ import {
   Globe,
   ShieldAlert,
   Sparkles,
+  Fuel,
+  X,
+  Gauge
 } from 'lucide-react';
 import { Shipment, ShipmentStatus } from '@/types';
 
@@ -32,7 +35,16 @@ export default function DriverMobileApp() {
   const [showSOSModal, setShowSOSModal] = useState(false);
   const [photoUploaded, setPhotoUploaded] = useState(false);
 
-  const orgId = 'org-apex-001';
+  // Refuel modal state for driver
+  const [showRefuelModal, setShowRefuelModal] = useState(false);
+  const [refuelStation, setRefuelStation] = useState('Shell Dar Port Terminal');
+  const [refuelLitres, setRefuelLitres] = useState('180');
+  const [refuelCost, setRefuelCost] = useState('207.00');
+  const [refuelOdometer, setRefuelOdometer] = useState('49485');
+  const [receiptPhotoTaken, setReceiptPhotoTaken] = useState(false);
+  const [submittingRefuel, setSubmittingRefuel] = useState(false);
+
+  const orgId = 'org-dpw-rwanda';
 
   const translations = {
     EN: {
@@ -48,12 +60,14 @@ export default function DriverMobileApp() {
       borderBtn: '🛂 AT BORDER',
       arrivedBtn: '🏁 I HAVE ARRIVED',
       checkpointBtn: '🚩 CHECKPOINT PING',
+      refuelBtn: '⛽ LOG REFUEL & RECEIPT',
       photoBtn: '📷 TAKE CARGO PHOTO',
       signBtn: '✍️ SIGN SCREEN',
       submitPodBtn: '✅ COMPLETE & SUBMIT',
       sosBtn: '🆘 EMERGENCY HELP',
       audioPrompt: 'John, your truck RAB 123A is near Rusumo Border. Tap yellow button at border, or green button when you reach Kigali destination.',
       photoDone: '✓ Photo Attached',
+      refuelDone: '✓ Refuel Logged to ERP',
     },
     SW: {
       consoleTitle: 'Kituo cha Dereva',
@@ -68,12 +82,14 @@ export default function DriverMobileApp() {
       borderBtn: '🛂 NIPO MPAKANAI',
       arrivedBtn: '🏁 NIMEFIKA KIGALI',
       checkpointBtn: '🚩 UKAGUZI',
+      refuelBtn: '⛽ WEKA MAFUTA NA RISITI',
       photoBtn: '📷 PIGA PICHA MZUGO',
       signBtn: '✍️ WEKA SAHINI',
       submitPodBtn: '✅ MALIZA NA TUMA',
       sosBtn: '🆘 MSAADA WA DHARURA',
       audioPrompt: 'John, gari yako RAB 123A ipo Rusumo. Bonyeza kitufe cha manjano mpakanai, au cha kijani ukifika Kigali.',
       photoDone: '✓ Picha Imepigwa',
+      refuelDone: '✓ Mafuta Yamehifadhiwa',
     },
     RW: {
       consoleTitle: 'Porogaramu y\'Umushoferi',
@@ -88,12 +104,14 @@ export default function DriverMobileApp() {
       borderBtn: '🛂 NGEZE KU MUPAKA',
       arrivedBtn: '🏁 NAGEZE KIGALI',
       checkpointBtn: '🚩 ISUZUMA',
+      refuelBtn: '⛽ GUFATIRA MAFUTA NA RISITI',
       photoBtn: '📷 FATA IFOTO Y\'IBIZIGO',
       signBtn: '✍️ SHYIRAHO SINIYA',
       submitPodBtn: '✅ OHEREZA POD',
       sosBtn: '🆘 TABARA / MSAADA',
       audioPrompt: 'John, ikamyo yawe RAB 123A igeze Rusumo. Kanda ku kifungo cy\'umuhondo ku mupaka, cyangwa icy\'icyatsi wageze Kigali.',
       photoDone: '✓ Ifoto Yafashwe',
+      refuelDone: '✓ Mafuta Yiyandikishije',
     },
     FR: {
       consoleTitle: 'Console Conducteur',
@@ -108,12 +126,14 @@ export default function DriverMobileApp() {
       borderBtn: '🛂 Á LA FRONTIÈRE',
       arrivedBtn: '🏁 JE SUIS ARRIVÉ',
       checkpointBtn: '🚩 POINT DE CONTRÔLE',
+      refuelBtn: '⛽ RECHARGE CARBURANT & REÇU',
       photoBtn: '📷 PRENDRE PHOTO',
       signBtn: '✍️ SIGNER L\'ÉCRAN',
       submitPodBtn: '✅ VALIDER & ENVOYER',
       sosBtn: '🆘 SOS URGENCE',
       audioPrompt: 'John, votre camion RAB 123A est près de la frontière Rusumo. Appuyez sur le bouton jaune à la frontière ou vert à destination.',
       photoDone: '✓ Photo Capturée',
+      refuelDone: '✓ Carburant Enregistré',
     },
   };
 
@@ -171,6 +191,40 @@ export default function DriverMobileApp() {
     handleDriverStatusUpdate('DELIVERED', `POD signed by recipient ${recipientName}. Proof of delivery uploaded.`);
   };
 
+  const handleDriverRefuelSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmittingRefuel(true);
+    try {
+      const res = await fetch('/api/v1/fuel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          organizationId: orgId,
+          shipmentNumber: activeShipment?.shipmentNumber || 'RWA-2026-000125',
+          truck: 'RAB 123A',
+          driver: 'John',
+          station: refuelStation,
+          litres: Number(refuelLitres),
+          totalCost: Number(refuelCost),
+          currentOdometerKm: Number(refuelOdometer),
+          openingOdometerKm: 48200,
+          openingFuelLitres: 300,
+          gpsDistanceKm: 1270,
+          receiptPhotoUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500',
+          odometerPhotoUrl: 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=500',
+        }),
+      });
+      if (res.ok) {
+        setShowRefuelModal(false);
+        alert('⛽ Refuel & Receipt successfully sent to Fuel Control Tower!');
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSubmittingRefuel(false);
+    }
+  };
+
   return (
     <div className="max-w-md mx-auto bg-slate-900 border-2 border-sky-500/40 rounded-3xl overflow-hidden shadow-2xl space-y-0 my-3">
       {/* Driver Language & Easy Mode Header */}
@@ -219,7 +273,7 @@ export default function DriverMobileApp() {
 
       {activeShipment ? (
         <div className="p-4 space-y-4 text-xs">
-          {/* Visual Step Tracker (Low-Literacy Friendly Progress) */}
+          {/* Visual Step Tracker */}
           <div className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
             <div className="flex items-center justify-between text-[11px] font-bold text-slate-300">
               <span className="text-emerald-400">1. Dar Port ✓</span>
@@ -257,7 +311,7 @@ export default function DriverMobileApp() {
             </div>
           </div>
 
-          {/* ULTRA-EASY EXTRA LARGE TOUCH BUTTONS FOR LOW LITERACY */}
+          {/* ULTRA-EASY EXTRA LARGE TOUCH BUTTONS */}
           <div className="space-y-2.5">
             <div className="text-[11px] uppercase font-extrabold tracking-wider text-slate-400 text-center">
               👇 TAP BIG BUTTON TO UPDATE STATUS
@@ -281,16 +335,25 @@ export default function DriverMobileApp() {
               <span className="tracking-wide uppercase">{text.arrivedBtn}</span>
             </button>
 
+            {/* Fuel Refuel & Receipt Button */}
+            <button
+              onClick={() => setShowRefuelModal(true)}
+              className="w-full py-3.5 bg-sky-600 hover:bg-sky-500 text-white font-black text-xs rounded-2xl shadow-lg shadow-sky-600/30 flex items-center justify-center space-x-2 border-2 border-sky-400 transition-transform active:scale-95"
+            >
+              <Fuel className="w-4 h-4" />
+              <span className="tracking-wide uppercase">{text.refuelBtn}</span>
+            </button>
+
             <button
               onClick={() => handleDriverStatusUpdate('CHECKPOINT', 'Driver passed border checkpoint inspection.')}
-              className="w-full py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl text-center border border-slate-700 flex items-center justify-center space-x-1.5"
+              className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs rounded-xl text-center border border-slate-700 flex items-center justify-center space-x-1.5"
             >
               <span>🚩</span>
               <span>{text.checkpointBtn}</span>
             </button>
           </div>
 
-          {/* Proof of Delivery (POD) - Large Camera & Sign Controls */}
+          {/* Proof of Delivery (POD) */}
           <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
             <div className="font-extrabold text-slate-200 text-xs flex items-center space-x-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -353,7 +416,7 @@ export default function DriverMobileApp() {
             )}
           </div>
 
-          {/* Big Red SOS Emergency Button */}
+          {/* SOS Emergency Button */}
           <div className="pt-2 border-t border-slate-800">
             <button
               onClick={() => setShowSOSModal(true)}
@@ -366,6 +429,118 @@ export default function DriverMobileApp() {
         </div>
       ) : (
         <div className="p-8 text-center text-slate-400 text-xs">Loading active driver job...</div>
+      )}
+
+      {/* Refuel & Receipt Photo Modal */}
+      {showRefuelModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+          <div className="bg-slate-900 border-2 border-sky-500 rounded-3xl w-full max-w-sm p-5 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div className="flex items-center space-x-2 text-sky-400 font-bold text-xs">
+                <Fuel className="w-4 h-4" />
+                <span>LOG REFUEL &amp; RECEIPT PHOTO</span>
+              </div>
+              <button onClick={() => setShowRefuelModal(false)} className="text-slate-400 hover:text-white">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleDriverRefuelSubmit} className="space-y-3 text-xs">
+              <div>
+                <label className="block text-slate-300 font-bold mb-1 text-[10px]">1. FUEL STATION LOCATION</label>
+                <input
+                  type="text"
+                  required
+                  value={refuelStation}
+                  onChange={(e) => setRefuelStation(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 font-semibold"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1 text-[10px]">2. LITRES BOUGHT</label>
+                  <input
+                    type="number"
+                    required
+                    value={refuelLitres}
+                    onChange={(e) => {
+                      setRefuelLitres(e.target.value);
+                      setRefuelCost((Number(e.target.value) * 1.15).toFixed(2));
+                    }}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-sky-400 font-black text-sm"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1 text-[10px]">TOTAL COST ($)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={refuelCost}
+                    onChange={(e) => setRefuelCost(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 font-bold text-xs"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-bold mb-1 text-[10px]">3. CURRENT ODOMETER KM</label>
+                <input
+                  type="number"
+                  required
+                  value={refuelOdometer}
+                  onChange={(e) => setRefuelOdometer(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-slate-100 font-mono font-bold"
+                />
+              </div>
+
+              {/* Photo Snap Buttons */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setReceiptPhotoTaken(true);
+                    alert('📸 Fuel Receipt Photo captured!');
+                  }}
+                  className={`py-2.5 rounded-xl text-[11px] font-bold border flex items-center justify-center space-x-1 ${
+                    receiptPhotoTaken
+                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500'
+                      : 'bg-slate-800 text-slate-200 border-slate-700'
+                  }`}
+                >
+                  <Camera className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{receiptPhotoTaken ? '✓ Receipt Attached' : '📷 Receipt Photo'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => alert('📸 Dashboard Odometer Photo captured!')}
+                  className="py-2.5 rounded-xl text-[11px] font-bold bg-slate-800 text-slate-200 border border-slate-700 flex items-center justify-center space-x-1"
+                >
+                  <Gauge className="w-3.5 h-3.5 text-sky-400" />
+                  <span>📷 Odometer Photo</span>
+                </button>
+              </div>
+
+              <div className="pt-2 border-t border-slate-800 flex space-x-2">
+                <button
+                  type="button"
+                  onClick={() => setShowRefuelModal(false)}
+                  className="flex-1 py-2.5 bg-slate-800 text-slate-300 rounded-xl font-bold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={submittingRefuel}
+                  className="flex-1 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-extrabold shadow-lg shadow-sky-600/30"
+                >
+                  {submittingRefuel ? 'Sending...' : 'SEND REFUEL LOG'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
 
       {/* SOS Emergency Call Modal */}

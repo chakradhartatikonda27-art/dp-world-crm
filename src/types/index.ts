@@ -347,13 +347,33 @@ export interface AuditLog {
 export interface FuelRecord {
   id: string;
   organizationId: string;
+  shipmentId?: string;
+  shipmentNumber?: string;
   truck: string;
   driver: string;
   station: string;
   litres: number;
   totalCost: number;
+  pricePerLitre?: number;
   kmPerLitre: number;
+  expectedKmPerLitre?: number;
+  gpsDistanceKm?: number;
+  odometerDistanceKm?: number;
+  openingFuelLitres?: number;
+  openingOdometerKm?: number;
+  expectedFuelConsumed?: number;
+  expectedRemainingFuel?: number;
+  fuelVarianceLitres?: number;
+  fuelVarianceCost?: number;
   variancePercent: number;
+  locationMismatch?: boolean;
+  receiptMismatch?: boolean;
+  odometerMismatch?: boolean;
+  receiptOcrLitres?: number;
+  status: 'OK' | 'REVIEW_REQUIRED' | 'LOCATION_MISMATCH' | 'RECEIPT_MISMATCH' | 'HIGH_VARIANCE';
+  rootCauseInvestigation?: string;
+  receiptPhotoUrl?: string;
+  odometerPhotoUrl?: string;
   createdAt: string;
 }
 

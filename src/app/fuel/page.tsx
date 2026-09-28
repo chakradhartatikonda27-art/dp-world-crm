@@ -1,31 +1,66 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Fuel, Plus, X, RefreshCw, Edit3, Trash2 } from 'lucide-react';
+import {
+  Fuel,
+  Plus,
+  X,
+  RefreshCw,
+  Edit3,
+  Trash2,
+  AlertTriangle,
+  CheckCircle2,
+  Search,
+  MapPin,
+  Camera,
+  FileText,
+  BarChart2,
+  TrendingDown,
+  ShieldAlert,
+  ArrowUpRight,
+  Eye,
+  Zap,
+  Gauge
+} from 'lucide-react';
 import { FuelRecord } from '@/types';
 
 export default function FuelPage() {
   const [records, setRecords] = useState<FuelRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFillModal, setShowFillModal] = useState(false);
+  const [selectedAuditRecord, setSelectedAuditRecord] = useState<FuelRecord | null>(null);
   const [editingRecord, setEditingRecord] = useState<FuelRecord | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Form state for add
-  const [truck, setTruck] = useState('RAB 123 A');
-  const [driver, setDriver] = useState('John Mwangi');
-  const [station, setStation] = useState('Shell Dar Port');
-  const [litres, setLitres] = useState('200');
-  const [totalCost, setTotalCost] = useState('210.00');
-  const [distanceKm, setDistanceKm] = useState('750');
+  // Search and filter
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('ALL');
+
+  // Form state for add refuel record
+  const [shipmentNumber, setShipmentNumber] = useState('RWA-2026-000125');
+  const [truck, setTruck] = useState('RAB 123A');
+  const [driver, setDriver] = useState('John');
+  const [station, setStation] = useState('Shell Dar Port Terminal');
+  const [openingFuelLitres, setOpeningFuelLitres] = useState('300');
+  const [litres, setLitres] = useState('180');
+  const [pricePerLitre, setPricePerLitre] = useState('1.15');
+  const [totalCost, setTotalCost] = useState('207.00');
+  const [openingOdometerKm, setOpeningOdometerKm] = useState('48200');
+  const [currentOdometerKm, setCurrentOdometerKm] = useState('49485');
+  const [gpsDistanceKm, setGpsDistanceKm] = useState('1270');
+  const [expectedKmPerLitre, setExpectedKmPerLitre] = useState('3.1');
+  const [locationMismatch, setLocationMismatch] = useState(false);
+  const [receiptOcrLitres, setReceiptOcrLitres] = useState('182.5');
 
   // Form state for edit
   const [editTruck, setEditTruck] = useState('');
   const [editStation, setEditStation] = useState('');
   const [editLitres, setEditLitres] = useState('');
   const [editCost, setEditCost] = useState('');
+  const [editStatus, setEditStatus] = useState<FuelRecord['status']>('OK');
+  const [editRootCause, setEditRootCause] = useState('');
 
-  const orgId = 'org-apex-001';
+  const orgId = 'org-dpw-rwanda';
 
   const fetchFuel = () => {
     setLoading(true);
@@ -52,12 +87,20 @@ export default function FuelPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           organizationId: orgId,
+          shipmentNumber: shipmentNumber.trim(),
           truck: truck.trim(),
           driver: driver.trim(),
           station: station.trim(),
+          openingFuelLitres: Number(openingFuelLitres),
           litres: Number(litres),
+          pricePerLitre: Number(pricePerLitre),
           totalCost: Number(totalCost),
-          distanceKm: Number(distanceKm),
+          openingOdometerKm: Number(openingOdometerKm),
+          currentOdometerKm: Number(currentOdometerKm),
+          gpsDistanceKm: Number(gpsDistanceKm),
+          expectedKmPerLitre: Number(expectedKmPerLitre),
+          locationMismatch,
+          receiptOcrLitres: receiptOcrLitres ? Number(receiptOcrLitres) : undefined,
         }),
       });
       if (res.ok) {
@@ -85,6 +128,8 @@ export default function FuelPage() {
           station: editStation.trim(),
           litres: Number(editLitres),
           totalCost: Number(editCost),
+          status: editStatus,
+          rootCauseInvestigation: editRootCause,
         }),
       });
       if (res.ok) {
@@ -116,175 +161,770 @@ export default function FuelPage() {
     setEditStation(r.station);
     setEditLitres(r.litres.toString());
     setEditCost(r.totalCost.toString());
+    setEditStatus(r.status);
+    setEditRootCause(r.rootCauseInvestigation || '');
   };
 
+  // KPIs
+  const totalLitresPurchased = records.reduce((sum, r) => sum + r.litres, 0);
+  const totalFuelCost = records.reduce((sum, r) => sum + r.totalCost, 0);
+  const totalExpectedConsumed = records.reduce((sum, r) => sum + (r.expectedFuelConsumed || 0), 0);
+  const totalFuelVarianceLitres = records.reduce((sum, r) => sum + (r.fuelVarianceLitres || 0), 0);
+  const totalFuelVarianceCost = records.reduce((sum, r) => sum + (r.fuelVarianceCost || 0), 0);
+  const anomalyCount = records.filter((r) => r.status !== 'OK').length;
+
+  // Filtered records
+  const filteredRecords = records.filter((r) => {
+    const matchesSearch =
+      r.truck.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.driver.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      r.station.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (r.shipmentNumber && r.shipmentNumber.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      r.id.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchesStatus =
+      statusFilter === 'ALL' ||
+      (statusFilter === 'ANOMALIES' && r.status !== 'OK') ||
+      r.status === statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm">
+    <div className="space-y-6 pb-12">
+      {/* Executive Control Tower Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-2">
-            <Fuel className="w-5 h-5 text-amber-500 shrink-0" />
-            <span>Fuel Management &amp; Variance Audit</span>
+          <div className="flex items-center space-x-2">
+            <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 uppercase tracking-wider">
+              Software-Only Reconciliation Tower
+            </span>
+            <span className="text-xs text-slate-400">• Step-by-Step Fuel Control</span>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 flex items-center space-x-2 mt-1">
+            <Fuel className="w-6 h-6 text-amber-500 shrink-0" />
+            <span>Fuel Control &amp; Reconciliation Engine</span>
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            IoT Fuel sensors • Digital Card reconciliation • Theft/Leakage detection • Efficiency benchmarks.
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-3xl">
+            Software-only reconciliation pairing Driver Phone GPS location, Odometer photos, Fuel Receipt OCR, and ERP expected consumption math to detect theft, unauthorized refuels, and mileage loss.
           </p>
         </div>
 
-        <button
-          onClick={() => setShowFillModal(true)}
-          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Record Fuel Fill</span>
-        </button>
+        <div className="flex items-center space-x-2 shrink-0">
+          <button
+            onClick={fetchFuel}
+            className="p-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 rounded-xl transition"
+            title="Refresh Fuel Telemetry"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+          </button>
+          <button
+            onClick={() => setShowFillModal(true)}
+            className="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold flex items-center space-x-2 shadow-md shadow-amber-500/20 transition"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Log Refuel / Opening Balance</span>
+          </button>
+        </div>
       </div>
 
-      {/* Fuel Records Table */}
+      {/* KPI Metrics Dashboard Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Total Refuel Purchased */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span className="font-medium">Total Refueled Fuel</span>
+            <Fuel className="w-4 h-4 text-sky-500" />
+          </div>
+          <div className="flex items-baseline space-x-2">
+            <span className="text-2xl font-black text-slate-900 dark:text-slate-100">
+              {totalLitresPurchased.toLocaleString()} L
+            </span>
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400">
+              (${totalFuelCost.toFixed(2)})
+            </span>
+          </div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center space-x-1 pt-1">
+            <span>Avg Price:</span>
+            <span className="font-semibold text-slate-700 dark:text-slate-300">$1.15 / Litre</span>
+          </div>
+        </div>
+
+        {/* Expected Fuel Consumed */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span className="font-medium">Expected Consumption</span>
+            <Gauge className="w-4 h-4 text-emerald-500" />
+          </div>
+          <div className="flex items-baseline space-x-2">
+            <span className="text-2xl font-black text-emerald-600 dark:text-emerald-400">
+              {totalExpectedConsumed.toFixed(1)} L
+            </span>
+          </div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center space-x-1 pt-1">
+            <span>Formula:</span>
+            <span className="font-semibold text-slate-700 dark:text-slate-300">GPS Distance / Benchmark Mileage</span>
+          </div>
+        </div>
+
+        {/* Net Fuel Variance */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span className="font-medium">Net Fuel Variance</span>
+            <TrendingDown className="w-4 h-4 text-rose-500" />
+          </div>
+          <div className="flex items-baseline space-x-2">
+            <span
+              className={`text-2xl font-black ${
+                totalFuelVarianceLitres > 0
+                  ? 'text-rose-600 dark:text-rose-400'
+                  : 'text-emerald-600 dark:text-emerald-400'
+              }`}
+            >
+              {totalFuelVarianceLitres > 0 ? `+${totalFuelVarianceLitres.toFixed(1)} L` : `${totalFuelVarianceLitres.toFixed(1)} L`}
+            </span>
+            <span className="text-xs font-bold text-rose-500">
+              (${totalFuelVarianceCost.toFixed(2)})
+            </span>
+          </div>
+          <div className="text-[11px] text-rose-600 dark:text-rose-400 font-medium pt-1">
+            {totalFuelVarianceLitres > 0 ? 'Exceeding benchmark tolerance' : 'Within normal operational limits'}
+          </div>
+        </div>
+
+        {/* Verification Mismatches */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-2xl shadow-sm space-y-1">
+          <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+            <span className="font-medium">Verification Mismatches</span>
+            <ShieldAlert className="w-4 h-4 text-amber-500" />
+          </div>
+          <div className="flex items-baseline space-x-2">
+            <span className="text-2xl font-black text-amber-600 dark:text-amber-400">
+              {anomalyCount} Flagged
+            </span>
+          </div>
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center space-x-1 pt-1">
+            <span>Location • OCR • Odometer Mismatch</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Filters & Search Toolbar */}
+      <div className="flex flex-col md:flex-row items-center justify-between gap-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3.5 rounded-2xl shadow-sm">
+        <div className="relative w-full md:w-80">
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search truck, driver, shipment, or station..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
+          />
+        </div>
+
+        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
+          <button
+            onClick={() => setStatusFilter('ALL')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition ${
+              statusFilter === 'ALL'
+                ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 shadow-sm'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
+            }`}
+          >
+            All Logs ({records.length})
+          </button>
+          <button
+            onClick={() => setStatusFilter('ANOMALIES')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition flex items-center space-x-1.5 ${
+              statusFilter === 'ANOMALIES'
+                ? 'bg-rose-600 text-white shadow-sm'
+                : 'bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900 hover:bg-rose-100'
+            }`}
+          >
+            <AlertTriangle className="w-3.5 h-3.5" />
+            <span>Flagged Anomalies ({anomalyCount})</span>
+          </button>
+          <button
+            onClick={() => setStatusFilter('OK')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-semibold shrink-0 transition flex items-center space-x-1.5 ${
+              statusFilter === 'OK'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900 hover:bg-emerald-100'
+            }`}
+          >
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Verified OK</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Fuel Records Table & Reconciliation Control Tower */}
       {loading ? (
-        <div className="flex justify-center items-center py-12">
-          <RefreshCw className="w-6 h-6 animate-spin text-sky-500" />
+        <div className="flex justify-center items-center py-16">
+          <RefreshCw className="w-8 h-8 animate-spin text-amber-500" />
+        </div>
+      ) : filteredRecords.length === 0 ? (
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 text-center text-slate-500 dark:text-slate-400">
+          <Fuel className="w-12 h-12 text-slate-300 dark:text-slate-700 mx-auto mb-3" />
+          <p className="font-semibold text-sm">No fuel records match your search or filter.</p>
         </div>
       ) : (
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto min-w-full">
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-semibold">
-                  <th className="p-3">Record ID</th>
-                  <th className="p-3">Truck / Driver</th>
-                  <th className="p-3">Station</th>
-                  <th className="p-3">Litres</th>
-                  <th className="p-3">Total Cost</th>
-                  <th className="p-3">Km/L Efficiency</th>
-                  <th className="p-3">Variance</th>
-                  <th className="p-3 text-right">Actions</th>
+                <tr className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-500 dark:text-slate-400 uppercase text-[10px] font-bold">
+                  <th className="p-3.5">Record &amp; Shipment</th>
+                  <th className="p-3.5">Truck / Driver</th>
+                  <th className="p-3.5">Station &amp; Location</th>
+                  <th className="p-3.5">Opening / Added Fuel</th>
+                  <th className="p-3.5">GPS Dist vs Odo</th>
+                  <th className="p-3.5">Expected vs Actual</th>
+                  <th className="p-3.5">Variance (L &amp; $)</th>
+                  <th className="p-3.5">Audit Status</th>
+                  <th className="p-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300 font-mono">
-                {records.map((r) => (
-                  <tr key={r.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition">
-                    <td className="p-3 font-bold text-sky-600 dark:text-sky-400">{r.id}</td>
-                    <td className="p-3 font-sans font-medium text-slate-900 dark:text-slate-200">
-                      {r.truck} {r.driver ? <span className="text-slate-500 dark:text-slate-400">({r.driver})</span> : null}
-                    </td>
-                    <td className="p-3 font-sans text-slate-500 dark:text-slate-400">{r.station}</td>
-                    <td className="p-3">{r.litres} L</td>
-                    <td className="p-3 text-emerald-600 dark:text-emerald-400 font-bold">${r.totalCost.toFixed(2)}</td>
-                    <td className="p-3">{r.kmPerLitre} km/L</td>
-                    <td className="p-3">
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                          r.variancePercent > 0
-                            ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
-                            : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
-                        }`}
-                      >
-                        {r.variancePercent > 0 ? `+${r.variancePercent}%` : `${r.variancePercent}%`}
-                      </span>
-                    </td>
-                    <td className="p-3 text-right">
-                      <div className="flex items-center justify-end space-x-1">
-                        <button
-                          onClick={() => openEditModal(r)}
-                          className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                          title="Edit Fuel Record"
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300 font-sans">
+                {filteredRecords.map((r) => {
+                  const isAnomaly = r.status !== 'OK';
+                  return (
+                    <tr
+                      key={r.id}
+                      className={`hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition cursor-pointer ${
+                        isAnomaly ? 'bg-rose-50/30 dark:bg-rose-950/10' : ''
+                      }`}
+                      onClick={() => setSelectedAuditRecord(r)}
+                    >
+                      {/* Record & Shipment */}
+                      <td className="p-3.5">
+                        <div className="font-bold font-mono text-slate-900 dark:text-slate-100 flex items-center space-x-1.5">
+                          <Fuel className="w-3.5 h-3.5 text-amber-500" />
+                          <span>{r.id}</span>
+                        </div>
+                        {r.shipmentNumber && (
+                          <div className="text-[11px] text-sky-600 dark:text-sky-400 font-mono font-medium">
+                            {r.shipmentNumber}
+                          </div>
+                        )}
+                      </td>
+
+                      {/* Truck / Driver */}
+                      <td className="p-3.5">
+                        <div className="font-bold text-slate-900 dark:text-slate-100">{r.truck}</div>
+                        <div className="text-[11px] text-slate-500 dark:text-slate-400">{r.driver}</div>
+                      </td>
+
+                      {/* Station & Location */}
+                      <td className="p-3.5 max-w-[180px] truncate">
+                        <div className="font-medium text-slate-900 dark:text-slate-200 flex items-center space-x-1">
+                          <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+                          <span className="truncate">{r.station}</span>
+                        </div>
+                        {r.locationMismatch && (
+                          <span className="inline-block mt-0.5 px-1.5 py-0.2 rounded text-[9px] font-bold bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                            GPS Station Mismatch
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Opening / Added Fuel */}
+                      <td className="p-3.5 font-mono">
+                        <div>
+                          <span className="text-slate-400 text-[10px]">Open:</span>{' '}
+                          <span className="font-semibold">{r.openingFuelLitres || 300} L</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 text-[10px]">Refuel:</span>{' '}
+                          <span className="font-bold text-sky-600 dark:text-sky-400">+{r.litres} L</span>{' '}
+                          <span className="text-slate-400 text-[10px]">(${r.totalCost.toFixed(2)})</span>
+                        </div>
+                      </td>
+
+                      {/* GPS Dist vs Odo */}
+                      <td className="p-3.5 font-mono">
+                        <div>
+                          <span className="text-slate-400 text-[10px]">GPS:</span>{' '}
+                          <span className="font-semibold text-slate-900 dark:text-slate-100">
+                            {r.gpsDistanceKm || 750} km
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 text-[10px]">Odo:</span>{' '}
+                          <span className="font-medium text-slate-600 dark:text-slate-400">
+                            {r.odometerDistanceKm || r.gpsDistanceKm || 750} km
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Expected vs Actual */}
+                      <td className="p-3.5 font-mono">
+                        <div>
+                          <span className="text-slate-400 text-[10px]">Exp:</span>{' '}
+                          <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                            {r.expectedFuelConsumed || (r.litres ? (r.litres * 0.9).toFixed(1) : '0')} L
+                          </span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 text-[10px]">Bench:</span>{' '}
+                          <span className="text-slate-600 dark:text-slate-400">
+                            {r.expectedKmPerLitre || 3.1} km/L
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Variance */}
+                      <td className="p-3.5 font-mono">
+                        <div
+                          className={`font-bold ${
+                            (r.fuelVarianceLitres || 0) > 0
+                              ? 'text-rose-600 dark:text-rose-400'
+                              : 'text-emerald-600 dark:text-emerald-400'
+                          }`}
                         >
-                          <Edit3 className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteFuelRecord(r.id)}
-                          className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                          title="Delete Fuel Record"
+                          {(r.fuelVarianceLitres || 0) > 0
+                            ? `+${r.fuelVarianceLitres} L`
+                            : `${r.fuelVarianceLitres || 0} L`}
+                        </div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">
+                          ${r.fuelVarianceCost?.toFixed(2) || '0.00'}
+                        </div>
+                      </td>
+
+                      {/* Audit Status */}
+                      <td className="p-3.5">
+                        <span
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-extrabold flex items-center space-x-1 w-max ${
+                            r.status === 'OK'
+                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
+                              : r.status === 'LOCATION_MISMATCH'
+                              ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20'
+                              : r.status === 'RECEIPT_MISMATCH'
+                              ? 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20'
+                              : 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
+                          }`}
                         >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          {r.status === 'OK' ? (
+                            <>
+                              <CheckCircle2 className="w-3 h-3" />
+                              <span>VERIFIED OK</span>
+                            </>
+                          ) : (
+                            <>
+                              <AlertTriangle className="w-3 h-3" />
+                              <span>{r.status.replace('_', ' ')}</span>
+                            </>
+                          )}
+                        </span>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="p-3.5 text-right" onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-end space-x-1">
+                          <button
+                            onClick={() => setSelectedAuditRecord(r)}
+                            className="p-1.5 text-slate-400 hover:text-amber-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            title="Open Detailed Audit View"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => openEditModal(r)}
+                            className="p-1.5 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            title="Edit Record"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteFuelRecord(r.id)}
+                            className="p-1.5 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            title="Delete Record"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* Record Fuel Modal */}
+      {/* Detailed Reconciliation Audit View Modal */}
+      {selectedAuditRecord && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-3xl p-6 space-y-6 shadow-2xl my-8">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+              <div>
+                <div className="flex items-center space-x-2">
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 font-mono">
+                    {selectedAuditRecord.id}
+                  </span>
+                  <span className="text-xs font-mono text-sky-600 dark:text-sky-400 font-semibold">
+                    {selectedAuditRecord.shipmentNumber}
+                  </span>
+                </div>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 mt-1">
+                  Fuel Control Reconciliation &amp; Audit Trail
+                </h2>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Truck {selectedAuditRecord.truck} • Driver {selectedAuditRecord.driver}
+                </p>
+              </div>
+
+              <button
+                onClick={() => setSelectedAuditRecord(null)}
+                className="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Verification Status Banner */}
+            <div
+              className={`p-4 rounded-2xl border flex items-start space-x-3 ${
+                selectedAuditRecord.status === 'OK'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
+                  : 'bg-rose-50 dark:bg-rose-950/30 border-rose-200 dark:border-rose-800 text-rose-900 dark:text-rose-200'
+              }`}
+            >
+              {selectedAuditRecord.status === 'OK' ? (
+                <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+              ) : (
+                <ShieldAlert className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />
+              )}
+              <div className="space-y-1">
+                <h4 className="text-xs font-bold uppercase tracking-wider">
+                  Audit Verdict: {selectedAuditRecord.status.replace('_', ' ')}
+                </h4>
+                <p className="text-xs">
+                  {selectedAuditRecord.rootCauseInvestigation ||
+                    'Automated multi-point software reconciliation completed.'}
+                </p>
+              </div>
+            </div>
+
+            {/* Reconciliation Math Comparison Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+              {/* Box 1: Fuel Tank Math */}
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-2">
+                <div className="font-sans font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5 text-xs">
+                  <Fuel className="w-4 h-4 text-amber-500" />
+                  <span>1. Fuel Tank Balance</span>
+                </div>
+                <div className="space-y-1 pt-1 text-slate-600 dark:text-slate-300">
+                  <div className="flex justify-between">
+                    <span>Opening Fuel:</span>
+                    <span className="font-bold">{selectedAuditRecord.openingFuelLitres || 300} L</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Refuel Added:</span>
+                    <span className="font-bold text-sky-600 dark:text-sky-400">+{selectedAuditRecord.litres} L</span>
+                  </div>
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-700 pt-1 font-bold text-slate-900 dark:text-slate-100">
+                    <span>Total Available:</span>
+                    <span>{(selectedAuditRecord.openingFuelLitres || 300) + selectedAuditRecord.litres} L</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Box 2: GPS Telemetry vs Benchmark */}
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-2">
+                <div className="font-sans font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5 text-xs">
+                  <Gauge className="w-4 h-4 text-emerald-500" />
+                  <span>2. Satellite Telemetry</span>
+                </div>
+                <div className="space-y-1 pt-1 text-slate-600 dark:text-slate-300">
+                  <div className="flex justify-between">
+                    <span>GPS Distance:</span>
+                    <span className="font-bold text-slate-900 dark:text-slate-100">
+                      {selectedAuditRecord.gpsDistanceKm || 750} km
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Odometer Dist:</span>
+                    <span>{selectedAuditRecord.odometerDistanceKm || selectedAuditRecord.gpsDistanceKm || 750} km</span>
+                  </div>
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-700 pt-1">
+                    <span>Model Efficiency:</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                      {selectedAuditRecord.expectedKmPerLitre || 3.1} km/L
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Box 3: Expected vs Variance */}
+              <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-2">
+                <div className="font-sans font-bold text-slate-900 dark:text-slate-100 flex items-center space-x-1.5 text-xs">
+                  <TrendingDown className="w-4 h-4 text-rose-500" />
+                  <span>3. Expected &amp; Variance</span>
+                </div>
+                <div className="space-y-1 pt-1 text-slate-600 dark:text-slate-300">
+                  <div className="flex justify-between">
+                    <span>Exp. Consumed:</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400">
+                      {selectedAuditRecord.expectedFuelConsumed || 0} L
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Fuel Variance:</span>
+                    <span
+                      className={`font-bold ${
+                        (selectedAuditRecord.fuelVarianceLitres || 0) > 0 ? 'text-rose-500' : 'text-emerald-500'
+                      }`}
+                    >
+                      {selectedAuditRecord.fuelVarianceLitres || 0} L
+                    </span>
+                  </div>
+                  <div className="flex justify-between border-t border-slate-200 dark:border-slate-700 pt-1 font-bold">
+                    <span>Financial Loss:</span>
+                    <span className="text-rose-600 dark:text-rose-400">
+                      ${selectedAuditRecord.fuelVarianceCost?.toFixed(2) || '0.00'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Image & Proof Verification Section */}
+            <div className="space-y-3 pt-2">
+              <h4 className="text-xs font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wider">
+                Photo &amp; OCR Evidence Verification
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {/* Fuel Receipt OCR Photo */}
+                <div className="border border-slate-200 dark:border-slate-800 rounded-2xl p-3 space-y-2 bg-slate-50/50 dark:bg-slate-950/40">
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    <span className="flex items-center space-x-1.5">
+                      <Camera className="w-3.5 h-3.5 text-amber-500" />
+                      <span>Fuel Station Receipt Photo &amp; OCR</span>
+                    </span>
+                    {selectedAuditRecord.receiptMismatch ? (
+                      <span className="text-[10px] text-rose-500 font-bold">OCR MISMATCH</span>
+                    ) : (
+                      <span className="text-[10px] text-emerald-500 font-bold">OCR MATCH</span>
+                    )}
+                  </div>
+                  <div className="aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl overflow-hidden relative group border border-slate-300 dark:border-slate-700">
+                    {/* eslint-disable-next-html-element-suppress */}
+                    <img
+                      src={selectedAuditRecord.receiptPhotoUrl || 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=500'}
+                      alt="Fuel Receipt"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-semibold">
+                      View Original Receipt Image
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-400 font-mono space-y-0.5">
+                    <div>Station: <span className="text-slate-900 dark:text-slate-200 font-sans">{selectedAuditRecord.station}</span></div>
+                    <div>Receipt OCR Litres: <span className="font-bold text-amber-600 dark:text-amber-400">{selectedAuditRecord.receiptOcrLitres || selectedAuditRecord.litres} L</span></div>
+                  </div>
+                </div>
+
+                {/* Dashboard Odometer Photo */}
+                <div className="border border-slate-200 dark:border-slate-800 rounded-2xl p-3 space-y-2 bg-slate-50/50 dark:bg-slate-950/40">
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    <span className="flex items-center space-x-1.5">
+                      <Gauge className="w-3.5 h-3.5 text-sky-500" />
+                      <span>Truck Dashboard Odometer Photo</span>
+                    </span>
+                    {selectedAuditRecord.odometerMismatch ? (
+                      <span className="text-[10px] text-rose-500 font-bold">ODO MISMATCH</span>
+                    ) : (
+                      <span className="text-[10px] text-emerald-500 font-bold">ODO MATCH</span>
+                    )}
+                  </div>
+                  <div className="aspect-video bg-slate-200 dark:bg-slate-800 rounded-xl overflow-hidden relative group border border-slate-300 dark:border-slate-700">
+                    {/* eslint-disable-next-html-element-suppress */}
+                    <img
+                      src={selectedAuditRecord.odometerPhotoUrl || 'https://images.unsplash.com/photo-1517524008697-84bbe3c3fd98?w=500'}
+                      alt="Truck Odometer"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-semibold">
+                      View Odometer Photo
+                    </div>
+                  </div>
+                  <div className="text-[11px] text-slate-600 dark:text-slate-400 font-mono space-y-0.5">
+                    <div>Opening Odometer: <span className="text-slate-900 dark:text-slate-200">{selectedAuditRecord.openingOdometerKm || 48200} km</span></div>
+                    <div>Trip Odometer Dist: <span className="font-bold text-sky-600 dark:text-sky-400">{selectedAuditRecord.odometerDistanceKm || selectedAuditRecord.gpsDistanceKm || 750} km</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800">
+              <button
+                onClick={() => {
+                  const recordToEdit = selectedAuditRecord;
+                  setSelectedAuditRecord(null);
+                  openEditModal(recordToEdit);
+                }}
+                className="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5"
+              >
+                <Edit3 className="w-4 h-4" />
+                <span>Edit Audit Status / Root Cause</span>
+              </button>
+
+              <button
+                onClick={() => setSelectedAuditRecord(null)}
+                className="px-5 py-2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 rounded-xl text-xs font-bold transition shadow-sm"
+              >
+                Close Audit View
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Record Fuel Fill Modal */}
       {showFillModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-xl p-6 space-y-5 shadow-2xl my-8">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Fuel className="w-4 h-4 text-amber-500" />
-                <span>Record Fuel Fill Log</span>
+                <span>Log Refuel / Opening Fuel Balance</span>
               </h3>
               <button onClick={() => setShowFillModal(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleRecordFuel} className="space-y-3 text-xs">
+            <form onSubmit={handleRecordFuel} className="space-y-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Truck Reg *</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Shipment # *</label>
+                  <input
+                    type="text"
+                    required
+                    value={shipmentNumber}
+                    onChange={(e) => setShipmentNumber(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 font-mono focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Truck Reg *</label>
                   <input
                     type="text"
                     required
                     value={truck}
                     onChange={(e) => setTruck(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Driver Name</label>
-                  <input
-                    type="text"
-                    value={driver}
-                    onChange={(e) => setDriver(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 font-bold focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Station Location *</label>
-                <input
-                  type="text"
-                  required
-                  value={station}
-                  onChange={(e) => setStation(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Driver Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={driver}
+                    onChange={(e) => setDriver(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Fuel Station Location *</label>
+                  <input
+                    type="text"
+                    required
+                    value={station}
+                    onChange={(e) => setStation(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
               </div>
 
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Litres</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Opening Fuel (L)</label>
                   <input
                     type="number"
-                    value={litres}
-                    onChange={(e) => setLitres(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    value={openingFuelLitres}
+                    onChange={(e) => setOpeningFuelLitres(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Cost ($)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Refueled (L) *</label>
+                  <input
+                    type="number"
+                    required
+                    value={litres}
+                    onChange={(e) => {
+                      const l = e.target.value;
+                      setLitres(l);
+                      setTotalCost((Number(l) * Number(pricePerLitre)).toFixed(2));
+                    }}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-mono font-bold text-sky-600 dark:text-sky-400 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Total Cost ($)</label>
                   <input
                     type="number"
                     step="0.01"
                     value={totalCost}
                     onChange={(e) => setTotalCost(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Start Odometer (km)</label>
+                  <input
+                    type="number"
+                    value={openingOdometerKm}
+                    onChange={(e) => setOpeningOdometerKm(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Dist (km)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Current Odometer (km)</label>
                   <input
                     type="number"
-                    value={distanceKm}
-                    onChange={(e) => setDistanceKm(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    value={currentOdometerKm}
+                    onChange={(e) => setCurrentOdometerKm(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">GPS Distance (km)</label>
+                  <input
+                    type="number"
+                    value={gpsDistanceKm}
+                    onChange={(e) => setGpsDistanceKm(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl font-mono text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 bg-slate-50 dark:bg-slate-800/80 rounded-2xl border border-slate-200 dark:border-slate-700 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-slate-700 dark:text-slate-300">Software Reconciliation Preview:</span>
+                  <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-bold">
+                    Expected: {+(Number(gpsDistanceKm) / Number(expectedKmPerLitre)).toFixed(1)} L
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-[11px] text-slate-500">
+                  <span>Simulate GPS Station Mismatch</span>
+                  <input
+                    type="checkbox"
+                    checked={locationMismatch}
+                    onChange={(e) => setLocationMismatch(e.target.checked)}
+                    className="w-4 h-4 rounded text-amber-500 focus:ring-amber-500"
                   />
                 </div>
               </div>
@@ -300,9 +940,9 @@ export default function FuelPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                  className="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold shadow-md disabled:opacity-50"
                 >
-                  {submitting ? 'Saving...' : 'Record Fill'}
+                  {submitting ? 'Calculating & Saving...' : 'Run Audit & Save'}
                 </button>
               </div>
             </form>
@@ -312,12 +952,12 @@ export default function FuelPage() {
 
       {/* Edit Fuel Modal */}
       {editingRecord && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-md p-6 space-y-4 shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
               <h3 className="font-bold text-slate-900 dark:text-slate-100 text-sm flex items-center space-x-2">
                 <Edit3 className="w-4 h-4 text-amber-500" />
-                <span>Edit Fuel Record ({editingRecord.id})</span>
+                <span>Edit Audit Record ({editingRecord.id})</span>
               </h3>
               <button onClick={() => setEditingRecord(null)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
                 <X className="w-5 h-5" />
@@ -326,47 +966,72 @@ export default function FuelPage() {
 
             <form onSubmit={handleEditFuelSubmit} className="space-y-3 text-xs">
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Truck Registration</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Truck Registration</label>
                 <input
                   type="text"
                   required
                   value={editTruck}
                   onChange={(e) => setEditTruck(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
               <div>
-                <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Fuel Station</label>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Fuel Station</label>
                 <input
                   type="text"
                   required
                   value={editStation}
                   onChange={(e) => setEditStation(e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Litres</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Litres</label>
                   <input
                     type="number"
                     value={editLitres}
                     onChange={(e) => setEditLitres(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-700 dark:text-slate-300 font-medium mb-1">Total Cost ($)</label>
+                  <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Total Cost ($)</label>
                   <input
                     type="number"
                     step="0.01"
                     value={editCost}
                     onChange={(e) => setEditCost(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
                   />
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Audit Status</label>
+                <select
+                  value={editStatus}
+                  onChange={(e) => setEditStatus(e.target.value as FuelRecord['status'])}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                >
+                  <option value="OK">OK - Verified</option>
+                  <option value="LOCATION_MISMATCH">LOCATION_MISMATCH</option>
+                  <option value="RECEIPT_MISMATCH">RECEIPT_MISMATCH</option>
+                  <option value="HIGH_VARIANCE">HIGH_VARIANCE</option>
+                  <option value="REVIEW_REQUIRED">REVIEW_REQUIRED</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-700 dark:text-slate-300 font-semibold mb-1">Root Cause Investigation</label>
+                <textarea
+                  rows={3}
+                  value={editRootCause}
+                  onChange={(e) => setEditRootCause(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                />
               </div>
 
               <div className="flex justify-end space-x-2 pt-3 border-t border-slate-200 dark:border-slate-800">
@@ -380,9 +1045,9 @@ export default function FuelPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-semibold shadow-md disabled:opacity-50"
+                  className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-bold shadow-md disabled:opacity-50"
                 >
-                  {submitting ? 'Saving...' : 'Save Changes'}
+                  {submitting ? 'Saving...' : 'Save Audit Changes'}
                 </button>
               </div>
             </form>
