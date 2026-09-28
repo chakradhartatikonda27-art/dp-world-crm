@@ -3,8 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import { UserSquare2, Star, Plus, X, RefreshCw, Edit3, Trash2 } from 'lucide-react';
 import { Driver } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 export default function DriversPage() {
+  const { currentRole } = useAuth();
+  const canEditDrivers = ['FLEET_MANAGER', 'DISPATCHER', 'OPERATIONS_MANAGER', 'ORG_ADMIN', 'SUPER_ADMIN'].includes(currentRole);
+
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(true);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
@@ -154,13 +158,15 @@ export default function DriversPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setShowRegisterModal(true)}
-          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Register Driver</span>
-        </button>
+        {canEditDrivers && (
+          <button
+            onClick={() => setShowRegisterModal(true)}
+            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center justify-center space-x-1.5 shadow-md transition shrink-0"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Register Driver</span>
+          </button>
+        )}
       </div>
 
       {/* Grid */}
@@ -198,20 +204,24 @@ export default function DriversPage() {
                   >
                     {driver.status}
                   </button>
-                  <button
-                    onClick={() => openEditModal(driver)}
-                    className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                    title="Edit Driver"
-                  >
-                    <Edit3 className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteDriver(driver.id)}
-                    className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                    title="Delete Driver"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+                  {canEditDrivers && (
+                    <>
+                      <button
+                        onClick={() => openEditModal(driver)}
+                        className="p-1 text-slate-400 hover:text-sky-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                        title="Edit Driver"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteDriver(driver.id)}
+                        className="p-1 text-slate-400 hover:text-rose-500 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                        title="Delete Driver"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
 

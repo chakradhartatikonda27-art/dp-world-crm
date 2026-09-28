@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { UserRole, Permission } from '@/types';
 import { ROLE_PERMISSIONS } from '@/lib/constants';
 
@@ -12,6 +13,7 @@ interface AuthContextType {
   permissions: Permission[];
   hasPermission: (permission: Permission) => boolean;
   canAccessRoute: (route: string) => boolean;
+  roleDefaultRoute: string;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -22,9 +24,28 @@ const AuthContext = createContext<AuthContextType>({
   permissions: [],
   hasPermission: () => true,
   canAccessRoute: () => true,
+  roleDefaultRoute: '/',
 });
 
-// Role to route mapping rules
+// Primary home route per role
+export const DEFAULT_ROLE_LANDING: Record<UserRole, string> = {
+  SUPER_ADMIN: '/',
+  ORG_ADMIN: '/',
+  OPERATIONS_MANAGER: '/',
+  OPERATIONS_EXECUTIVE: '/',
+  FLEET_MANAGER: '/fleet',
+  DISPATCHER: '/',
+  DRIVER: '/driver',
+  WAREHOUSE_MANAGER: '/warehouse',
+  WAREHOUSE_OPERATOR: '/warehouse',
+  FINANCE_MANAGER: '/invoices',
+  FINANCE_EXECUTIVE: '/invoices',
+  CUSTOMER_ADMIN: '/customer',
+  CUSTOMER_USER: '/customer',
+  MANAGEMENT_VIEWER: '/analytics',
+};
+
+// Allowed routes per role
 const ROLE_ROUTE_ACCESS: Record<UserRole, string[]> = {
   SUPER_ADMIN: ['*'],
   ORG_ADMIN: ['*'],
@@ -42,28 +63,28 @@ const ROLE_ROUTE_ACCESS: Record<UserRole, string[]> = {
     '/', '/shipments', '/tracking', '/driver', '/drivers', '/routes', '/loading', '/exceptions'
   ],
   DRIVER: [
-    '/', '/driver', '/shipments', '/tracking', '/pod'
+    '/driver', '/shipments', '/tracking', '/pod'
   ],
   WAREHOUSE_MANAGER: [
     '/', '/warehouse', '/loading', '/shipments', '/tracking', '/documents', '/pod', '/exceptions'
   ],
   WAREHOUSE_OPERATOR: [
-    '/', '/warehouse', '/loading', '/shipments', '/pod'
+    '/warehouse', '/loading', '/shipments', '/pod'
   ],
   FINANCE_MANAGER: [
     '/', '/invoices', '/quotes', '/clients', '/vendors', '/fuel', '/productivity', '/analytics', '/documents'
   ],
   FINANCE_EXECUTIVE: [
-    '/', '/invoices', '/quotes', '/clients', '/vendors', '/documents'
+    '/invoices', '/quotes', '/clients', '/vendors', '/documents'
   ],
   CUSTOMER_ADMIN: [
-    '/', '/customer', '/shipments', '/tracking', '/invoices', '/quotes', '/pod'
+    '/customer', '/shipments', '/tracking', '/invoices', '/quotes', '/pod'
   ],
   CUSTOMER_USER: [
-    '/', '/customer', '/shipments', '/tracking', '/pod'
+    '/customer', '/shipments', '/tracking', '/pod'
   ],
   MANAGEMENT_VIEWER: [
-    '/', '/analytics', '/productivity', '/shipments', '/tracking', '/fleet', '/drivers', '/invoices', '/audit'
+    '/analytics', '/productivity', '/shipments', '/tracking', '/fleet', '/drivers', '/invoices', '/audit'
   ],
 };
 
@@ -74,6 +95,8 @@ export const AuthProvider: React.FC<{
 }> = ({ children, initialRole = 'ORG_ADMIN', initialOrgId = 'org-dpw-rwanda' }) => {
   const [currentRole, setCurrentRole] = useState<UserRole>(initialRole);
   const [currentOrgId, setCurrentOrgId] = useState<string>(initialOrgId);
+  const pathname = usePathname();
+  const router = useRouter();
 
   // Sync role state with localStorage for persistence across reloads
   useEffect(() => {
@@ -83,9 +106,21 @@ export const AuthProvider: React.FC<{
     if (savedOrg) setCurrentOrgId(savedOrg);
   }, []);
 
+  const canAccessRoute = (route: string, roleToTest = currentRole): boolean => {
+    const allowed = ROLE_ROUTE_ACCESS[roleToTest] || ['*'];
+    if (allowed.includes('*')) return true;
+    return allowed.includes(route);
+  };
+
   const handleRoleChange = (role: UserRole) => {
     setCurrentRole(role);
     localStorage.setItem('logistics_os_user_role', role);
+
+    // Auto-redirect if current pathname is forbidden for the new role
+    if (!canAccessRoute(pathname, role)) {
+      const targetRoute = DEFAULT_ROLE_LANDING[role] || '/';
+      router.push(targetRoute);
+    }
   };
 
   const handleOrgChange = (orgId: string) => {
@@ -100,12 +135,6 @@ export const AuthProvider: React.FC<{
     return permissions.includes(permission);
   };
 
-  const canAccessRoute = (route: string): boolean => {
-    const allowed = ROLE_ROUTE_ACCESS[currentRole] || ['*'];
-    if (allowed.includes('*')) return true;
-    return allowed.includes(route);
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -115,7 +144,8 @@ export const AuthProvider: React.FC<{
         setCurrentOrgId: handleOrgChange,
         permissions,
         hasPermission,
-        canAccessRoute,
+        canAccessRoute: (r) => canAccessRoute(r, currentRole),
+        roleDefaultRoute: DEFAULT_ROLE_LANDING[currentRole] || '/',
       }}
     >
       {children}

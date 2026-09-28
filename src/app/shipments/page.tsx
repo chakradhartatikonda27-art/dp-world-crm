@@ -6,8 +6,12 @@ import { ShipmentDetailDrawer } from '@/components/shipments/ShipmentDetailDrawe
 import { CreateShipmentModal } from '@/components/shipments/CreateShipmentModal';
 import { Shipment, ShipmentStatus, ShipmentTimelineEvent } from '@/types';
 import { Boxes, Plus, Search, Filter } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext';
 
 export default function ShipmentsPage() {
+  const { currentRole } = useAuth();
+  const canCreateShipment = ['ORG_ADMIN', 'SUPER_ADMIN', 'OPERATIONS_MANAGER', 'DISPATCHER', 'CUSTOMER_ADMIN'].includes(currentRole);
+
   const [shipments, setShipments] = useState<Shipment[]>([]);
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
   const [timeline, setTimeline] = useState<ShipmentTimelineEvent[]>([]);
@@ -63,13 +67,15 @@ export default function ShipmentsPage() {
           </p>
         </div>
 
-        <button
-          onClick={() => setIsCreateOpen(true)}
-          className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-lg shadow-sky-500/20"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Create Booking</span>
-        </button>
+        {canCreateShipment && (
+          <button
+            onClick={() => setIsCreateOpen(true)}
+            className="px-4 py-2 bg-sky-600 hover:bg-sky-500 text-white rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-lg shadow-sky-500/20"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Create Booking</span>
+          </button>
+        )}
       </div>
 
       {/* Filter Bar */}
